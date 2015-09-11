@@ -1,4 +1,18 @@
 *.class
+*/target
+*/bin
+*/widgetsets/
+
+.settings/
+*/.settings/
+.classpath
+*/.classpath
+.project
+*/.project
+.idea
+*.iml
+
+/.apt_generated/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
