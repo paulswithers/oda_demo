@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+  <display-name>ODA Demo Application</display-name>
+    <context-param>
+        <description>Vaadin production mode</description>
+        <param-name>productionMode</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <context-param>
+    	<param-name>osgiworlds.developermode</param-name>
+    	<param-value>true</param-value>
+    </context-param>
+	<context-param>
+		<param-name>org.openntf.osgiworlds.devtimename</param-name>
+		<param-value>CN=Micky Mouse/O=Intec-PW</param-value>
+	</context-param>
+    <context-param>
+    	<description>Standard Vaadin parameter, period for checking back to server</description>
+    	<param-name>heartbeatInterval</param-name>
+    	<param-value>300</param-value>
+    </context-param>
+	<context-param>
+		<param-name>org.openntf.domino.extlib.filepath</param-name>
+		<param-value>extlibnew/xpagesext.nsf</param-value>
+	</context-param>
+	<context-param>
+		<param-name>org.openntf.domino.demoApp.folder</param-name>
+		<param-value>odademo_osgi</param-value>
+	</context-param>
+	<context-param>
+		<param-name>org.openntf.domino.demoApp.instances</param-name>
+		<param-value>10</param-value>
+	</context-param>
+	<session-config>
+    	<session-timeout>30</session-timeout>
+	</session-config>
+	<listener>
+		<display-name>org.atmosphere.cpr.SessionSupport</display-name>
+		<listener-class>
+			org.atmosphere.cpr.SessionSupport
+		</listener-class>
+	</listener>
+    
+    <servlet>
+        <servlet-name>OdaDemoAppServlet</servlet-name>
+        <servlet-class>org.openntf.osgiworlds.ODA_VaadinServlet</servlet-class>
+        <init-param>
+            <param-name>UI</param-name>
+            <param-value>org.openntf.domino.demoApp.DemoUI</param-value>
+        </init-param>
+    </servlet> 
+
+    <servlet-mapping>
+        <servlet-name>OdaDemoAppServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    
+</web-app>
