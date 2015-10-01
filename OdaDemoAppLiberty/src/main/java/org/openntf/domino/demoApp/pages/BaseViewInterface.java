@@ -52,9 +52,9 @@ public interface BaseViewInterface {
 
 	void setRightSliderContent(TabSheet rightSliderContent);
 
-	VerticalLayout getMethodList();
+	Panel getMethodList();
 
-	void setMethodList(VerticalLayout methodList);
+	void setMethodList(Panel methodList);
 
 	VerticalLayout getSourceCode();
 

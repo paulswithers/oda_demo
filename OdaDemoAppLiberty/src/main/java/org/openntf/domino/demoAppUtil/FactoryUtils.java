@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
+import org.openntf.domino.demoApp.application.DocumentListener;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 
@@ -48,6 +49,7 @@ public class FactoryUtils {
 			Session userSess = getUserSession();
 			String filePath = getDemoDatabasesFolder();
 			retVal_ = userSess.getDatabase(userSess.getServerName(), filePath + "/oda_" + idex.toString() + ".nsf", false);
+			retVal_.addListener(new DocumentListener(filePath));
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -56,6 +58,10 @@ public class FactoryUtils {
 
 	public static String getNumberOfDemos() {
 		return VaadinServlet.getCurrent().getServletContext().getInitParameter("org.openntf.domino.demoApp.instances");
+	}
+
+	public static int getNumberOfDemosAsInt() {
+		return Integer.parseInt(getNumberOfDemos());
 	}
 
 	public static String dumpConfigSettings() {

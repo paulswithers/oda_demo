@@ -1,5 +1,7 @@
 package org.openntf.domino.demoApp;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import javax.servlet.annotation.WebServlet;
 
 import org.openntf.domino.demoApp.components.HeaderComponent;
@@ -56,6 +58,8 @@ public class DemoUI extends UI {
 	private boolean setup;
 	private Target appTarget;
 	private Label configDetails;
+	private ConcurrentHashMap<String, Integer> createdDocs;
+	private ConcurrentHashMap<String, Integer> updatedDocs;
 
 	public Navigator getUiNavigator() {
 		return uiNavigator;
@@ -146,7 +150,7 @@ public class DemoUI extends UI {
 		addNewMenuItem(DocumentView.VIEW_NAME, DocumentView.VIEW_LABEL, (View) new SessionView());
 		addNewMenuItem(DateTimeView.VIEW_NAME, DateTimeView.VIEW_LABEL, (View) new SessionView());
 		addNewMenuItem(MiscView.VIEW_NAME, MiscView.VIEW_LABEL, (View) new SessionView());
-		addNewMenuItem(XotsView.VIEW_NAME, XotsView.VIEW_LABEL, (View) new SessionView());
+		addNewMenuItem(XotsView.VIEW_NAME, XotsView.VIEW_LABEL, (View) new XotsView());
 
 		// Add inner layout to outer layout
 		outerLayout.addComponent(innerLayout);
@@ -231,6 +235,22 @@ public class DemoUI extends UI {
 
 	public void setConfigDetails(Label configDetails) {
 		this.configDetails = configDetails;
+	}
+
+	public ConcurrentHashMap<String, Integer> getCreatedDocs() {
+		return createdDocs;
+	}
+
+	public void setCreatedDocs(ConcurrentHashMap<String, Integer> createdDocs) {
+		this.createdDocs = createdDocs;
+	}
+
+	public ConcurrentHashMap<String, Integer> getUpdatedDocs() {
+		return updatedDocs;
+	}
+
+	public void setUpdatedDocs(ConcurrentHashMap<String, Integer> updatedDocs) {
+		this.updatedDocs = updatedDocs;
 	}
 
 }

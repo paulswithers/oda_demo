@@ -25,7 +25,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	private CssLayout subNavigation = new CssLayout();
 	private Panel contentPanel = new Panel();
 	private TabSheet rightSliderContent = new TabSheet();
-	private VerticalLayout methodList = new VerticalLayout();
+	private Panel methodList = new Panel();
 	private VerticalLayout sourceCode = new VerticalLayout();
 	private boolean showNavigation;
 
@@ -55,7 +55,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 			getContentPanel().setSizeFull();
 			loadContent();
 			loadMethodList();
-			// loadSource();
+			loadSource();
 			addComponent(getPageBody());
 
 			// Add right slider
@@ -212,7 +212,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#getMethodList()
 	 */
 	@Override
-	public VerticalLayout getMethodList() {
+	public Panel getMethodList() {
 		return methodList;
 	}
 
@@ -224,7 +224,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	 * vaadin.ui.VerticalLayout)
 	 */
 	@Override
-	public void setMethodList(VerticalLayout methodList) {
+	public void setMethodList(Panel methodList) {
 		this.methodList = methodList;
 	}
 

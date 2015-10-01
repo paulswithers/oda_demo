@@ -168,12 +168,17 @@ public class SessionView extends BaseView {
 			sb.append(content);
 		}
 		Label methLabel = new Label(sb.toString(), ContentMode.HTML);
-		getMethodList().addComponent(methLabel);
+		getMethodList().setContent(methLabel);
 	}
 
 	@Override
 	public String getMethodSummary(ArrayList<String> newMethods, Method crystal) {
 		return super.getMethodSummary(newMethods, crystal);
+	}
+
+	@Override
+	public void loadSource() {
+		return;
 	}
 
 	public SessionSubPage getCurrentPage() {
@@ -214,7 +219,7 @@ public class SessionView extends BaseView {
 
 	public void loadDatabases() {
 		try {
-			int numberOfDemos = Integer.parseInt(FactoryUtils.getNumberOfDemos());
+			int numberOfDemos = FactoryUtils.getNumberOfDemosAsInt();
 			String templatePath = FactoryUtils.getDemoTemplateFilepath();
 			String demoDbFolder = FactoryUtils.getDemoDatabasesFolder();
 			String[] firstNames = SampleDataUtil.readFirstNames();

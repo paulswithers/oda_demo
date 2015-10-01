@@ -1,14 +1,10 @@
 package org.openntf.domino.demoApp.subpages;
 
-import java.util.concurrent.Future;
-
 import org.apache.commons.lang3.StringUtils;
 import org.openntf.domino.Session;
-import org.openntf.domino.demoApp.XotsTests.SessionCallable;
 import org.openntf.domino.demoApp.pages.BaseView;
 import org.openntf.domino.demoApp.pages.SessionView;
 import org.openntf.domino.demoAppUtil.FactoryUtils;
-import org.openntf.domino.xots.Xots;
 
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.HorizontalLayout;
@@ -44,15 +40,8 @@ public class Session_Summary extends BaseSubPage {
 			sb.append("<br/>" + fix.name());
 		}
 		Label label6 = new Label(sb.toString(), ContentMode.HTML);
-		Future<String> future = Xots.getService().submit(new SessionCallable());
-		Label label7 = new Label("XOTS FAILED");
-		try {
-			label7.setValue(future.get());
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
 		fixLayout.addComponents(label5, label6);
-		addComponents(label1, label2, label3, label4, label7, fixLayout);
+		addComponents(label1, label2, label3, label4, fixLayout);
 	}
 
 }

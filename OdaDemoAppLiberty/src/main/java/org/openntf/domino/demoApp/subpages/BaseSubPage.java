@@ -23,6 +23,7 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 	public void load() {
 		if (!isLoaded()) {
 			loadContent();
+			setLoaded(true);
 		}
 	}
 

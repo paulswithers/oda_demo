@@ -12856,3 +12856,7 @@ div.v-layout.v-horizontal.v-widget {
 .OdaDemoTheme .v-slot-right {
 	float: right;
 }
+
+.OdaDemoTheme .v-slot-floating-btn {
+	display: inline;
+}

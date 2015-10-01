@@ -57,7 +57,7 @@ public class XotsDatabaseLoader implements Runnable {
 		try {
 
 			Session sess = Factory.getSession(SessionType.NATIVE);
-			Database dbTemplate = sess.getDatabase(sess.getServerName(), templatePath, false);
+			Database dbTemplate = sess.getDatabase(templatePath);
 			Database dbNew = dbTemplate.createCopy(dbTemplate.getServer(), dbPath);
 
 			createUsers(dbNew);
