@@ -39,6 +39,8 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	@Override
 	public void enter(ViewChangeEvent event) {
 		if (!isLoaded()) {
+			checkIsSetup();
+
 			getPageBody().setSizeFull();
 			// Need to add a height for scroll bars to appear
 			getPageBody().setHeight(UI.getCurrent().getPage().getBrowserWindowHeight() - 100, Unit.PIXELS);
@@ -62,8 +64,6 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 			getRightSliderContent().setSizeFull();
 			getRightSliderContent().addTab(getMethodList(), "Public Methods", FontAwesome.INFO);
 			getRightSliderContent().addTab(getSourceCode(), "Source", FontAwesome.CODE);
-
-			checkIsSetup();
 
 			setLoaded(true);
 		}

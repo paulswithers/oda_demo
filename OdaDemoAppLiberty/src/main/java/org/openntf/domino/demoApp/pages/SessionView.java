@@ -201,7 +201,7 @@ public class SessionView extends BaseView {
 	}
 
 	public void checkLoadSetupButton(VerticalLayout gridBody) {
-		if (showSetupButton) {
+		if (isShowSetupButton()) {
 			Button setupButton = new Button("Set Up Demo Databases");
 			setupButton.setIcon(FontAwesome.DATABASE);
 			setupButton.addClickListener(new ClickListener() {
@@ -233,6 +233,9 @@ public class SessionView extends BaseView {
 						loremIpsum);
 				Xots.getService().submit(dbInitialiser);
 			}
+			Notification.show(
+					"Loading databases...use refresh link in 'Configuration Settings' panel to check progress.\nOnce complete, refresh the page.",
+					Notification.Type.WARNING_MESSAGE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

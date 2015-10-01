@@ -29,7 +29,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	</context-param>
 	<context-param>
 		<param-name>org.openntf.domino.demoApp.folder</param-name>
-		<param-value>odademo</param-value>
+		<param-value>odademo_osgi</param-value>
 	</context-param>
 	<context-param>
 		<param-name>org.openntf.domino.demoApp.instances</param-name>

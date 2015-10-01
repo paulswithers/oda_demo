@@ -36,14 +36,14 @@ public class SessionView extends BaseView {
 	public static final String VIEW_LABEL = "Session";
 	private boolean showSetupButton = false;
 	private SessionSubPage currentPage;
-	private Session_Summary summaryDetails = new Session_Summary(this);
-	private Session_Fixes fixesDetails = new Session_Fixes(this);
-	private Session_Factory factorySessionDetails = new Session_Factory(this);
-	private Session_XspProperties xspPropertyDetails = new Session_XspProperties(this);
+	private final Session_Summary summaryDetails = new Session_Summary(this);
+	private final Session_Fixes fixesDetails = new Session_Fixes(this);
+	private final Session_Factory factorySessionDetails = new Session_Factory(this);
+	private final Session_XspProperties xspPropertyDetails = new Session_XspProperties(this);
 
 	public enum SessionSubPage {
-		SUMMARY_DETAILS("Summary Details", Target.BOTH), FIXES("Fixes", Target.NON_XPAGES), XSP_PROPS("Xsp Properties",
-				Target.XPAGES), FACTORY_SESSION("Getting Sessions", Target.BOTH);
+		SUMMARY_DETAILS("Summary Details", Target.BOTH), FIXES("Fixes", Target.NON_XPAGES), XSP_PROPS("Xsp Properties", Target.XPAGES), FACTORY_SESSION("Getting Sessions",
+				Target.BOTH);
 		private String value_;
 		private Target target_;
 
@@ -70,12 +70,12 @@ public class SessionView extends BaseView {
 		super.enter(event);
 	}
 
+	@Override
 	public void checkIsSetup() {
 		String setupErrors = "";
-		Database demoDb = FactoryUtils.getDemoTemplate();
+		final Database demoDb = FactoryUtils.getDemoTemplate();
 		if (null == demoDb) {
-			setupErrors = String.format(
-					"Please amend the XPages Extension Library Demo database filepath in the application's web.xml.\nCurrent value is '%s'\n",
+			setupErrors = String.format("Please amend the XPages Extension Library Demo database filepath in the application's web.xml.\nCurrent value is '%s'\n",
 					FactoryUtils.getDemoTemplateFilepath());
 		}
 		if (null == FactoryUtils.getDemoDatabase()) {
@@ -129,13 +129,13 @@ public class SessionView extends BaseView {
 	public void loadNavigation() {
 		getSubNavigation().removeAllComponents();
 
-		TargetSelector target1 = new TargetSelector(this);
+		final TargetSelector target1 = new TargetSelector(this);
 		getSubNavigation().addComponent(target1);
-		Target currTarget = DemoUI.get().getAppTarget();
+		final Target currTarget = DemoUI.get().getAppTarget();
 
 		for (final SessionSubPage subPage : SessionSubPage.values()) {
 			if (Target.BOTH.equals(currTarget) || Target.BOTH.equals(subPage.getTarget()) || currTarget.equals(subPage.getTarget())) {
-				Button button1 = new Button(subPage.getValue());
+				final Button button1 = new Button(subPage.getValue());
 				button1.addStyleName(ValoTheme.BUTTON_LINK);
 				button1.addStyleName(ValoTheme.BUTTON_SMALL);
 				button1.addStyleName("navigation-button");
@@ -155,19 +155,19 @@ public class SessionView extends BaseView {
 
 	@Override
 	public void loadMethodList() {
-		StringBuilder sb = new StringBuilder();
-		ArrayList<String> newMethods = new ArrayList<String>();
-		for (Method newCrystal : org.openntf.domino.ext.Session.class.getMethods()) {
+		final StringBuilder sb = new StringBuilder();
+		final ArrayList<String> newMethods = new ArrayList<String>();
+		for (final Method newCrystal : org.openntf.domino.ext.Session.class.getMethods()) {
 			newMethods.add(newCrystal.getName());
 		}
-		TreeMap<String, String> methSummary = new TreeMap<String, String>();
-		for (Method crystal : Session.class.getMethods()) {
+		final TreeMap<String, String> methSummary = new TreeMap<String, String>();
+		for (final Method crystal : Session.class.getMethods()) {
 			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
 		}
-		for (String content : methSummary.values()) {
+		for (final String content : methSummary.values()) {
 			sb.append(content);
 		}
-		Label methLabel = new Label(sb.toString(), ContentMode.HTML);
+		final Label methLabel = new Label(sb.toString(), ContentMode.HTML);
 		getMethodList().setContent(methLabel);
 	}
 
@@ -201,8 +201,8 @@ public class SessionView extends BaseView {
 	}
 
 	public void checkLoadSetupButton(VerticalLayout gridBody) {
-		if (showSetupButton) {
-			Button setupButton = new Button("Set Up Demo Databases");
+		if (isShowSetupButton()) {
+			final Button setupButton = new Button("Set Up Demo Databases");
 			setupButton.setIcon(FontAwesome.DATABASE);
 			setupButton.addClickListener(new ClickListener() {
 				private static final long serialVersionUID = 1L;
@@ -219,21 +219,22 @@ public class SessionView extends BaseView {
 
 	public void loadDatabases() {
 		try {
-			int numberOfDemos = FactoryUtils.getNumberOfDemosAsInt();
-			String templatePath = FactoryUtils.getDemoTemplateFilepath();
-			String demoDbFolder = FactoryUtils.getDemoDatabasesFolder();
-			String[] firstNames = SampleDataUtil.readFirstNames();
-			String[] lastNames = SampleDataUtil.readLastNames();
-			String[] cities = SampleDataUtil.readCities();
-			String[] states = SampleDataUtil.readStates();
-			String[] loremIpsum = SampleDataUtil.readLoremIpsum();
+			final int numberOfDemos = FactoryUtils.getNumberOfDemosAsInt();
+			final String templatePath = FactoryUtils.getDemoTemplateFilepath();
+			final String demoDbFolder = FactoryUtils.getDemoDatabasesFolder();
+			final String[] firstNames = SampleDataUtil.readFirstNames();
+			final String[] lastNames = SampleDataUtil.readLastNames();
+			final String[] cities = SampleDataUtil.readCities();
+			final String[] states = SampleDataUtil.readStates();
+			final String[] loremIpsum = SampleDataUtil.readLoremIpsum();
 			for (Integer i = 1; i <= numberOfDemos; i++) {
-				String dbPath = demoDbFolder + "/oda_" + i.toString() + ".nsf";
-				XotsDatabaseLoader dbInitialiser = new XotsDatabaseLoader(dbPath, templatePath, 20000, 1000, 5, firstNames, lastNames, cities, states,
-						loremIpsum);
+				final String dbPath = demoDbFolder + "/oda_" + i.toString() + ".nsf";
+				final XotsDatabaseLoader dbInitialiser = new XotsDatabaseLoader(dbPath, templatePath, 20000, 1000, 5, firstNames, lastNames, cities, states, loremIpsum);
 				Xots.getService().submit(dbInitialiser);
 			}
-		} catch (Exception e) {
+			Notification.show("Loading databases...use refresh link in 'Configuration Settings' panel to check progress.\nOnce complete, refresh the page.",
+					Notification.Type.WARNING_MESSAGE);
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}

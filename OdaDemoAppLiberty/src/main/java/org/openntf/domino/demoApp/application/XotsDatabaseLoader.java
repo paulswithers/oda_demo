@@ -178,7 +178,7 @@ public class XotsDatabaseLoader implements Runnable {
 		ViewEntryCollection ec = authorView.getAllEntries();
 		for (ViewEntry e : ec) {
 			Vector<?> values = e.getColumnValues();
-			String name = (String) values.get(7);
+			String name = (String) values.get(6);
 			// Add it a random number of times to the list
 			int n = ((int) (Math.random() * maxAuthors)) + 1;
 			for (int jj = 0; jj < n; jj++) {

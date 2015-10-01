@@ -17,7 +17,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class Database_Transaction extends BaseSubPage {
 	private static final long serialVersionUID = 1L;
 	private final Label outputLabel = new Label();
-	private final StateSelector stateSelector = new StateSelector();
+	private StateSelector stateSelector;
 
 	public Database_Transaction(BaseView parentView) {
 		super(parentView);
@@ -25,38 +25,34 @@ public class Database_Transaction extends BaseSubPage {
 
 	@Override
 	public void loadContent() {
-		Label label1 = new Label("Defining a Database Transaction.");
+		stateSelector = new StateSelector();
+		final Label label1 = new Label("Defining a Database Transaction.");
 		label1.setStyleName(ValoTheme.LABEL_H3);
-		Label label2 = new Label("A " + FactoryUtils.addCodeString("DatabaseTransaction") + " is assigned to one or more "
-				+ FactoryUtils.addCodeString("Database") + " objects. Assigning multiple will allow a cross-database transaction"
-				+ "There are two ways to load a " + FactoryUtils.addCodeString("DatabaseTransaction") + " for a "
-				+ FactoryUtils.addCodeString("Database") + ". <ul><li>Call "
-				+ FactoryUtils.addCodeString("Database.setTransaction(DatabaseTransaction)") + ". This method will throw an error if a "
-				+ FactoryUtils.addCodeString("DatabaseTransaction") + " is already assigned to the " + FactoryUtils.addCodeString("Database")
-				+ "</li><li>Call " + FactoryUtils.addCodeString("Database.startTransaction()") + " which will create a new "
-				+ FactoryUtils.addCodeString("DatabaseTransaction") + " if none has already been created and return the "
-				+ FactoryUtils.addCodeString("DatabaseTransaction") + "assigned to the " + FactoryUtils.addCodeString("Database") + "</li></ul>"
-				+ "In the finally block the developer should call " + FactoryUtils.addCodeString(
-						"Database.closeTransaction()" + " to clear the " + FactoryUtils.addCodeString("DatabaseTransaction") + " from the Database"));
+		final Label label2 = new Label("A " + FactoryUtils.addCodeString("DatabaseTransaction") + " is assigned to one or more " + FactoryUtils.addCodeString("Database")
+				+ " objects. Assigning multiple will allow a cross-database transaction" + "There are two ways to load a " + FactoryUtils.addCodeString("DatabaseTransaction")
+				+ " for a " + FactoryUtils.addCodeString("Database") + ". <ul><li>Call " + FactoryUtils.addCodeString("Database.setTransaction(DatabaseTransaction)")
+				+ ". This method will throw an error if a " + FactoryUtils.addCodeString("DatabaseTransaction") + " is already assigned to the "
+				+ FactoryUtils.addCodeString("Database") + "</li><li>Call " + FactoryUtils.addCodeString("Database.startTransaction()") + " which will create a new "
+				+ FactoryUtils.addCodeString("DatabaseTransaction") + " if none has already been created and return the " + FactoryUtils.addCodeString("DatabaseTransaction")
+				+ "assigned to the " + FactoryUtils.addCodeString("Database") + "</li></ul>" + "In the finally block the developer should call "
+				+ FactoryUtils.addCodeString("Database.closeTransaction()" + " to clear the " + FactoryUtils.addCodeString("DatabaseTransaction") + " from the Database"));
 		label2.setContentMode(ContentMode.HTML);
-		Label label3 = new Label("Processing the Database Transaction");
+		final Label label3 = new Label("Processing the Database Transaction");
 		label3.setStyleName(ValoTheme.LABEL_H3);
-		Label label4 = new Label("Create or Update processes on any document's " + FactoryUtils.addCodeString("Item") + " will add that "
-				+ FactoryUtils.addCodeString("Document") + " to the " + FactoryUtils.addCodeString("DatabaseTransaction")
-				+ ". But any Domino object can be added to a " + FactoryUtils.addCodeString("DatabaseTransaction") + " by calling "
-				+ FactoryUtils.addCodeString("DatabaseTransaction.queueUpdate()") + ". Documents for deletion can be added to the "
-				+ FactoryUtils.addCodeString("DatabaseTransaction") + " by calling " + FactoryUtils.addCodeString("DatabaseTransaction.queueRemove()")
-				+ " The number of updates or deletes queued can be found by calling "
-				+ FactoryUtils.addCodeString("DatabaseTransaction.getUpdateSize()") + " or "
-				+ FactoryUtils.addCodeString("DatabaseTransaction.getRemoveSize()") + ". The " + FactoryUtils.addCodeString("DatabaseTransaction")
-				+ " can be processed by calling " + FactoryUtils.addCodeString("DatabaseTransaction.commit()") + " or aborted by calling "
-				+ FactoryUtils.addCodeString("DatabaseTransaction.rollback()"));
-		Label label5 = new Label("The following demo shows transaction processing within Domino. Changing the state will "
+		final Label label4 = new Label("Create or Update processes on any document's " + FactoryUtils.addCodeString("Item") + " will add that "
+				+ FactoryUtils.addCodeString("Document") + " to the " + FactoryUtils.addCodeString("DatabaseTransaction") + ". But any Domino object can be added to a "
+				+ FactoryUtils.addCodeString("DatabaseTransaction") + " by calling " + FactoryUtils.addCodeString("DatabaseTransaction.queueUpdate()")
+				+ ". Documents for deletion can be added to the " + FactoryUtils.addCodeString("DatabaseTransaction") + " by calling "
+				+ FactoryUtils.addCodeString("DatabaseTransaction.queueRemove()") + " The number of updates or deletes queued can be found by calling "
+				+ FactoryUtils.addCodeString("DatabaseTransaction.getUpdateSize()") + " or " + FactoryUtils.addCodeString("DatabaseTransaction.getRemoveSize()") + ". The "
+				+ FactoryUtils.addCodeString("DatabaseTransaction") + " can be processed by calling " + FactoryUtils.addCodeString("DatabaseTransaction.commit()")
+				+ " or aborted by calling " + FactoryUtils.addCodeString("DatabaseTransaction.rollback()"));
+		final Label label5 = new Label("The following demo shows transaction processing within Domino. Changing the state will "
 				+ "update the txProcessed field on every other contact for that state in oda_1.nsf. "
 				+ "The first button will run the transaction and roll back. The second button will run the transaction and save."
 				+ "Only contacts updated will be saved. This is handled automatically by the transactional code.");
-		Label label6 = new Label("State:");
-		Button button1 = new Button("Run Transaction and Roll Back");
+		final Label label6 = new Label("State:");
+		final Button button1 = new Button("Run Transaction and Roll Back");
 		button1.addClickListener(new ClickListener() {
 
 			@Override
@@ -66,7 +62,7 @@ public class Database_Transaction extends BaseSubPage {
 		});
 		button1.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 		button1.addStyleName("floating-btn");
-		Button button2 = new Button("Run Transaction and Commit");
+		final Button button2 = new Button("Run Transaction and Commit");
 		button2.addClickListener(new ClickListener() {
 
 			@Override

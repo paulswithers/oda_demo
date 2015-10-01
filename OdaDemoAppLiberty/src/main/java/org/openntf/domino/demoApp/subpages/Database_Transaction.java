@@ -17,7 +17,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class Database_Transaction extends BaseSubPage {
 	private static final long serialVersionUID = 1L;
 	private final Label outputLabel = new Label();
-	private final StateSelector stateSelector = new StateSelector();
+	private StateSelector stateSelector;
 
 	public Database_Transaction(BaseView parentView) {
 		super(parentView);
@@ -25,6 +25,7 @@ public class Database_Transaction extends BaseSubPage {
 
 	@Override
 	public void loadContent() {
+		stateSelector = new StateSelector();
 		Label label1 = new Label("Defining a Database Transaction.");
 		label1.setStyleName(ValoTheme.LABEL_H3);
 		Label label2 = new Label("A " + FactoryUtils.addCodeString("DatabaseTransaction") + " is assigned to one or more "
