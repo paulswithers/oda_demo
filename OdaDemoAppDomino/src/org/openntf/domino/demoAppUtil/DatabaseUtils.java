@@ -41,9 +41,16 @@ public class DatabaseUtils {
 			int count = 0;
 			sb.append("Starting update with " + selectedState);
 			final View view = db.getView("allStates");
-			final Document state = view.getFirstDocumentByKey(selectedState, true);
-			state.replaceItemValue("txnTest", new Date());
-			sb.append("...Updated State pending committal, value is " + state.get("txnTest").toString());
+			String stringDate = "";
+			// Aargh!! Thew view's not sorted!
+			for (final Document state : view.getAllDocuments()) {
+				if (state.getItemValueString("Key").equals(selectedState)) {
+					state.replaceItemValue("txnTest", new Date());
+					stringDate = state.get("txnTest").toString();
+					break;
+				}
+			}
+			sb.append("...Updated State pending committal, value is " + stringDate);
 			final View contacts = db.getView("AllContactsByState");
 			final DocumentCollection dc = contacts.getAllDocumentsByKey(selectedState, true);
 			for (final Document doc : dc) {
@@ -61,7 +68,7 @@ public class DatabaseUtils {
 				throw new Exception("Now roll back");
 			}
 		} catch (final Exception e) {
-			sb.append("...Rolling back");
+			sb.append("...Whoops! We hit a problem. Rolling back");
 			txn.rollback();
 		} finally {
 			db.closeTransaction();

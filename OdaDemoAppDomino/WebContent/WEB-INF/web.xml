@@ -16,7 +16,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     </context-param>
 	<context-param>
 		<param-name>org.openntf.osgiworlds.devtimename</param-name>
-		<param-value>CN=Micky Mouse/O=Intec-PW</param-value>
+		<param-value>CN=Micky Mouse/O=Disney</param-value>
 	</context-param>
     <context-param>
     	<description>Standard Vaadin parameter, period for checking back to server</description>
