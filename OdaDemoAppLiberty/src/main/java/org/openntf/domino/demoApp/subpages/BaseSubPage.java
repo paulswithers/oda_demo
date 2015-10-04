@@ -1,5 +1,23 @@
 package org.openntf.domino.demoApp.subpages;
 
+/*
+
+<!--
+Copyright 2015 Paul Withers
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License
+-->
+
+*/
+
 import org.openntf.domino.demoApp.pages.BaseView;
 
 import com.vaadin.ui.VerticalLayout;
@@ -30,8 +48,7 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.subpages.BaseSubPageInterface#loadContent()
+	 * @see org.openntf.domino.demoApp.subpages.BaseSubPageInterface#loadContent()
 	 */
 	@Override
 	public void loadContent() {
@@ -51,8 +68,7 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.openntf.domino.demoApp.subpages.BaseSubPageInterface#setLoaded(
-	 * boolean)
+	 * @see org.openntf.domino.demoApp.subpages.BaseSubPageInterface#setLoaded( boolean)
 	 */
 	@Override
 	public void setLoaded(boolean loaded) {
@@ -62,8 +78,7 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.subpages.BaseSubPageInterface#getParentView()
+	 * @see org.openntf.domino.demoApp.subpages.BaseSubPageInterface#getParentView()
 	 */
 	@Override
 	public BaseView getParentView() {
@@ -73,9 +88,7 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.subpages.BaseSubPageInterface#setParentView(
-	 * org.openntf.domino.demoApp.pages.BaseView)
+	 * @see org.openntf.domino.demoApp.subpages.BaseSubPageInterface#setParentView( org.openntf.domino.demoApp.pages.BaseView)
 	 */
 	@Override
 	public void setParentView(BaseView parentView) {

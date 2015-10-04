@@ -1,5 +1,23 @@
 package org.openntf.domino.demoApp.pages;
 
+/*
+
+<!--
+Copyright 2015 Paul Withers
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License
+-->
+
+*/
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.TreeMap;
@@ -31,24 +49,23 @@ public class DatabaseView extends BaseView {
 	public static String VIEW_NAME = "Database";
 	public static String VIEW_LABEL = "Database";
 	private DatabaseSubPage currentPage;
-	private Database_Summary summaryDetails = new Database_Summary(this);
-	private Database_GettingDbs gettingDbs = new Database_GettingDbs(this);
-	private Database_GettingDocuments gettingDocs = new Database_GettingDocuments(this);
-	private Database_CompactOptions compactOpts = new Database_CompactOptions(this);
-	private Database_FixupOption fixupOpts = new Database_FixupOption(this);
-	private Database_DatabaseOptions dbOpts = new Database_DatabaseOptions(this);
-	private Database_FTIndex ftIndex = new Database_FTIndex(this);
-	private Database_Transaction transactionSummary = new Database_Transaction(this);
-	private Database_Listeners listenerSummary = new Database_Listeners(this);
+	private final Database_Summary summaryDetails = new Database_Summary(this);
+	private final Database_GettingDbs gettingDbs = new Database_GettingDbs(this);
+	private final Database_GettingDocuments gettingDocs = new Database_GettingDocuments(this);
+	private final Database_CompactOptions compactOpts = new Database_CompactOptions(this);
+	private final Database_FixupOption fixupOpts = new Database_FixupOption(this);
+	private final Database_DatabaseOptions dbOpts = new Database_DatabaseOptions(this);
+	private final Database_FTIndex ftIndex = new Database_FTIndex(this);
+	private final Database_Transaction transactionSummary = new Database_Transaction(this);
+	private final Database_Listeners listenerSummary = new Database_Listeners(this);
 	private Label databaseMethodLabel;
 	private Label databaseTransactionMethodLabel;
 	private Label databaseListenerMethodLabel;
 
 	public enum DatabaseSubPage {
 		SUMMARY_DETAILS("Summary Details", Target.BOTH), GETTING_DBS("Getting Databases", Target.BOTH), GETTING_DOCS("Getting Documents",
-				Target.BOTH), FT_INDEXING("Full Text Indexing", Target.BOTH), COMPACT_OPTIONS("Compact Options",
-						Target.BOTH), FIXUP_OPTIONS("Fixup Options", Target.BOTH), DB_OPTIONS("Database Options", Target.BOTH), LISTENERS("Listeners",
-								Target.BOTH), TRANSACTION("Transactional Processing", Target.BOTH);
+				Target.BOTH), FT_INDEXING("Full Text Indexing", Target.BOTH), COMPACT_OPTIONS("Compact Options", Target.BOTH), FIXUP_OPTIONS("Fixup Options",
+						Target.BOTH), DB_OPTIONS("Database Options", Target.BOTH), LISTENERS("Listeners", Target.BOTH), TRANSACTION("Transactional Processing", Target.BOTH);
 		private String value_;
 		private Target target_;
 
@@ -138,13 +155,13 @@ public class DatabaseView extends BaseView {
 	public void loadNavigation() {
 		getSubNavigation().removeAllComponents();
 
-		TargetSelector target1 = new TargetSelector(this);
+		final TargetSelector target1 = new TargetSelector(this);
 		getSubNavigation().addComponent(target1);
-		Target currTarget = DemoUI.get().getAppTarget();
+		final Target currTarget = DemoUI.get().getAppTarget();
 
 		for (final DatabaseSubPage subPage : DatabaseSubPage.values()) {
 			if (Target.BOTH.equals(currTarget) || Target.BOTH.equals(subPage.getTarget()) || currTarget.equals(subPage.getTarget())) {
-				Button button1 = new Button(subPage.getValue());
+				final Button button1 = new Button(subPage.getValue());
 				button1.addStyleName(ValoTheme.BUTTON_LINK);
 				button1.addStyleName(ValoTheme.BUTTON_SMALL);
 				button1.addStyleName("navigation-button");
@@ -165,7 +182,7 @@ public class DatabaseView extends BaseView {
 
 	@Override
 	public void loadMethodList() {
-		Label methLabel = getDatabaseMethodLabel();
+		final Label methLabel = getDatabaseMethodLabel();
 		getMethodList().setContent(methLabel);
 	}
 
@@ -177,16 +194,16 @@ public class DatabaseView extends BaseView {
 	}
 
 	private void setDatabaseMethodLabel() {
-		StringBuilder sb = new StringBuilder();
-		ArrayList<String> newMethods = new ArrayList<String>();
-		for (Method newCrystal : org.openntf.domino.ext.Database.class.getMethods()) {
+		final StringBuilder sb = new StringBuilder();
+		final ArrayList<String> newMethods = new ArrayList<String>();
+		for (final Method newCrystal : org.openntf.domino.ext.Database.class.getMethods()) {
 			newMethods.add(newCrystal.getName());
 		}
-		TreeMap<String, String> methSummary = new TreeMap<String, String>();
-		for (Method crystal : Database.class.getMethods()) {
+		final TreeMap<String, String> methSummary = new TreeMap<String, String>();
+		for (final Method crystal : Database.class.getMethods()) {
 			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
 		}
-		for (String content : methSummary.values()) {
+		for (final String content : methSummary.values()) {
 			sb.append(content);
 		}
 		databaseMethodLabel = new Label(sb.toString(), ContentMode.HTML);
@@ -200,16 +217,16 @@ public class DatabaseView extends BaseView {
 	}
 
 	public void setDatabaseTransactionMethodLabel() {
-		StringBuilder sb = new StringBuilder();
-		ArrayList<String> newMethods = new ArrayList<String>();
-		for (Method newCrystal : org.openntf.domino.transactions.DatabaseTransaction.class.getMethods()) {
+		final StringBuilder sb = new StringBuilder();
+		final ArrayList<String> newMethods = new ArrayList<String>();
+		for (final Method newCrystal : org.openntf.domino.transactions.DatabaseTransaction.class.getMethods()) {
 			newMethods.add(newCrystal.getName());
 		}
-		TreeMap<String, String> methSummary = new TreeMap<String, String>();
-		for (Method crystal : org.openntf.domino.transactions.DatabaseTransaction.class.getMethods()) {
+		final TreeMap<String, String> methSummary = new TreeMap<String, String>();
+		for (final Method crystal : org.openntf.domino.transactions.DatabaseTransaction.class.getMethods()) {
 			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
 		}
-		for (String content : methSummary.values()) {
+		for (final String content : methSummary.values()) {
 			sb.append(content);
 		}
 		databaseTransactionMethodLabel = new Label(sb.toString(), ContentMode.HTML);
@@ -223,29 +240,29 @@ public class DatabaseView extends BaseView {
 	}
 
 	public void setDatabaseListenerMethodLabel() {
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		sb.append("<h3>IDominoEvent</h3>");
 		ArrayList<String> newMethods = new ArrayList<String>();
-		for (Method newCrystal : org.openntf.domino.events.IDominoEvent.class.getMethods()) {
+		for (final Method newCrystal : org.openntf.domino.events.IDominoEvent.class.getMethods()) {
 			newMethods.add(newCrystal.getName());
 		}
 		TreeMap<String, String> methSummary = new TreeMap<String, String>();
-		for (Method crystal : org.openntf.domino.events.IDominoEvent.class.getMethods()) {
+		for (final Method crystal : org.openntf.domino.events.IDominoEvent.class.getMethods()) {
 			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
 		}
-		for (String content : methSummary.values()) {
+		for (final String content : methSummary.values()) {
 			sb.append(content);
 		}
 		sb.append("<br/><h3>IDominoListener</h3>");
 		newMethods = new ArrayList<String>();
-		for (Method newCrystal : org.openntf.domino.events.IDominoListener.class.getMethods()) {
+		for (final Method newCrystal : org.openntf.domino.events.IDominoListener.class.getMethods()) {
 			newMethods.add(newCrystal.getName());
 		}
 		methSummary = new TreeMap<String, String>();
-		for (Method crystal : org.openntf.domino.events.IDominoListener.class.getMethods()) {
+		for (final Method crystal : org.openntf.domino.events.IDominoListener.class.getMethods()) {
 			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
 		}
-		for (String content : methSummary.values()) {
+		for (final String content : methSummary.values()) {
 			sb.append(content);
 		}
 		databaseListenerMethodLabel = new Label(sb.toString(), ContentMode.HTML);

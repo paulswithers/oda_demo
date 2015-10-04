@@ -1,5 +1,23 @@
 package org.openntf.domino.demoApp.subpages;
 
+/*
+
+<!--
+Copyright 2015 Paul Withers
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License
+-->
+
+*/
+
 import org.openntf.domino.Database;
 import org.openntf.domino.demoApp.components.Html_Separator;
 import org.openntf.domino.demoApp.components.Html_Separator.SeparatorType;
@@ -17,12 +35,12 @@ public class Database_FixupOption extends BaseSubPage {
 		super(parentView);
 	}
 
+	@Override
 	public void loadContent() {
-		Label label1 = new Label("The " + FactoryUtils.addCodeString("Database.FixupOption")
-				+ " admin-related enums have been added to make code more readable. The core API has "
-				+ FactoryUtils.addCodeString("Database.fixup(int)")
-				+ ", where the int is a total of the integers for the selected settings, e.g. incremental with no views "
-				+ "would expect 4 + 64 = 68. The new method " + FactoryUtils.addCodeString("Database.fixup(Set<FixupOption>)")
+		final Label label1 = new Label("The " + FactoryUtils.addCodeString("Database.FixupOption")
+				+ " admin-related enums have been added to make code more readable. The core API has " + FactoryUtils.addCodeString("Database.fixup(int)")
+				+ ", where the int is a total of the integers for the selected settings, e.g. incremental with no views " + "would expect 4 + 64 = 68. The new method "
+				+ FactoryUtils.addCodeString("Database.fixup(Set<FixupOption>)")
 				+ " take instead a Set of the options selected. Resulting code takes more lines, but is easier to support.");
 		label1.setContentMode(ContentMode.HTML);
 		addComponents(label1);
@@ -31,8 +49,8 @@ public class Database_FixupOption extends BaseSubPage {
 	}
 
 	public void addFixupOptions() {
-		for (Database.FixupOption opt : Database.FixupOption.values()) {
-			Label label1 = new Label(opt.name());
+		for (final Database.FixupOption opt : Database.FixupOption.values()) {
+			final Label label1 = new Label(opt.name());
 			label1.setStyleName(ValoTheme.LABEL_H3);
 			String optExplanation = "";
 			boolean isDefault = false;
@@ -65,7 +83,7 @@ public class Database_FixupOption extends BaseSubPage {
 			if (!isDefault) {
 				optExplanation = optExplanation + " - " + Integer.toString(opt.getValue());
 			}
-			Label label2 = new Label(optExplanation + "<br/>", ContentMode.HTML);
+			final Label label2 = new Label(optExplanation + "<br/>", ContentMode.HTML);
 			addComponents(label1, label2);
 		}
 	}

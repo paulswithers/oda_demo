@@ -1,5 +1,23 @@
 package org.openntf.domino.demoApp.subpages;
 
+/*
+
+<!--
+Copyright 2015 Paul Withers
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License
+-->
+
+*/
+
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.openntf.domino.demoApp.application.ContactSummary;
@@ -32,20 +50,19 @@ public class Xots_RunnableExample extends BaseSubPage {
 	public void load() {
 		super.load();
 		if (getCompleteThreads().size() == FactoryUtils.getNumberOfDemosAsInt()) {
-			for (ContactSummary contact : getContacts()) {
+			for (final ContactSummary contact : getContacts()) {
 				getContactsContainer().addBean(contact);
 			}
 			setContacts(new ConcurrentSkipListSet<ContactSummary>());
 			setCompleteThreads(new ConcurrentSkipListSet<String>());
-			new Notification("Loaded " + getContactsContainer().size() + " contacts", Notification.Type.HUMANIZED_MESSAGE)
-					.show(UI.getCurrent().getPage());
+			new Notification("Loaded " + getContactsContainer().size() + " contacts", Notification.Type.HUMANIZED_MESSAGE).show(UI.getCurrent().getPage());
 		}
 	}
 
 	@Override
 	public void loadContent() {
-		Label label1 = new Label("State:");
-		StateSelector states = new StateSelector();
+		final Label label1 = new Label("State:");
+		final StateSelector states = new StateSelector();
 		states.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -58,7 +75,7 @@ public class Xots_RunnableExample extends BaseSubPage {
 		states.setValue("FL");
 		loadView((String) states.getValue());
 
-		Grid viewGrid = new Grid();
+		final Grid viewGrid = new Grid();
 		viewGrid.setSizeFull();
 		viewGrid.setContainerDataSource(getContactsContainer());
 		Grid.Column col = viewGrid.getColumn("firstName");
@@ -73,15 +90,15 @@ public class Xots_RunnableExample extends BaseSubPage {
 	}
 
 	public void loadView(String stateKey) {
-		Notification msg = new Notification("Just gathering all Contacts for " + stateKey + ". You will be notified once complete.");
+		final Notification msg = new Notification("Just gathering all Contacts for " + stateKey + ". You will be notified once complete.");
 		msg.show(UI.getCurrent().getPage());
 		getContactsContainer().removeAllItems();
 		getContactsContainer().setBeanIdProperty("metaversalId");
 
-		String demoDbFolder = FactoryUtils.getDemoDatabasesFolder();
-		int numberOfDemos = FactoryUtils.getNumberOfDemosAsInt();
+		final String demoDbFolder = FactoryUtils.getDemoDatabasesFolder();
+		final int numberOfDemos = FactoryUtils.getNumberOfDemosAsInt();
 		for (Integer i = 1; i <= numberOfDemos; i++) {
-			String dbPath = demoDbFolder + "/oda_" + i.toString() + ".nsf";
+			final String dbPath = demoDbFolder + "/oda_" + i.toString() + ".nsf";
 			Xots.getService().submit(new UserMergeView(dbPath, stateKey, contacts, completeThreads, UI.getCurrent()));
 		}
 	}

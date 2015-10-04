@@ -1,5 +1,23 @@
 package org.openntf.domino.demoApp.pages;
 
+/*
+
+<!--
+Copyright 2015 Paul Withers
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License
+-->
+
+*/
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
@@ -32,9 +50,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#enter(com.vaadin.
-	 * navigator.ViewChangeListener.ViewChangeEvent)
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#enter(com.vaadin. navigator.ViewChangeListener.ViewChangeEvent)
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
@@ -80,9 +96,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#getMethodSummary(
-	 * java.util.ArrayList, java.lang.reflect.Method)
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#getMethodSummary( java.util.ArrayList, java.lang.reflect.Method)
 	 */
 	@Override
 	public String getMethodSummary(ArrayList<String> newMethods, Method crystal) {
@@ -111,9 +125,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#showError(java.lang
-	 * .String)
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#showError(java.lang .String)
 	 */
 	@Override
 	public void showError(String msg) {
@@ -133,8 +145,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#loadNavigation()
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#loadNavigation()
 	 */
 	@Override
 	public void loadNavigation() {
@@ -144,8 +155,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#loadMethodList()
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#loadMethodList()
 	 */
 	@Override
 	public void loadMethodList() {
@@ -175,8 +185,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#setLoaded(boolean)
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#setLoaded(boolean)
 	 */
 	@Override
 	public void setLoaded(boolean loaded) {
@@ -186,8 +195,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#
-	 * getRightSliderContent()
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface# getRightSliderContent()
 	 */
 	@Override
 	public TabSheet getRightSliderContent() {
@@ -197,8 +205,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#
-	 * setRightSliderContent(com.vaadin.ui.TabSheet)
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface# setRightSliderContent(com.vaadin.ui.TabSheet)
 	 */
 	@Override
 	public void setRightSliderContent(TabSheet rightSliderContent) {
@@ -208,8 +215,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#getMethodList()
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#getMethodList()
 	 */
 	@Override
 	public Panel getMethodList() {
@@ -219,9 +225,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#setMethodList(com.
-	 * vaadin.ui.VerticalLayout)
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#setMethodList(com. vaadin.ui.VerticalLayout)
 	 */
 	@Override
 	public void setMethodList(Panel methodList) {
@@ -231,8 +235,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#getSourceCode()
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#getSourceCode()
 	 */
 	@Override
 	public VerticalLayout getSourceCode() {
@@ -242,9 +245,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#setSourceCode(com.
-	 * vaadin.ui.VerticalLayout)
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#setSourceCode(com. vaadin.ui.VerticalLayout)
 	 */
 	@Override
 	public void setSourceCode(VerticalLayout sourceCode) {
@@ -264,9 +265,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#setPageBody(com.
-	 * vaadin.ui.HorizontalLayout)
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#setPageBody(com. vaadin.ui.HorizontalLayout)
 	 */
 	@Override
 	public void setPageBody(HorizontalLayout pageBody) {
@@ -276,8 +275,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#getSubNavigation()
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#getSubNavigation()
 	 */
 	@Override
 	public CssLayout getSubNavigation() {
@@ -287,9 +285,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#setSubNavigation(
-	 * com.vaadin.ui.CssLayout)
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#setSubNavigation( com.vaadin.ui.CssLayout)
 	 */
 	@Override
 	public void setSubNavigation(CssLayout subNavigation) {
@@ -299,8 +295,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#getContentPanel()
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#getContentPanel()
 	 */
 	@Override
 	public Panel getContentPanel() {
@@ -310,9 +305,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#setContentPanel(com
-	 * .vaadin.ui.Panel)
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#setContentPanel(com .vaadin.ui.Panel)
 	 */
 	@Override
 	public void setContentPanel(Panel contentPanel) {
@@ -322,8 +315,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#isShowNavigation()
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#isShowNavigation()
 	 */
 	@Override
 	public boolean isShowNavigation() {
@@ -333,9 +325,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.openntf.domino.demoApp.pages.DemoAppViewInterface#setShowNavigation(
-	 * boolean)
+	 * @see org.openntf.domino.demoApp.pages.DemoAppViewInterface#setShowNavigation( boolean)
 	 */
 	@Override
 	public void setShowNavigation(boolean showNavigation) {
