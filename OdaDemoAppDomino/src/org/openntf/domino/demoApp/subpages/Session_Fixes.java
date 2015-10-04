@@ -1,5 +1,23 @@
 package org.openntf.domino.demoApp.subpages;
 
+/*
+
+<!--
+Copyright 2015 Paul Withers
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License
+-->
+
+*/
+
 import org.openntf.domino.Session;
 import org.openntf.domino.demoApp.components.Html_Separator;
 import org.openntf.domino.demoApp.components.Html_Separator.SeparatorType;
@@ -18,10 +36,11 @@ public class Session_Fixes extends BaseSubPage {
 		super(parentView);
 	}
 
+	@Override
 	public void loadContent() {
 		((SessionView) getParentView()).checkLoadSetupButton(this);
-		for (Session.Fixes fix : Session.Fixes.values()) {
-			Label label1 = new Label(fix.name());
+		for (final Session.Fixes fix : Session.Fixes.values()) {
+			final Label label1 = new Label(fix.name());
 			label1.setStyleName(ValoTheme.LABEL_H3);
 			String fixExplanation;
 			switch (fix) {
@@ -37,8 +56,7 @@ public class Session_Fixes extends BaseSubPage {
 						+ "or create a new database at the specified path and return the Database object relating to that.";
 				break;
 			case DOC_UNID_NULLS:
-				fixExplanation = "Normal behaviour of " + FactoryUtils.addCodeString("Database.getDocumentByUNID()")
-						+ " is to throw an error if the UNID cannot be found. "
+				fixExplanation = "Normal behaviour of " + FactoryUtils.addCodeString("Database.getDocumentByUNID()") + " is to throw an error if the UNID cannot be found. "
 						+ "With this fix, that method will now just return a null object and suppress the error.";
 				break;
 			case FORCE_JAVA_DATES:
@@ -57,27 +75,23 @@ public class Session_Fixes extends BaseSubPage {
 						+ "This class can be stored in Java obejcts and uses String manipulation to convert between formats.";
 				break;
 			case REMOVE_ITEM:
-				fixExplanation = "Normal behaviour is to remove the <b>first</b> Item with the specified name. "
-						+ "This switch removes <b>all</b> Items with the specified name.";
+				fixExplanation = "Normal behaviour is to remove the <b>first</b> Item with the specified name. " + "This switch removes <b>all</b> Items with the specified name.";
 				break;
 			case REPLACE_ITEM_NULL:
-				fixExplanation = "This extension allows developers to use " + FactoryUtils.addCodeString("Document.replaceItemValue(String, null)")
-						+ " to remove the Item";
+				fixExplanation = "This extension allows developers to use " + FactoryUtils.addCodeString("Document.replaceItemValue(String, null)") + " to remove the Item";
 				break;
 			case VIEW_UPDATE_OFF:
-				fixExplanation = "Ensures any method accessing view entries calls " + FactoryUtils.addCodeString("View.setAutoUpdate(false)")
-						+ " before doing anything.";
+				fixExplanation = "Ensures any method accessing view entries calls " + FactoryUtils.addCodeString("View.setAutoUpdate(false)") + " before doing anything.";
 				break;
 			case VIEWENTRY_RETURN_CONSTANT_VALUES:
-				fixExplanation = "Ensures " + FactoryUtils.addCodeString("ViewEntry.getColumnValues()") + " and "
-						+ FactoryUtils.addCodeString("ViewColumn.getColumnValuesIndex()") + " include view columns "
-						+ "whose value is a constant value rather than a field value or result of an @formula.";
+				fixExplanation = "Ensures " + FactoryUtils.addCodeString("ViewEntry.getColumnValues()") + " and " + FactoryUtils.addCodeString("ViewColumn.getColumnValuesIndex()")
+						+ " include view columns " + "whose value is a constant value rather than a field value or result of an @formula.";
 				break;
 			default:
 				fixExplanation = "Whoops!! This must be a new switch. Please let us know so we can add documentation.";
 				break;
 			}
-			Label label2 = new Label(fixExplanation + "<br/>", ContentMode.HTML);
+			final Label label2 = new Label(fixExplanation + "<br/>", ContentMode.HTML);
 			addComponents(label1, label2);
 		}
 		addComponent(new Html_Separator(SeparatorType.NEW_LINE));

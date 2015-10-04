@@ -1,5 +1,23 @@
 package org.openntf.domino.demoAppUtil;
 
+/*
+
+<!--
+Copyright 2015 Paul Withers
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License
+-->
+
+*/
+
 import java.util.Date;
 
 import org.openntf.domino.Database;
@@ -19,10 +37,10 @@ public class FactoryUtils {
 	public static Database getDemoTemplate() {
 		Database retVal_ = null;
 		try {
-			Session userSess = getUserSession();
-			String filePath = getDemoTemplateFilepath();
+			final Session userSess = getUserSession();
+			final String filePath = getDemoTemplateFilepath();
 			retVal_ = userSess.getDatabase(userSess.getServerName(), filePath, false);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// TODO: handle exception
 		}
 		return retVal_;
@@ -46,11 +64,11 @@ public class FactoryUtils {
 			if (null == idex) {
 				idex = 1;
 			}
-			Session userSess = getUserSession();
-			String filePath = getDemoDatabasesFolder();
+			final Session userSess = getUserSession();
+			final String filePath = getDemoDatabasesFolder();
 			retVal_ = userSess.getDatabase(userSess.getServerName(), filePath + "/oda_" + idex.toString() + ".nsf", false);
 			retVal_.addListener(new DocumentListener(filePath));
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// TODO: handle exception
 		}
 		return retVal_;
@@ -65,20 +83,20 @@ public class FactoryUtils {
 	}
 
 	public static String dumpConfigSettings() {
-		String demoCount = getNumberOfDemos();
-		StringBuilder s = new StringBuilder();
-		Date dt = new Date();
+		final String demoCount = getNumberOfDemos();
+		final StringBuilder s = new StringBuilder();
+		final Date dt = new Date();
 		s.append("Configuration loaded at " + dt.toString());
 		s.append("<br/>Configured to look for Extension Library demo database at " + getDemoTemplateFilepath());
 		s.append("<br/>\nConfigured to create ODA Demo databases in folder " + getDemoDatabasesFolder());
 		s.append("<br/>\nConfigured to work with " + demoCount + " ODA Demo instances.");
 
-		int numberOfDemos = Integer.parseInt(demoCount);
+		final int numberOfDemos = Integer.parseInt(demoCount);
 		for (Integer i = 1; i <= numberOfDemos; i++) {
 			int count = 0;
 			try {
 				count = getDemoDatabase(i).getAllDocuments().getCount();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				// TODO: handle exception
 			}
 			s.append("<br/>ODA_" + i.toString() + ": " + Integer.toString(count) + " documents");

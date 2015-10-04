@@ -1,5 +1,23 @@
 package org.openntf.domino.demoApp.pages;
 
+/*
+
+<!--
+Copyright 2015 Paul Withers
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License
+-->
+
+*/
+
 import org.openntf.domino.demoApp.DemoUI;
 import org.openntf.domino.demoApp.components.TargetSelector;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
@@ -20,15 +38,15 @@ public class XotsView extends BaseView {
 	private static final long serialVersionUID = 1L;
 	public static String VIEW_NAME = "XOTS";
 	public static String VIEW_LABEL = "XOTS";
-	private Xots_Summary summaryDetails = new Xots_Summary(this);
-	private Xots_CallableExample threadExample = new Xots_CallableExample(this);
-	private Xots_RunnableExample runnableExample = new Xots_RunnableExample(this);
-	private Xots_Tasklets taskletDetails = new Xots_Tasklets(this);
+	private final Xots_Summary summaryDetails = new Xots_Summary(this);
+	private final Xots_CallableExample threadExample = new Xots_CallableExample(this);
+	private final Xots_RunnableExample runnableExample = new Xots_RunnableExample(this);
+	private final Xots_Tasklets taskletDetails = new Xots_Tasklets(this);
 	private XotsSubPage currentPage;
 
 	public enum XotsSubPage {
-		SUMMARY_DETAILS("Summary Details", Target.BOTH), CALLABLE_EXAMPLE("Callable Example", Target.BOTH), RUNNABLE_EXAMPLE("Runnable Example",
-				Target.BOTH), TASKLETS("Tasklets", Target.BOTH);
+		SUMMARY_DETAILS("Summary Details", Target.BOTH), CALLABLE_EXAMPLE("Callable Example", Target.BOTH), RUNNABLE_EXAMPLE("Runnable Example", Target.BOTH), TASKLETS("Tasklets",
+				Target.BOTH);
 
 		private String value_;
 		private Target target_;
@@ -91,13 +109,13 @@ public class XotsView extends BaseView {
 	public void loadNavigation() {
 		getSubNavigation().removeAllComponents();
 
-		TargetSelector target1 = new TargetSelector(this);
+		final TargetSelector target1 = new TargetSelector(this);
 		getSubNavigation().addComponent(target1);
-		Target currTarget = DemoUI.get().getAppTarget();
+		final Target currTarget = DemoUI.get().getAppTarget();
 
 		for (final XotsSubPage subPage : XotsSubPage.values()) {
 			if (Target.BOTH.equals(currTarget) || Target.BOTH.equals(subPage.getTarget()) || currTarget.equals(subPage.getTarget())) {
-				Button button1 = new Button(subPage.getValue());
+				final Button button1 = new Button(subPage.getValue());
 				button1.addStyleName(ValoTheme.BUTTON_LINK);
 				button1.addStyleName(ValoTheme.BUTTON_SMALL);
 				button1.addStyleName("navigation-button");
@@ -123,12 +141,10 @@ public class XotsView extends BaseView {
 
 	@Override
 	public void loadSource() {
-		Label label1 = new Label(
-				"@Tasklet(session = Tasklet.Session.CLONE)<br/>" + "public static class SessionCallable implements Callable<String> {<br/><br/>"
-						+ "  public SessionCallable() {<br/><br/>  }<br/><br/>  public String call() {"
-						+ "    try {<br/>      String name = Factory.getSession(SessionType.CURRENT). getEffectiveUserName();"
-						+ "<br/>      return name;<br/>    } catch (Throwable t) {<br/>      t.printStackTrace();<br/>      return t.getMessage();"
-						+ "<br/>    }<br/>  }<br/>}");
+		final Label label1 = new Label("@Tasklet(session = Tasklet.Session.CLONE)<br/>" + "public static class SessionCallable implements Callable<String> {<br/><br/>"
+				+ "  public SessionCallable() {<br/><br/>  }<br/><br/>  public String call() {"
+				+ "    try {<br/>      String name = Factory.getSession(SessionType.CURRENT). getEffectiveUserName();"
+				+ "<br/>      return name;<br/>    } catch (Throwable t) {<br/>      t.printStackTrace();<br/>      return t.getMessage();" + "<br/>    }<br/>  }<br/>}");
 		label1.setContentMode(ContentMode.HTML);
 		getSourceCode().addComponent(label1);
 	}
