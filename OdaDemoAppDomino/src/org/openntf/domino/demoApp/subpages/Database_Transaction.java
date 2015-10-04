@@ -85,7 +85,7 @@ public class Database_Transaction extends BaseSubPage {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				getOutputLabel().setCaption(DatabaseUtils.transactionTest((String) getStateSelector().getValue(), false));
+				getOutputLabel().setCaption(DatabaseUtils.transactionTest((String) getStateSelector().getValue(), true));
 			}
 		});
 		button2.addStyleName(ValoTheme.BUTTON_FRIENDLY);

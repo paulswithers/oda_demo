@@ -93,7 +93,8 @@ public class SessionView extends BaseView {
 		String setupErrors = "";
 		final Database demoDb = FactoryUtils.getDemoTemplate();
 		if (null == demoDb) {
-			setupErrors = String.format("Please amend the XPages Extension Library Demo database filepath in the application's web.xml.\nCurrent value is '%s'\n",
+			setupErrors = String.format(
+					"Please amend the XPages Extension Library Demo database filepath in the application's web.xml.\nAlternatively create an instance of Extension Library Demo Database at '%s'\n",
 					FactoryUtils.getDemoTemplateFilepath());
 		}
 		if (null == FactoryUtils.getDemoDatabase()) {
