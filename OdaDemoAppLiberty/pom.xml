@@ -4,13 +4,15 @@
 	<groupId>org.openntf.domino.demos</groupId>
 	<artifactId>ODA_DemoApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	
+	<properties>
+		<vaadin.version>7.7.0</vaadin.version>
+		<vaadin.plugin.version>7.7.0</vaadin.plugin.version>
+		<vaadin.widgetset.mode>fetch</vaadin.widgetset.mode>
+	</properties>
+	
 	<packaging>war</packaging>
 	<dependencies>
-		<dependency>
-			<groupId>org.openntf.xworlds.webapp</groupId>
-			<artifactId>j2eeenabler</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 		<dependency>
 			<groupId>com.ibm.tools.target</groupId>
 			<artifactId>was-liberty</artifactId>
@@ -21,12 +23,12 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-server</artifactId>
-			<version>7.5.4</version>
+			<version>${vaadin.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-client-compiled</artifactId>
-			<version>7.5.4</version>
+			<version>${vaadin.version}</version>
 		</dependency>
 
 		<!-- Optional for extending client-side See: https://vaadin.com/book/-/page/clientside.html 
@@ -36,7 +38,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-client-compiler</artifactId>
-			<version>7.5.4</version>
+			<version>${vaadin.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -44,7 +46,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
-			<version>7.5.4</version>
+			<version>${vaadin.version}</version>
 		</dependency>
 
 		<!-- Optional push support for communication See: https://vaadin.com/book/-/page/advanced.push.html 
@@ -60,6 +62,11 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.7</version>
 		</dependency>
 	</dependencies>
 
@@ -88,6 +95,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		
+
 	</build>
 </project>
