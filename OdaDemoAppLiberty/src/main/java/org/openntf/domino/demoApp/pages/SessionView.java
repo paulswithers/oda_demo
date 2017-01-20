@@ -25,14 +25,16 @@ import java.util.TreeMap;
 import org.apache.commons.lang3.StringUtils;
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
+import org.openntf.domino.View;
 import org.openntf.domino.demoApp.DemoUI;
 import org.openntf.domino.demoApp.application.XotsDatabaseLoader;
 import org.openntf.domino.demoApp.components.TargetSelector;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
-import org.openntf.domino.demoApp.subpages.Session_Factory;
-import org.openntf.domino.demoApp.subpages.Session_Fixes;
-import org.openntf.domino.demoApp.subpages.Session_Summary;
-import org.openntf.domino.demoApp.subpages.Session_XspProperties;
+import org.openntf.domino.demoApp.subpages.session.Session_Factory;
+import org.openntf.domino.demoApp.subpages.session.Session_Fixes;
+import org.openntf.domino.demoApp.subpages.session.Session_Summary;
+import org.openntf.domino.demoApp.subpages.session.Session_ThreadConfig;
+import org.openntf.domino.demoApp.subpages.session.Session_XspProperties;
 import org.openntf.domino.demoAppUtil.FactoryUtils;
 import org.openntf.domino.demoAppUtil.SampleDataUtil;
 import org.openntf.domino.xots.Xots;
@@ -58,10 +60,12 @@ public class SessionView extends BaseView {
 	private Session_Fixes fixesDetails = new Session_Fixes(this);
 	private Session_Factory factorySessionDetails = new Session_Factory(this);
 	private Session_XspProperties xspPropertyDetails = new Session_XspProperties(this);
+	private Session_ThreadConfig threadConfig = new Session_ThreadConfig(this);
 
 	public enum SessionSubPage {
 		SUMMARY_DETAILS("Summary Details", Target.BOTH), FIXES("Fixes", Target.NON_XPAGES), XSP_PROPS("Xsp Properties",
-				Target.XPAGES), FACTORY_SESSION("Getting Sessions", Target.BOTH);
+				Target.XPAGES), THREAD_CONFIG("Thread Config",
+						Target.NON_XPAGES), FACTORY_SESSION("Getting Sessions", Target.BOTH);
 		private String value_;
 		private Target target_;
 
@@ -88,6 +92,7 @@ public class SessionView extends BaseView {
 		super.enter(event);
 	}
 
+	@Override
 	public void checkIsSetup() {
 		String setupErrors = "";
 		Database demoDb = FactoryUtils.getDemoTemplate();
@@ -96,8 +101,15 @@ public class SessionView extends BaseView {
 					"Please amend the XPages Extension Library Demo database filepath in the application's web.xml.\nAlternatively create an instance of Extension Library Demo Database at '%s'\n",
 					FactoryUtils.getDemoTemplateFilepath());
 		}
+		View contactsByState = demoDb.getView("AllContactsByState");
+		if (null == contactsByState) {
+			setupErrors = String.format(
+					"Please add an 'AllContactsByState' view to the XPages Extension Library Demo database filepath at '%s', copying 'AllContacts' and adding a categorised column for field 'State'\n",
+					FactoryUtils.getDemoTemplateFilepath());
+		}
 		if (null == FactoryUtils.getDemoDatabase()) {
-			setupErrors = setupErrors + "Demo databases have not been initialised yet.\nPlease generate using setup button";
+			setupErrors = setupErrors
+					+ "Demo databases have not been initialised yet.\nPlease generate using setup button";
 			setShowSetupButton(true);
 		}
 		if (StringUtils.isNotEmpty(setupErrors)) {
@@ -138,6 +150,10 @@ public class SessionView extends BaseView {
 			xspPropertyDetails.load();
 			getContentPanel().setContent(xspPropertyDetails);
 			break;
+		case THREAD_CONFIG:
+			threadConfig.load();
+			getContentPanel().setContent(threadConfig);
+			break;
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));
 		}
@@ -152,7 +168,8 @@ public class SessionView extends BaseView {
 		Target currTarget = DemoUI.get().getAppTarget();
 
 		for (final SessionSubPage subPage : SessionSubPage.values()) {
-			if (Target.BOTH.equals(currTarget) || Target.BOTH.equals(subPage.getTarget()) || currTarget.equals(subPage.getTarget())) {
+			if (Target.BOTH.equals(currTarget) || Target.BOTH.equals(subPage.getTarget())
+					|| currTarget.equals(subPage.getTarget())) {
 				Button button1 = new Button(subPage.getValue());
 				button1.addStyleName(ValoTheme.BUTTON_LINK);
 				button1.addStyleName(ValoTheme.BUTTON_SMALL);
@@ -247,8 +264,8 @@ public class SessionView extends BaseView {
 			String[] loremIpsum = SampleDataUtil.readLoremIpsum();
 			for (Integer i = 1; i <= numberOfDemos; i++) {
 				String dbPath = demoDbFolder + "/oda_" + i.toString() + ".nsf";
-				XotsDatabaseLoader dbInitialiser = new XotsDatabaseLoader(dbPath, templatePath, 20000, 1000, 5, firstNames, lastNames, cities, states,
-						loremIpsum);
+				XotsDatabaseLoader dbInitialiser = new XotsDatabaseLoader(dbPath, templatePath, 20000, 1000, 5,
+						firstNames, lastNames, cities, states, loremIpsum);
 				Xots.getService().submit(dbInitialiser);
 			}
 			Notification.show(

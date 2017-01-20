@@ -1,5 +1,9 @@
 package org.openntf.domino.demoApp.subpages;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 /*
 
 <!--
@@ -19,6 +23,7 @@ See the License for the specific language governing permissions and limitations 
 */
 
 import org.openntf.domino.demoApp.pages.BaseView;
+import org.openntf.domino.demoAppUtil.DatabaseUtils;
 
 import com.vaadin.ui.VerticalLayout;
 
@@ -27,9 +32,16 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 	private static final String ERROR_DONT_USE_DIRECTLY = "This base method shouldn't be used directly.";
 	private BaseView parentView;
 	private boolean loaded = false;
+	private Properties props = new Properties();
 
 	public BaseSubPage(BaseView parentView) {
 		setParentView(parentView);
+		try {
+			InputStream inputStream = getClass().getResourceAsStream("strings.properties");
+			props.load(inputStream);
+		} catch (IOException t) {
+			DatabaseUtils.LOG.error(t.getMessage(), t);
+		}
 	}
 
 	/*
@@ -48,7 +60,8 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.openntf.domino.demoApp.subpages.BaseSubPageInterface#loadContent()
+	 * @see
+	 * org.openntf.domino.demoApp.subpages.BaseSubPageInterface#loadContent()
 	 */
 	@Override
 	public void loadContent() {
@@ -68,7 +81,8 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.openntf.domino.demoApp.subpages.BaseSubPageInterface#setLoaded( boolean)
+	 * @see org.openntf.domino.demoApp.subpages.BaseSubPageInterface#setLoaded(
+	 * boolean)
 	 */
 	@Override
 	public void setLoaded(boolean loaded) {
@@ -78,7 +92,8 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.openntf.domino.demoApp.subpages.BaseSubPageInterface#getParentView()
+	 * @see
+	 * org.openntf.domino.demoApp.subpages.BaseSubPageInterface#getParentView()
 	 */
 	@Override
 	public BaseView getParentView() {
@@ -88,11 +103,29 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.openntf.domino.demoApp.subpages.BaseSubPageInterface#setParentView( org.openntf.domino.demoApp.pages.BaseView)
+	 * @see
+	 * org.openntf.domino.demoApp.subpages.BaseSubPageInterface#setParentView(
+	 * org.openntf.domino.demoApp.pages.BaseView)
 	 */
 	@Override
 	public void setParentView(BaseView parentView) {
 		this.parentView = parentView;
+	}
+
+	/**
+	 * Gets properties file "strings.properties" of content to insert
+	 * 
+	 * @return
+	 */
+	public Properties getProps() {
+		return props;
+	}
+
+	/**
+	 * @param props
+	 */
+	public void setProps(Properties props) {
+		this.props = props;
 	}
 
 }
