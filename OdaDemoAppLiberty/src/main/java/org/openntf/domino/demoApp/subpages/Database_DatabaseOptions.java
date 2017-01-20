@@ -35,12 +35,14 @@ public class Database_DatabaseOptions extends BaseSubPage {
 		super(parentView);
 	}
 
+	@Override
 	public void loadContent() {
 		Label label1 = new Label("The " + FactoryUtils.addCodeString("Database.DBOption")
 				+ " admin-related enums have been added to make code more readable. The core API has "
-				+ FactoryUtils.addCodeString("Database.getOption(int)") + " and " + FactoryUtils.addCodeString("Database.setOption(int, boolean)")
-				+ ", where the int is the integer for the selected setting, e.g. looking for soft deletes is 49. " + "The new methods "
-				+ FactoryUtils.addCodeString("Database.getOption(DBOption)") + " and "
+				+ FactoryUtils.addCodeString("Database.getOption(int)") + " and "
+				+ FactoryUtils.addCodeString("Database.setOption(int, boolean)")
+				+ ", where the int is the integer for the selected setting, e.g. looking for soft deletes is 49. "
+				+ "The new methods " + FactoryUtils.addCodeString("Database.getOption(DBOption)") + " and "
 				+ FactoryUtils.addCodeString("Database.setOption(DBOption, true)")
 				+ " take an Enum for the option required. Resulting code is easier to support.");
 
@@ -96,17 +98,23 @@ public class Database_DatabaseOptions extends BaseSubPage {
 			case OPTIMIZAION:
 				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.DBOPT_OPTIMIZATION");
 				break;
+			case OPTIMIZATION:
+				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.DBOPT_OPTIMIZATION");
+				break;
 			case OUTOFOFFICEENABLED:
 				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.DBOPT_OUTOFOFFICEENABLED");
 				break;
 			case REPLICATEUNREADMARKSNEVER:
-				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.DBOPT_REPLICATEUNREADMARKSNEVER");
+				optExplanation = "Corresponds to "
+						+ FactoryUtils.addCodeString("Database.DBOPT_REPLICATEUNREADMARKSNEVER");
 				break;
 			case REPLICATEUNREADMARKSTOANY:
-				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.DBOPT_REPLICATEUNREADMARKSTOANY");
+				optExplanation = "Corresponds to "
+						+ FactoryUtils.addCodeString("Database.DBOPT_REPLICATEUNREADMARKSTOANY");
 				break;
 			case REPLICATEUNREADMARKSTOCLUSTER:
-				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.DBOPT_REPLICATEUNREADMARKSTOCLUSTER");
+				optExplanation = "Corresponds to "
+						+ FactoryUtils.addCodeString("Database.DBOPT_REPLICATEUNREADMARKSTOCLUSTER");
 				break;
 			case SOFTDELETE:
 				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.DBOPT_SOFTDELETE");

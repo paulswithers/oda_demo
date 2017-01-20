@@ -66,7 +66,8 @@ public class FactoryUtils {
 			}
 			Session userSess = getUserSession();
 			String filePath = getDemoDatabasesFolder();
-			retVal_ = userSess.getDatabase(userSess.getServerName(), filePath + "/oda_" + idex.toString() + ".nsf", false);
+			retVal_ = userSess.getDatabase(userSess.getServerName(), filePath + "/oda_" + idex.toString() + ".nsf",
+					false);
 			retVal_.addListener(new DocumentListener(filePath));
 		} catch (Exception e) {
 			// TODO: handle exception
