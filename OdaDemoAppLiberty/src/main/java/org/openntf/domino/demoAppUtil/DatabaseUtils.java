@@ -25,8 +25,11 @@ import org.openntf.domino.Document;
 import org.openntf.domino.DocumentCollection;
 import org.openntf.domino.View;
 import org.openntf.domino.transactions.DatabaseTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DatabaseUtils {
+	public static final Logger LOG = LoggerFactory.getLogger(DatabaseUtils.class);
 
 	public DatabaseUtils() {
 
