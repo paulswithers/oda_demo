@@ -20,7 +20,6 @@ See the License for the specific language governing permissions and limitations 
 
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +30,8 @@ import org.openntf.domino.ViewEntryCollection;
 import org.openntf.domino.ViewNavigator;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.xots.AbstractXotsCallable;
+import org.openntf.domino.xots.AbstractXotsRunnable;
 import org.openntf.domino.xots.Tasklet;
 
 import com.vaadin.ui.Notification;
@@ -39,12 +40,13 @@ import com.vaadin.ui.UI;
 public class XotsTests {
 
 	@Tasklet(session = Tasklet.Session.CLONE)
-	public static class SessionCallable implements Callable<String> {
+	public static class SessionCallable extends AbstractXotsCallable {
 
 		public SessionCallable() {
-
+			// Pass any additional variables for use within the call() method
 		}
 
+		@Override
 		public String call() {
 			try {
 				String name = Factory.getSession(SessionType.CURRENT).getEffectiveUserName();
@@ -57,7 +59,7 @@ public class XotsTests {
 	}
 
 	@Tasklet(session = Tasklet.Session.CLONE)
-	public static class StateUserSummary implements Callable<TreeMap<String, Integer>> {
+	public static class StateUserSummary extends AbstractXotsCallable {
 		private String dbPath;
 		private Integer dbNo;
 		private TreeMap<String, String> states;
@@ -69,6 +71,7 @@ public class XotsTests {
 			this.dbPath = dbPath;
 		}
 
+		@Override
 		public TreeMap<String, Integer> call() {
 			try {
 				TreeMap<String, Integer> results = new TreeMap<String, Integer>();
@@ -78,6 +81,7 @@ public class XotsTests {
 					results.put(stateKey, 0);
 				}
 
+				System.out.println("XOTS task as " + Factory.getSession(SessionType.CURRENT).getEffectiveUserName());
 				Database dataDb = Factory.getSession(SessionType.CURRENT).getDatabase(dbPath);
 				View people = dataDb.getView("AllContactsByState");
 				ViewNavigator nav = people.createViewNav();
@@ -86,16 +90,16 @@ public class XotsTests {
 				ViewEntry lastEntInCat;
 				while (null != cat) {
 					lastEntInCat = nav.getPrev(cat);
-					String st = (String) lastEntInCat.getColumnValues().get(0);
-					String pos = (String) lastEntInCat.getPosition();
+					String st = (String) lastEntInCat.getColumnValues().get(1);
+					String pos = lastEntInCat.getPosition();
 					Integer count = Integer.parseInt(StringUtils.substringAfter(pos, "."));
 					results.put(st, count);
 					cat = nav.getNextSibling(cat);
 				}
 				// We won't have got the last category!
 				lastEntInCat = nav.getLast();
-				String st = (String) lastEntInCat.getColumnValues().get(0);
-				String pos = (String) lastEntInCat.getPosition();
+				String st = (String) lastEntInCat.getColumnValues().get(1);
+				String pos = lastEntInCat.getPosition();
 				Integer count = Integer.parseInt(StringUtils.substringAfter(pos, "."));
 				results.put(st, count);
 				return results;
@@ -107,7 +111,7 @@ public class XotsTests {
 	}
 
 	@Tasklet(session = Tasklet.Session.NATIVE)
-	public static class UserMergeView implements Runnable {
+	public static class UserMergeView extends AbstractXotsRunnable {
 		private String dbPath;
 		private String stateCode;
 		private ConcurrentSkipListSet<ContactSummary> contacts;
@@ -148,7 +152,8 @@ public class XotsTests {
 
 					@Override
 					public void run() {
-						Notification msg = new Notification("Completed loading content from " + dbPath, Notification.Type.TRAY_NOTIFICATION);
+						Notification msg = new Notification("Completed loading content from " + dbPath,
+								Notification.Type.TRAY_NOTIFICATION);
 						msg.show(currUi.getPage());
 					}
 

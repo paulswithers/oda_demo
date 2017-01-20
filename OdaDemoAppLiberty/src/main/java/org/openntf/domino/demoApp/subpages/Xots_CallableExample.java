@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.concurrent.Future;
 
+import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 import org.openntf.domino.View;
 import org.openntf.domino.demoApp.application.XotsTests.StateUserSummary;
@@ -53,6 +54,7 @@ public class Xots_CallableExample extends BaseSubPage {
 	public void loadContent() {
 		final Panel panel = new Panel();
 		Button button1 = new Button("Count Users By State");
+		Database db = null;
 		button1.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -61,7 +63,8 @@ public class Xots_CallableExample extends BaseSubPage {
 				testThread(panel);
 			}
 		});
-		addComponents(button1, new Html_Separator(SeparatorType.NEW_LINE), panel, new Html_Separator(SeparatorType.NEW_LINE));
+		addComponents(button1, new Html_Separator(SeparatorType.NEW_LINE), panel,
+				new Html_Separator(SeparatorType.NEW_LINE));
 	}
 
 	private void testThread(Panel panel) {
@@ -75,7 +78,7 @@ public class Xots_CallableExample extends BaseSubPage {
 			}
 
 			// Load futures
-			List<Future<TreeMap<String, Integer>>> results = new ArrayList<Future<TreeMap<String, Integer>>>();
+			List<Future<Object>> results = new ArrayList<Future<Object>>();
 			String demoDbFolder = FactoryUtils.getDemoDatabasesFolder();
 			int numberOfDemos = FactoryUtils.getNumberOfDemosAsInt();
 			for (Integer i = 1; i <= numberOfDemos; i++) {
@@ -107,8 +110,8 @@ public class Xots_CallableExample extends BaseSubPage {
 			}
 
 			// Loop through Callables
-			for (Future<TreeMap<String, Integer>> f : results) {
-				TreeMap<String, Integer> output = f.get();
+			for (Future<Object> f : results) {
+				TreeMap<String, Integer> output = (TreeMap<String, Integer>) f.get();
 				Integer dbNo = output.get("dbNo");
 				// Add Db label
 				Label label2 = new Label("Demo " + dbNo.toString());

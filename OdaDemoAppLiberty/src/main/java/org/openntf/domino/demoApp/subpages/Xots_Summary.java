@@ -40,13 +40,17 @@ public class Xots_Summary extends BaseSubPage {
 
 	@Override
 	public void loadContent() {
-		Label label1 = new Label("Xots is designed as an all-encompassing replacement for multi-threaded processing, asynchronous jobs, "
-				+ "Java agents and DOTS tasks. It is designed to enable these tasks to be coded within the application and re-use existing logic without needing to duplicate code. "
-				+ "The functionality for multi-threaded or asynchronous jobs is fully-functional and production-ready.");
-		Label label2 = new Label("The Xots service should be started automatically by the platform's implementation of ODA and you can access it via "
-				+ FactoryUtils.addCodeString("Xots.getService()") + ". From there you can call " + FactoryUtils.addCodeString("submit(Runnable)")
-				+ " or " + FactoryUtils.addCodeString("submit(Callable)") + " to register and trigger a Xots tasklet to the service. "
-				+ "See the sub-pages for examples and information about creating the tasklet classes.");
+		Label label1 = new Label(
+				"Xots is designed as an all-encompassing replacement for multi-threaded processing, asynchronous jobs, "
+						+ "Java agents and DOTS tasks. It is designed to enable these tasks to be coded within the application and re-use existing logic without needing to duplicate code. "
+						+ "The functionality for multi-threaded or asynchronous jobs is fully-functional and production-ready.");
+		Label label2 = new Label(
+				"The Xots service should be started automatically by the platform's implementation of ODA and you can access it via "
+						+ FactoryUtils.addCodeString("Xots.getService()") + ". From there you can call "
+						+ FactoryUtils.addCodeString("submit(Runnable)") + " or "
+						+ FactoryUtils.addCodeString("submit(Callable)")
+						+ " to register and trigger a Xots tasklet to the service. "
+						+ "See the sub-pages for examples and information about creating the tasklet classes.");
 		label2.setContentMode(ContentMode.HTML);
 		Label label3 = new Label("Architecture");
 		label3.setStyleName(ValoTheme.LABEL_H3);
@@ -59,24 +63,27 @@ public class Xots_Summary extends BaseSubPage {
 		label4.setContentMode(ContentMode.HTML);
 		Label label5 = new Label("Limitations (as at ODA 2.0.0)");
 		label5.setStyleName(ValoTheme.LABEL_H3);
-		Label label6 = new Label("<ul><li>Scheduler is not yet implemented</li><li>TRUSTED session type is not yet implemented</li>" + "<li>The "
-				+ FactoryUtils.addCodeString("invokeAll()") + " method doesn't work. Use " + FactoryUtils.addCodeString("submit()") + " instead.</li>"
-				+ "<li>XPages scoped variables / application-specific objects you wish to re-use within the tasklet need passing into the Xots class as properties. "
-				+ "See examples for more details.</li></ul>");
+		Label label6 = new Label(
+				"<ul><li>Scheduler is not yet implemented</li><li>TRUSTED session type is not yet implemented</li>"
+						+ "<li>The " + FactoryUtils.addCodeString("invokeAll()") + " method doesn't work. Use "
+						+ FactoryUtils.addCodeString("submit()") + " instead.</li>"
+						+ "<li>XPages scoped variables / application-specific objects you wish to re-use within the tasklet need passing into the Xots class as properties. "
+						+ "See examples for more details.</li></ul>");
 		label6.setContentMode(ContentMode.HTML);
 		Label label7 = new Label("Xots Tasklet Retrieving Current Username");
 		label7.setStyleName(ValoTheme.LABEL_H3);
 		Label label8 = testSessionPassing();
 
-		addComponents(label1, label2, label3, label4, label5, label6, label7, label8, new Html_Separator(SeparatorType.NEW_LINE));
+		addComponents(label1, label2, label3, label4, label5, label6, label7, label8,
+				new Html_Separator(SeparatorType.NEW_LINE));
 
 	}
 
 	private Label testSessionPassing() {
-		Future<String> future = Xots.getService().submit(new SessionCallable());
+		Future<Object> future = Xots.getService().submit(new SessionCallable());
 		Label label6 = new Label("XOTS FAILED");
 		try {
-			label6.setValue(future.get());
+			label6.setValue((String) future.get());
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
