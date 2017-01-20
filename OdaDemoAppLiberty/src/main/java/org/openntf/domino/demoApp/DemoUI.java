@@ -30,6 +30,7 @@ import org.openntf.domino.demoApp.pages.DocumentView;
 import org.openntf.domino.demoApp.pages.ErrorView;
 import org.openntf.domino.demoApp.pages.MiscView;
 import org.openntf.domino.demoApp.pages.SessionView;
+import org.openntf.domino.demoApp.pages.ViewView;
 import org.openntf.domino.demoApp.pages.XotsView;
 import org.openntf.domino.demoAppUtil.FactoryUtils;
 import org.vaadin.sliderpanel.SliderPanel;
@@ -50,7 +51,6 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
@@ -79,17 +79,18 @@ public class DemoUI extends UI {
 	private ConcurrentHashMap<String, Integer> createdDocs;
 	private ConcurrentHashMap<String, Integer> updatedDocs;
 
+	@WebServlet(urlPatterns = "/*", name = "UIServlet", asyncSupported = true, displayName = "ODA Demo App", loadOnStartup = 1)
+	@VaadinServletConfiguration(ui = DemoUI.class, productionMode = false, heartbeatInterval = 300)
+	public static class UIServlet extends VaadinServlet {
+
+	}
+
 	public Navigator getUiNavigator() {
 		return uiNavigator;
 	}
 
 	public void setUiNavigator(Navigator uiNavigator) {
 		this.uiNavigator = uiNavigator;
-	}
-
-	@WebServlet(value = "/*", asyncSupported = true)
-	@VaadinServletConfiguration(productionMode = false, ui = DemoUI.class)
-	public static class Servlet extends VaadinServlet {
 	}
 
 	@Override
@@ -130,8 +131,9 @@ public class DemoUI extends UI {
 		});
 		setConfigDetails(new Label(FactoryUtils.dumpConfigSettings(), ContentMode.HTML));
 		cfgSettings.addComponents(button1, getConfigDetails());
-		SliderPanel cfgSlider = new SliderPanelBuilder(cfgSettings).caption("CONFIGURATION SETTINGS").mode(SliderMode.BOTTOM)
-				.style(SliderPanelStyles.COLOR_GRAY).tabPosition(SliderTabPosition.MIDDLE).build();
+		SliderPanel cfgSlider = new SliderPanelBuilder(cfgSettings).caption("CONFIGURATION SETTINGS")
+				.mode(SliderMode.BOTTOM).style(SliderPanelStyles.COLOR_GRAY).tabPosition(SliderTabPosition.MIDDLE)
+				.build();
 
 		// contentLayout component contains Header and Body, stored in
 		// middleLayout
@@ -156,19 +158,21 @@ public class DemoUI extends UI {
 		innerLayout.setSizeFull();
 		innerLayout.addComponent(contentLayout);
 		innerLayout.setExpandRatio(contentLayout, 1);
-		setRightSlider(new SliderPanelBuilder(new VerticalLayout()).caption("INFORMATION").mode(SliderMode.RIGHT).style(SliderPanelStyles.COLOR_WHITE)
-				.tabPosition(SliderTabPosition.MIDDLE).fixedContentSize(450).build());
+		setRightSlider(new SliderPanelBuilder(new VerticalLayout()).caption("INFORMATION").mode(SliderMode.RIGHT)
+				.style(SliderPanelStyles.COLOR_WHITE).tabPosition(SliderTabPosition.MIDDLE).fixedContentSize(450)
+				.build());
 		innerLayout.addComponent(getRightSlider());
 
 		// Add Navigator and menu items
 		setUiNavigator(new Navigator(this, getBody()));
 		getUiNavigator().setErrorView(ErrorView.class);
-		addNewMenuItem(SessionView.VIEW_NAME, SessionView.VIEW_LABEL, (View) new SessionView());
-		addNewMenuItem(DatabaseView.VIEW_NAME, DatabaseView.VIEW_LABEL, (View) new DatabaseView());
-		addNewMenuItem(DocumentView.VIEW_NAME, DocumentView.VIEW_LABEL, (View) new SessionView());
-		addNewMenuItem(DateTimeView.VIEW_NAME, DateTimeView.VIEW_LABEL, (View) new SessionView());
-		addNewMenuItem(MiscView.VIEW_NAME, MiscView.VIEW_LABEL, (View) new SessionView());
-		addNewMenuItem(XotsView.VIEW_NAME, XotsView.VIEW_LABEL, (View) new XotsView());
+		addNewMenuItem(SessionView.VIEW_NAME, SessionView.VIEW_LABEL, new SessionView());
+		addNewMenuItem(DatabaseView.VIEW_NAME, DatabaseView.VIEW_LABEL, new DatabaseView());
+		addNewMenuItem(ViewView.VIEW_NAME, ViewView.VIEW_LABEL, new ViewView());
+		addNewMenuItem(DocumentView.VIEW_NAME, DocumentView.VIEW_LABEL, new SessionView());
+		addNewMenuItem(DateTimeView.VIEW_NAME, DateTimeView.VIEW_LABEL, new SessionView());
+		addNewMenuItem(MiscView.VIEW_NAME, MiscView.VIEW_LABEL, new SessionView());
+		addNewMenuItem(XotsView.VIEW_NAME, XotsView.VIEW_LABEL, new XotsView());
 
 		// Add inner layout to outer layout
 		outerLayout.addComponent(innerLayout);
@@ -182,6 +186,7 @@ public class DemoUI extends UI {
 	public void addNewMenuItem(final String viewName, final String viewLabel, final View viewObj) {
 		getUiNavigator().addView(viewName, viewObj);
 		getHeader().getMenubar().addItem(viewLabel, new MenuBar.Command() {
+			@Override
 			public void menuSelected(MenuItem selectedItem) {
 				if (isSetup()) {
 					for (MenuItem itm : getHeader().getMenubar().getItems()) {
@@ -193,7 +198,8 @@ public class DemoUI extends UI {
 					selectedItem.setStyleName("highlight");
 					DemoUI.getCurrent().getNavigator().navigateTo(viewName);
 				} else {
-					addMessage("", "You must set up the database before navigating the application", Type.ERROR_MESSAGE);
+					addMessage("", "You must set up the database before navigating the application",
+							Type.ERROR_MESSAGE);
 				}
 			}
 		});
