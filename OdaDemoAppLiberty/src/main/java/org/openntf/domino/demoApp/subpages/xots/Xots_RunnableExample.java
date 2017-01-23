@@ -1,4 +1,4 @@
-package org.openntf.domino.demoApp.subpages;
+package org.openntf.domino.demoApp.subpages.xots;
 
 /*
 
@@ -24,6 +24,7 @@ import org.openntf.domino.demoApp.application.ContactSummary;
 import org.openntf.domino.demoApp.application.XotsTests.UserMergeView;
 import org.openntf.domino.demoApp.components.StateSelector;
 import org.openntf.domino.demoApp.pages.BaseView;
+import org.openntf.domino.demoApp.subpages.BaseSubPage;
 import org.openntf.domino.demoAppUtil.FactoryUtils;
 import org.openntf.domino.xots.Xots;
 

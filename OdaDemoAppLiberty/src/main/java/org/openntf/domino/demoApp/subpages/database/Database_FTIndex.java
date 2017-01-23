@@ -1,4 +1,6 @@
-package org.openntf.domino.demoApp.subpages;
+package org.openntf.domino.demoApp.subpages.database;
+
+import java.text.MessageFormat;
 
 /*
 
@@ -27,6 +29,7 @@ import org.openntf.domino.Database.FTSortOption;
 import org.openntf.domino.demoApp.components.Html_Separator;
 import org.openntf.domino.demoApp.components.Html_Separator.SeparatorType;
 import org.openntf.domino.demoApp.pages.BaseView;
+import org.openntf.domino.demoApp.subpages.BaseSubPage;
 import org.openntf.domino.demoAppUtil.FactoryUtils;
 
 import com.vaadin.shared.ui.label.ContentMode;
@@ -54,7 +57,7 @@ public class Database_FTIndex extends BaseSubPage {
 
 	@Override
 	public void loadContent() {
-		Label label1 = new Label("A number of enums related to Full Text Indexing have been added to OpenNTF Domino API.");
+		Label label1 = new Label(getProps().getProperty("indexIntro"));
 		Button button1 = new Button("FTIndexOption");
 		button1.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 		button1.addStyleName("floating-btn");
@@ -121,8 +124,8 @@ public class Database_FTIndex extends BaseSubPage {
 				getSubContentPanel().setContent(getFtDomainSortOptionLayout());
 			}
 		});
-		addComponents(label1, new Html_Separator(SeparatorType.NEW_LINE), button1, button2, button3, button4, button5, button6,
-				new Html_Separator(SeparatorType.NEW_LINE), getSubContentPanel());
+		addComponents(label1, new Html_Separator(SeparatorType.NEW_LINE), button1, button2, button3, button4, button5,
+				button6, new Html_Separator(SeparatorType.NEW_LINE), getSubContentPanel());
 	}
 
 	private Panel getSubContentPanel() {
@@ -144,9 +147,8 @@ public class Database_FTIndex extends BaseSubPage {
 		ftIndexLayout = new VerticalLayout();
 		Label label1 = new Label("FTIndexOption");
 		label1.setStyleName(ValoTheme.LABEL_H3);
-		Label label2 = new Label("Used by " + FactoryUtils.addCodeString("Database.createFTIndex()")
-				+ ". Normally that method takes an integer which is the total of the options desired, but this overloaded method "
-				+ "allows developers to use an enum. Options are:<ul>");
+		Label label2 = new Label(MessageFormat.format(getProps().getProperty("indexOptIntro"),
+				FactoryUtils.addCodeString("Database.createFTIndex()")));
 		label2.setContentMode(ContentMode.HTML);
 		ftIndexLayout.addComponents(label1, label2);
 		for (FTIndexOption elem : FTIndexOption.values()) {
@@ -168,9 +170,8 @@ public class Database_FTIndex extends BaseSubPage {
 		ftFrequencyLayout = new VerticalLayout();
 		Label label1 = new Label("FTIndexFrequency");
 		label1.setStyleName(ValoTheme.LABEL_H3);
-		Label label2 = new Label("Used by " + FactoryUtils.addCodeString("Database.setFTIndexFrequency()")
-				+ ". Normally that method takes an integer, but this overloaded method allows developers to use an enum. "
-				+ "<b>NOTE:</b> There is no corresponding getter, to get the FT index frequency as an enum. " + "Options are:<ul>");
+		Label label2 = new Label(MessageFormat.format(getProps().getProperty("indexFreqIntro"),
+				FactoryUtils.addCodeString("Database.setFTIndexFrequency()")));
 		label2.setContentMode(ContentMode.HTML);
 		ftFrequencyLayout.addComponents(label1, label2);
 		for (FTIndexFrequency elem : FTIndexFrequency.values()) {
@@ -192,9 +193,8 @@ public class Database_FTIndex extends BaseSubPage {
 		ftSearchOptionLayout = new VerticalLayout();
 		Label label1 = new Label("FTSearchOption");
 		label1.setStyleName(ValoTheme.LABEL_H3);
-		Label label2 = new Label("Used by " + FactoryUtils.addCodeString("Database.FTSearch()")
-				+ " methods. Normally those methods takes an integer, but the overloaded methods allows developers to use an enum. "
-				+ "Options are:<ul>");
+		Label label2 = new Label(MessageFormat.format(getProps().getProperty("searchOptIntro"),
+				FactoryUtils.addCodeString("Database.FTSearch()")));
 		label2.setContentMode(ContentMode.HTML);
 		ftSearchOptionLayout.addComponents(label1, label2);
 		for (FTSearchOption elem : FTSearchOption.values()) {
@@ -216,9 +216,8 @@ public class Database_FTIndex extends BaseSubPage {
 		ftSortOptionLayout = new VerticalLayout();
 		Label label1 = new Label("FTSortOption");
 		label1.setStyleName(ValoTheme.LABEL_H3);
-		Label label2 = new Label("Used by " + FactoryUtils.addCodeString("Database.FTSearch()")
-				+ " methods. Normally those methods takes an integer, but the overloaded methods allows developers to use an enum. "
-				+ "Options are:<ul>");
+		Label label2 = new Label(MessageFormat.format(getProps().getProperty("sortOptIntro"),
+				FactoryUtils.addCodeString("Database.FTSearch()")));
 		label2.setContentMode(ContentMode.HTML);
 		ftSortOptionLayout.addComponents(label1, label2);
 		for (FTSortOption elem : FTSortOption.values()) {
@@ -240,9 +239,9 @@ public class Database_FTIndex extends BaseSubPage {
 		ftDomainSearchOptionLayout = new VerticalLayout();
 		Label label1 = new Label("FTDomainSearchOption");
 		label1.setStyleName(ValoTheme.LABEL_H3);
-		Label label2 = new Label("Used by " + FactoryUtils.addCodeString("Database.FTDomainSearch()")
-				+ " methods. Normally those methods takes an integer, but the overloaded methods allows developers to use an enum. "
-				+ "There are more options available than " + FactoryUtils.addCodeString("Database.FTSearchOption") + ".Options are:<ul>");
+		Label label2 = new Label(MessageFormat.format(getProps().getProperty("domainSearchOptsIntro"),
+				FactoryUtils.addCodeString("Database.FTDomainSearch()"),
+				FactoryUtils.addCodeString("Database.FTSearchOption")));
 		label2.setContentMode(ContentMode.HTML);
 		ftDomainSearchOptionLayout.addComponents(label1, label2);
 		for (FTDomainSearchOption elem : FTDomainSearchOption.values()) {
@@ -264,9 +263,9 @@ public class Database_FTIndex extends BaseSubPage {
 		ftDomainSortOptionLayout = new VerticalLayout();
 		Label label1 = new Label("FTDomainSortOption");
 		label1.setStyleName(ValoTheme.LABEL_H3);
-		Label label2 = new Label("Used by " + FactoryUtils.addCodeString("Database.FTDomainSearch()")
-				+ " methods. Normally those methods takes an integer, but the overloaded methods allows developers to use an enum. "
-				+ "There are fewer options than " + FactoryUtils.addCodeString("Database.FTSortOption") + ". Options are:<ul>");
+		Label label2 = new Label(MessageFormat.format(getProps().getProperty("domainSortOptsIntro"),
+				FactoryUtils.addCodeString("Database.FTDomainSearch()"),
+				FactoryUtils.addCodeString("Database.FTSortOption")));
 		label2.setContentMode(ContentMode.HTML);
 		ftDomainSortOptionLayout.addComponents(label1, label2);
 		for (FTDomainSortOption elem : FTDomainSortOption.values()) {

@@ -21,10 +21,8 @@ See the License for the specific language governing permissions and limitations 
 */
 
 import org.apache.commons.lang3.StringUtils;
-import org.openntf.domino.demoApp.DemoUI;
 import org.openntf.domino.demoApp.components.Html_Separator;
 import org.openntf.domino.demoApp.components.Html_Separator.SeparatorType;
-import org.openntf.domino.demoApp.components.TargetSelector.Target;
 import org.openntf.domino.demoApp.pages.BaseView;
 import org.openntf.domino.demoApp.pages.SessionView;
 import org.openntf.domino.demoApp.subpages.BaseSubPage;
@@ -45,8 +43,7 @@ public class Session_Factory extends BaseSubPage {
 	@Override
 	public void loadContent() {
 		((SessionView) getParentView()).checkLoadSetupButton(this);
-		Target currTarget = DemoUI.get().getAppTarget();
-		if (!Target.NON_XPAGES.equals(currTarget)) {
+		if (FactoryUtils.contextIsXPagesOrBoth()) {
 			Label label1 = new Label(getProps().getProperty("factoryHistoricalTitle"));
 			label1.addStyleName(ValoTheme.LABEL_H3);
 			Label label2 = new Label(MessageFormat.format(getProps().getProperty("factoryHistorical"),
@@ -56,7 +53,7 @@ public class Session_Factory extends BaseSubPage {
 			addComponents(label1, label2);
 		}
 
-		if (!Target.NON_XPAGES.equals(currTarget)) {
+		if (FactoryUtils.contextIsXPagesOrBoth()) {
 			Label label3 = new Label(getProps().getProperty("factoryXPagesTitle"));
 			label3.addStyleName(ValoTheme.LABEL_H3);
 			Label label4 = new Label(MessageFormat.format(getProps().getProperty("factoryXPages"),
@@ -66,7 +63,7 @@ public class Session_Factory extends BaseSubPage {
 			addComponents(label3, label4);
 		}
 
-		if (!Target.XPAGES.equals(currTarget)) {
+		if (FactoryUtils.contextIsJavaOrBoth()) {
 			Label label5 = new Label(getProps().getProperty("factoryJavaTitle"));
 			label5.addStyleName(ValoTheme.LABEL_H3);
 			StringBuilder sb = new StringBuilder();

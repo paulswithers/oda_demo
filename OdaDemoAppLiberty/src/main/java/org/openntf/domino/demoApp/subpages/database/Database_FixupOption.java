@@ -1,4 +1,6 @@
-package org.openntf.domino.demoApp.subpages;
+package org.openntf.domino.demoApp.subpages.database;
+
+import java.text.MessageFormat;
 
 /*
 
@@ -22,6 +24,7 @@ import org.openntf.domino.Database;
 import org.openntf.domino.demoApp.components.Html_Separator;
 import org.openntf.domino.demoApp.components.Html_Separator.SeparatorType;
 import org.openntf.domino.demoApp.pages.BaseView;
+import org.openntf.domino.demoApp.subpages.BaseSubPage;
 import org.openntf.domino.demoAppUtil.FactoryUtils;
 
 import com.vaadin.shared.ui.label.ContentMode;
@@ -35,13 +38,11 @@ public class Database_FixupOption extends BaseSubPage {
 		super(parentView);
 	}
 
+	@Override
 	public void loadContent() {
-		Label label1 = new Label("The " + FactoryUtils.addCodeString("Database.FixupOption")
-				+ " admin-related enums have been added to make code more readable. The core API has "
-				+ FactoryUtils.addCodeString("Database.fixup(int)")
-				+ ", where the int is a total of the integers for the selected settings, e.g. incremental with no views "
-				+ "would expect 4 + 64 = 68. The new method " + FactoryUtils.addCodeString("Database.fixup(Set<FixupOption>)")
-				+ " take instead a Set of the options selected. Resulting code takes more lines, but is easier to support.");
+		Label label1 = new Label(MessageFormat.format(getProps().getProperty("fixupIntro"),
+				FactoryUtils.addCodeString("Database.FixupOption"), FactoryUtils.addCodeString("Database.fixup(int)"),
+				FactoryUtils.addCodeString("Database.fixup(Set<FixupOption>)")));
 		label1.setContentMode(ContentMode.HTML);
 		addComponents(label1);
 		addFixupOptions();
@@ -52,36 +53,36 @@ public class Database_FixupOption extends BaseSubPage {
 		for (Database.FixupOption opt : Database.FixupOption.values()) {
 			Label label1 = new Label(opt.name());
 			label1.setStyleName(ValoTheme.LABEL_H3);
-			String optExplanation = "";
+			String optExplanation = "Corresponds to ";
 			boolean isDefault = false;
 			switch (opt) {
 			case INCREMENTAL:
-				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.FIXUP_INCREMENTAL");
+				optExplanation += FactoryUtils.addCodeString("Database.FIXUP_INCREMENTAL");
 				break;
 			case NODELETE:
-				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.FIXUP_NODELETE");
+				optExplanation += FactoryUtils.addCodeString("Database.FIXUP_NODELETE");
 				break;
 			case NOVIEWS:
-				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.FIXUP_NOVIEWS");
+				optExplanation += FactoryUtils.addCodeString("Database.FIXUP_NOVIEWS");
 				break;
 			case QUICK:
-				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.FIXUP_QUICK");
+				optExplanation += FactoryUtils.addCodeString("Database.FIXUP_QUICK");
 				break;
 			case REVERT:
-				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.FIXUP_REVERT");
+				optExplanation += FactoryUtils.addCodeString("Database.FIXUP_REVERT");
 				break;
 			case TXLOGGED:
-				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.FIXUP_TXLOGGED");
+				optExplanation += FactoryUtils.addCodeString("Database.FIXUP_TXLOGGED");
 				break;
 			case VERIFY:
-				optExplanation = "Corresponds to " + FactoryUtils.addCodeString("Database.FIXUP_VERIFY");
+				optExplanation += FactoryUtils.addCodeString("Database.FIXUP_VERIFY");
 				break;
 			default:
 				isDefault = true;
-				optExplanation = "Whoops!! This must be a new setting. Please let us know so we can add documentation.";
+				optExplanation = getProps().getProperty("fixupDefault");
 			}
 			if (!isDefault) {
-				optExplanation = optExplanation + " - " + Integer.toString(opt.getValue());
+				optExplanation += " - " + Integer.toString(opt.getValue());
 			}
 			Label label2 = new Label(optExplanation + "<br/>", ContentMode.HTML);
 			addComponents(label1, label2);

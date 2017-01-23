@@ -22,7 +22,9 @@ import java.util.Date;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
+import org.openntf.domino.demoApp.DemoUI;
 import org.openntf.domino.demoApp.application.DocumentListener;
+import org.openntf.domino.demoApp.components.TargetSelector.Target;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 
@@ -108,6 +110,16 @@ public class FactoryUtils {
 
 	public static String addCodeString(String content) {
 		return "<span class=\"domino-code\">" + content + "</span>";
+	}
+
+	public static boolean contextIsXPagesOrBoth() {
+		Target currTarget = DemoUI.get().getAppTarget();
+		return !Target.NON_XPAGES.equals(currTarget);
+	}
+
+	public static boolean contextIsJavaOrBoth() {
+		Target currTarget = DemoUI.get().getAppTarget();
+		return !Target.XPAGES.equals(currTarget);
 	}
 
 }

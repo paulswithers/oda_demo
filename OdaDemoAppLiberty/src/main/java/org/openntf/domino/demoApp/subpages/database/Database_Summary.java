@@ -1,4 +1,6 @@
-package org.openntf.domino.demoApp.subpages;
+package org.openntf.domino.demoApp.subpages.database;
+
+import java.text.MessageFormat;
 
 /*
 
@@ -20,6 +22,7 @@ See the License for the specific language governing permissions and limitations 
 
 import org.openntf.domino.Database;
 import org.openntf.domino.demoApp.pages.BaseView;
+import org.openntf.domino.demoApp.subpages.BaseSubPage;
 import org.openntf.domino.demoAppUtil.FactoryUtils;
 
 import com.vaadin.shared.ui.label.ContentMode;
@@ -32,10 +35,11 @@ public class Database_Summary extends BaseSubPage {
 		super(parentView);
 	}
 
+	@Override
 	public void loadContent() {
 		Database db1 = FactoryUtils.getDemoDatabase();
-		Label label1 = new Label("Database details are: " + db1.getServer() + ", " + db1.getFilePath() + "<br/>ApiPath is: " + db1.getApiPath()
-				+ "<br/>MetaReplicaId is: " + db1.getMetaReplicaID());
+		Label label1 = new Label(MessageFormat.format(getProps().getProperty("dbSummary"), db1.getServer(),
+				db1.getFilePath(), db1.getApiPath(), db1.getMetaReplicaID()));
 		label1.setContentMode(ContentMode.HTML);
 		addComponent(label1);
 	}

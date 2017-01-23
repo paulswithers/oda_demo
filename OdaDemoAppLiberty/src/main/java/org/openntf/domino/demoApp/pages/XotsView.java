@@ -21,10 +21,10 @@ See the License for the specific language governing permissions and limitations 
 import org.openntf.domino.demoApp.DemoUI;
 import org.openntf.domino.demoApp.components.TargetSelector;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
-import org.openntf.domino.demoApp.subpages.Xots_CallableExample;
-import org.openntf.domino.demoApp.subpages.Xots_RunnableExample;
-import org.openntf.domino.demoApp.subpages.Xots_Summary;
-import org.openntf.domino.demoApp.subpages.Xots_Tasklets;
+import org.openntf.domino.demoApp.subpages.xots.Xots_CallableExample;
+import org.openntf.domino.demoApp.subpages.xots.Xots_RunnableExample;
+import org.openntf.domino.demoApp.subpages.xots.Xots_Summary;
+import org.openntf.domino.demoApp.subpages.xots.Xots_Tasklets;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.label.ContentMode;
