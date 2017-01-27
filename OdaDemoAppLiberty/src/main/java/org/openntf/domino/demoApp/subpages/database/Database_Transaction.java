@@ -96,7 +96,7 @@ public class Database_Transaction extends BaseSubPage {
 		});
 		button2.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 		button2.addStyleName("floating-btn");
-		getOutputLabel().setContentMode(ContentMode.HTML);
+		getOutputLabel().setCaptionAsHtml(true);
 		addComponents(label5, new Html_Separator(SeparatorType.NEW_LINE), label6, getStateSelector(), button1, button2,
 				getOutputLabel());
 	}

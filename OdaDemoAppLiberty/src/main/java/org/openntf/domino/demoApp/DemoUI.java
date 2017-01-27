@@ -19,6 +19,7 @@ See the License for the specific language governing permissions and limitations 
 */
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -68,6 +69,7 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("OdaDemoTheme")
 @Widgetset("org.openntf.domino.demoApp.widgetset.Oda_demoappWidgetset")
 public class DemoUI extends UI {
+	private static final Logger logger = Logger.getLogger(DemoUI.class.getName());
 
 	private Navigator uiNavigator;
 	private HeaderComponent header;

@@ -4,13 +4,16 @@
 	<groupId>org.openntf.domino.demos</groupId>
 	<artifactId>ODA_DemoApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	
+
 	<properties>
 		<vaadin.version>7.7.0</vaadin.version>
 		<vaadin.plugin.version>7.7.0</vaadin.plugin.version>
 		<vaadin.widgetset.mode>fetch</vaadin.widgetset.mode>
+		<tycho-version>0.22.0</tycho-version>
+		<notesJarPath>E:/eclipse-crossworlds/workspace/org.openntf.xworlds.dominodeps/BundleContent</notesJarPath>
+		<crossWorldsJarPath>E:/eclipse-crossworlds/liberty/usr/extension/lib/org.openntf.xworlds.core_1.0.0.jar</crossWorldsJarPath>
 	</properties>
-	
+
 	<packaging>war</packaging>
 	<dependencies>
 		<dependency>
@@ -29,6 +32,20 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-client-compiled</artifactId>
 			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>lotus.domino</groupId>
+			<artifactId>domino</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${notesJarPath}/Notes.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.openntf.crossworlds</groupId>
+			<artifactId>core</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${crossWorldsJarPath}</systemPath>
 		</dependency>
 
 		<!-- Optional for extending client-side See: https://vaadin.com/book/-/page/clientside.html 
@@ -64,9 +81,9 @@
 			<version>3.4</version>
 		</dependency>
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.1.7</version>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>domino</artifactId>
+			<version>3.2.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
@@ -93,6 +110,23 @@
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-maven-plugin</artifactId>
+				<version>${vaadin.plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>update-theme</goal>
+							<goal>update-widgetset</goal>
+							<goal>compile</goal>
+							<!-- Comment out compile-theme goal to use on-the-fly theme compilation -->
+							<goal>compile-theme</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 

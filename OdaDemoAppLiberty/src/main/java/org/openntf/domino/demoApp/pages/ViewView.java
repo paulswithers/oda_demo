@@ -8,7 +8,8 @@ import org.openntf.domino.View;
 import org.openntf.domino.demoApp.DemoUI;
 import org.openntf.domino.demoApp.components.TargetSelector;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
-import org.openntf.domino.demoApp.subpages.View_Summary;
+import org.openntf.domino.demoApp.subpages.view.View_GetEntries;
+import org.openntf.domino.demoApp.subpages.view.View_Summary;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -24,10 +25,11 @@ public class ViewView extends BaseView {
 	public static String VIEW_LABEL = "View";
 	private ViewSubPage currentPage;
 	private View_Summary summaryDetails = new View_Summary(this);
+	private View_GetEntries getDetails = new View_GetEntries(this);
 	private Label viewMethodLabel;
 
 	public enum ViewSubPage {
-		SUMMARY_DETAILS("Summary Details", Target.BOTH), GET_ENTRIES_DOCUMENTS("getAllEntries/Documents",
+		SUMMARY_DETAILS("Summary Details", Target.BOTH), GET_ENTRIES_DOCUMENTS("Getting Entries/Documents",
 				Target.BOTH), UNIQUE("Is Unique", Target.BOTH), TIME_SENSITIVE("Is Time Sensitive",
 						Target.BOTH), INDEX_FLAGS("Index Flags", Target.BOTH);
 
@@ -69,6 +71,10 @@ public class ViewView extends BaseView {
 		case SUMMARY_DETAILS:
 			summaryDetails.load();
 			getContentPanel().setContent(summaryDetails);
+			break;
+		case GET_ENTRIES_DOCUMENTS:
+			getDetails.load();
+			getContentPanel().setContent(getDetails);
 			break;
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));

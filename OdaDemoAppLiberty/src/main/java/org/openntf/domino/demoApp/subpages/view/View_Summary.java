@@ -1,4 +1,4 @@
-package org.openntf.domino.demoApp.subpages;
+package org.openntf.domino.demoApp.subpages.view;
 
 import java.io.Serializable;
 import java.util.TreeMap;
@@ -7,6 +7,7 @@ import org.openntf.domino.Database;
 import org.openntf.domino.View;
 import org.openntf.domino.View.IndexType;
 import org.openntf.domino.demoApp.pages.BaseView;
+import org.openntf.domino.demoApp.subpages.BaseSubPage;
 import org.openntf.domino.demoAppUtil.FactoryUtils;
 
 import com.vaadin.data.Property.ValueChangeEvent;

@@ -3,6 +3,11 @@ package org.openntf.domino.demoApp.subpages;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.openntf.domino.demoApp.DemoUI;
+import org.openntf.domino.demoApp.components.TargetSelector.Target;
 
 /*
 
@@ -28,10 +33,12 @@ import org.openntf.domino.demoAppUtil.DatabaseUtils;
 import com.vaadin.ui.VerticalLayout;
 
 public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface {
+	public static final Logger logger = Logger.getLogger(DatabaseUtils.class.getName());
 	private static final long serialVersionUID = 1L;
 	private static final String ERROR_DONT_USE_DIRECTLY = "This base method shouldn't be used directly.";
 	private BaseView parentView;
 	private boolean loaded = false;
+	private Target targetContext;
 	private Properties props = new Properties();
 
 	public BaseSubPage(BaseView parentView) {
@@ -40,7 +47,7 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 			InputStream inputStream = getClass().getResourceAsStream("strings.properties");
 			props.load(inputStream);
 		} catch (IOException t) {
-			DatabaseUtils.LOG.error(t.getMessage(), t);
+			logger.log(Level.SEVERE, t.getMessage(), t);
 		}
 	}
 
@@ -52,8 +59,13 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 	@Override
 	public void load() {
 		if (!isLoaded()) {
+			setTargetContext(DemoUI.get().getAppTarget());
 			loadContent();
 			setLoaded(true);
+		} else {
+			if (!getTargetContext().equals(DemoUI.get().getAppTarget())) {
+				loadContent();
+			}
 		}
 	}
 
@@ -126,6 +138,14 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 	 */
 	public void setProps(Properties props) {
 		this.props = props;
+	}
+
+	public Target getTargetContext() {
+		return targetContext;
+	}
+
+	public void setTargetContext(Target targetContext) {
+		this.targetContext = targetContext;
 	}
 
 }

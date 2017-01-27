@@ -13,7 +13,7 @@ import java.util.List;
 
 import javax.faces.context.FacesContext;
 
-import com.ibm.commons.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Utility class for importing sample data.
@@ -80,7 +80,8 @@ public class SampleDataUtil {
 	}
 
 	// Read a file from a class resource in the classpath
-	private static void readFromClassResource(String resourceName, List<String> entries, boolean capitalize) throws IOException {
+	private static void readFromClassResource(String resourceName, List<String> entries, boolean capitalize)
+			throws IOException {
 		if (TRACE) {
 			System.out.println("Reading: " + resourceName);
 		}
@@ -93,7 +94,7 @@ public class SampleDataUtil {
 				BufferedReader r = new BufferedReader(new InputStreamReader(is, "utf-8"));
 				String s;
 				while ((s = r.readLine()) != null) {
-					if (StringUtil.isNotEmpty(s)) {
+					if (StringUtils.isNotEmpty(s)) {
 						entries.add(capitalize ? capitalize(s) : s);
 					}
 				}
@@ -109,7 +110,8 @@ public class SampleDataUtil {
 
 	// Read a file from a resource in the NSF
 	@SuppressWarnings("unused")
-	private static void readFromFileResource(String resourceName, List<String> entries, boolean capitalize) throws IOException {
+	private static void readFromFileResource(String resourceName, List<String> entries, boolean capitalize)
+			throws IOException {
 		if (TRACE) {
 			System.out.println("Reading: " + resourceName);
 		}
@@ -122,7 +124,7 @@ public class SampleDataUtil {
 				BufferedReader r = new BufferedReader(new InputStreamReader(is, "utf-8"));
 				String s;
 				while ((s = r.readLine()) != null) {
-					if (StringUtil.isNotEmpty(s)) {
+					if (StringUtils.isNotEmpty(s)) {
 						entries.add(capitalize ? capitalize(s) : s);
 					}
 				}

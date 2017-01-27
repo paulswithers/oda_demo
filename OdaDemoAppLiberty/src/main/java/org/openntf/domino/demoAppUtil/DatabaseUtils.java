@@ -19,17 +19,18 @@ See the License for the specific language governing permissions and limitations 
 */
 
 import java.util.Date;
+import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 import org.openntf.domino.DocumentCollection;
 import org.openntf.domino.View;
+import org.openntf.domino.ViewEntry;
 import org.openntf.domino.transactions.DatabaseTransaction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DatabaseUtils {
-	public static final Logger LOG = LoggerFactory.getLogger(DatabaseUtils.class);
+	public static final Logger logger = Logger.getLogger(DatabaseUtils.class.getName());
 
 	public DatabaseUtils() {
 
@@ -77,6 +78,29 @@ public class DatabaseUtils {
 			db.closeTransaction();
 			return sb.toString();
 		}
+	}
+
+	public static String getEntriesDocumentsTest(String state, boolean isEntries) {
+		Database db = FactoryUtils.getDemoDatabase();
+		View contacts = db.getView("AllContactsByState");
+		StringBuilder sb = new StringBuilder();
+		if (StringUtils.isEmpty(state)) {
+			state = "XX";
+		}
+		if (isEntries) {
+			sb.append("Entries for " + state + " are:");
+			for (ViewEntry ent : contacts.getAllEntriesByKey(state)) {
+				sb.append("<br/>");
+				sb.append(ent.getColumnValuesEx().toString());
+			}
+		} else {
+			sb.append("Documents for " + state + " are:");
+			for (Document doc : contacts.getAllDocumentsByKey(state)) {
+				sb.append("<br/>");
+				sb.append(doc.getUniversalID());
+			}
+		}
+		return sb.toString();
 	}
 
 }
