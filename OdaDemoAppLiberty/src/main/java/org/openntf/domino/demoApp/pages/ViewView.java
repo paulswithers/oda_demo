@@ -10,6 +10,7 @@ import org.openntf.domino.demoApp.components.TargetSelector;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
 import org.openntf.domino.demoApp.subpages.view.View_GetEntries;
 import org.openntf.domino.demoApp.subpages.view.View_Summary;
+import org.openntf.domino.demoApp.subpages.view.View_Unique;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -26,6 +27,7 @@ public class ViewView extends BaseView {
 	private ViewSubPage currentPage;
 	private View_Summary summaryDetails = new View_Summary(this);
 	private View_GetEntries getDetails = new View_GetEntries(this);
+	private View_Unique uniqueDetails = new View_Unique(this);
 	private Label viewMethodLabel;
 
 	public enum ViewSubPage {
@@ -75,6 +77,10 @@ public class ViewView extends BaseView {
 		case GET_ENTRIES_DOCUMENTS:
 			getDetails.load();
 			getContentPanel().setContent(getDetails);
+			break;
+		case UNIQUE:
+			uniqueDetails.load();
+			getContentPanel().setContent(uniqueDetails);
 			break;
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));

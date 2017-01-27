@@ -46,7 +46,7 @@ public class DatabaseUtils {
 			sb.append("Starting update with " + selectedState);
 			View view = db.getView("allStates");
 			String stringDate = "";
-			// Aargh!! Thew view's not sorted!
+			// Aargh!! The view's not sorted on key, it's sorted on State Name!
 			for (final Document state : view.getAllDocuments()) {
 				if (state.getItemValueString("Key").equals(selectedState)) {
 					state.replaceItemValue("txnTest", new Date());
@@ -99,6 +99,27 @@ public class DatabaseUtils {
 				sb.append("<br/>");
 				sb.append(doc.getUniversalID());
 			}
+		}
+		return sb.toString();
+	}
+
+	public static String checkUniqueTest(String state, boolean useExisting) {
+		StringBuilder sb = new StringBuilder();
+		Database db = FactoryUtils.getDemoDatabase();
+		View states = db.getView("allStates");
+		System.out.println(state);
+		Document doc = null;
+		if (useExisting) {
+			doc = states.getFirstDocumentByKey(state);
+			sb.append("Running as existing document - " + doc.getUniversalID());
+		} else {
+			sb.append("Running as new document");
+		}
+		sb.append("<br/>");
+		if (states.checkUnique(state, doc)) {
+			sb.append("There are no other documents with the key " + state);
+		} else {
+			sb.append("Existing document found with the key " + state);
 		}
 		return sb.toString();
 	}
