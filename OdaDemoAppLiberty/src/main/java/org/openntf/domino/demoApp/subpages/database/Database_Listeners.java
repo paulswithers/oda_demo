@@ -22,7 +22,7 @@ See the License for the specific language governing permissions and limitations 
 
 import org.openntf.domino.demoApp.pages.BaseView;
 import org.openntf.domino.demoApp.subpages.BaseSubPage;
-import org.openntf.domino.demoAppUtil.FactoryUtils;
+import org.openntf.domino.demoApp.utils.FactoryUtils;
 import org.openntf.domino.ext.Database;
 import org.openntf.domino.ext.Database.Events;
 

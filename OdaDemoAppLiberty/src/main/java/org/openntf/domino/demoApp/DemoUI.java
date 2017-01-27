@@ -33,7 +33,7 @@ import org.openntf.domino.demoApp.pages.MiscView;
 import org.openntf.domino.demoApp.pages.SessionView;
 import org.openntf.domino.demoApp.pages.ViewView;
 import org.openntf.domino.demoApp.pages.XotsView;
-import org.openntf.domino.demoAppUtil.FactoryUtils;
+import org.openntf.domino.demoApp.utils.FactoryUtils;
 import org.vaadin.sliderpanel.SliderPanel;
 import org.vaadin.sliderpanel.SliderPanelBuilder;
 import org.vaadin.sliderpanel.SliderPanelStyles;

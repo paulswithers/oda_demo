@@ -1,4 +1,4 @@
-package org.openntf.domino.demoAppUtil;
+package org.openntf.domino.demoApp.utils;
 
 /*
  * Copied from Extension Library demo database

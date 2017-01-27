@@ -22,7 +22,7 @@ import java.util.Collection;
 
 import org.openntf.domino.Document;
 import org.openntf.domino.View;
-import org.openntf.domino.demoAppUtil.FactoryUtils;
+import org.openntf.domino.demoApp.utils.FactoryUtils;
 
 import com.vaadin.data.Container;
 import com.vaadin.ui.NativeSelect;

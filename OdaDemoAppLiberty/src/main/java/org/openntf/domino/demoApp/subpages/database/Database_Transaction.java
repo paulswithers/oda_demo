@@ -25,8 +25,8 @@ import org.openntf.domino.demoApp.components.Html_Separator.SeparatorType;
 import org.openntf.domino.demoApp.components.StateSelector;
 import org.openntf.domino.demoApp.pages.BaseView;
 import org.openntf.domino.demoApp.subpages.BaseSubPage;
-import org.openntf.domino.demoAppUtil.DatabaseUtils;
-import org.openntf.domino.demoAppUtil.FactoryUtils;
+import org.openntf.domino.demoApp.utils.DatabaseUtils;
+import org.openntf.domino.demoApp.utils.FactoryUtils;
 
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;

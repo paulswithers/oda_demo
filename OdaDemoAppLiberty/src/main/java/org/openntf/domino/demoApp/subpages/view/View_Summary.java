@@ -8,7 +8,7 @@ import org.openntf.domino.View;
 import org.openntf.domino.View.IndexType;
 import org.openntf.domino.demoApp.pages.BaseView;
 import org.openntf.domino.demoApp.subpages.BaseSubPage;
-import org.openntf.domino.demoAppUtil.FactoryUtils;
+import org.openntf.domino.demoApp.utils.FactoryUtils;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;

@@ -35,8 +35,8 @@ import org.openntf.domino.demoApp.subpages.session.Session_Fixes;
 import org.openntf.domino.demoApp.subpages.session.Session_Summary;
 import org.openntf.domino.demoApp.subpages.session.Session_ThreadConfig;
 import org.openntf.domino.demoApp.subpages.session.Session_XspProperties;
-import org.openntf.domino.demoAppUtil.FactoryUtils;
-import org.openntf.domino.demoAppUtil.SampleDataUtil;
+import org.openntf.domino.demoApp.utils.FactoryUtils;
+import org.openntf.domino.demoApp.utils.SampleDataUtil;
 import org.openntf.domino.xots.Xots;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;

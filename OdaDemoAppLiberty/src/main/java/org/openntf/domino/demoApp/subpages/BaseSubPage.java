@@ -28,7 +28,7 @@ See the License for the specific language governing permissions and limitations 
 */
 
 import org.openntf.domino.demoApp.pages.BaseView;
-import org.openntf.domino.demoAppUtil.DatabaseUtils;
+import org.openntf.domino.demoApp.utils.DatabaseUtils;
 
 import com.vaadin.ui.VerticalLayout;
 
