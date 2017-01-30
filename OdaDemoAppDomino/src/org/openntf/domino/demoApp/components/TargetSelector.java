@@ -43,7 +43,7 @@ public class TargetSelector extends NativeSelect {
 	public TargetSelector(BaseViewInterface thisPage) {
 		setCurrPage(thisPage);
 		setCaption("Target:");
-		for (final Target tgt : Target.values()) {
+		for (Target tgt : Target.values()) {
 			addItem(tgt);
 			setItemCaption(tgt, tgt.getValue());
 		}
@@ -54,7 +54,7 @@ public class TargetSelector extends NativeSelect {
 
 			@Override
 			public void valueChange(com.vaadin.data.Property.ValueChangeEvent event) {
-				final Target tgt = (Target) event.getProperty().getValue();
+				Target tgt = (Target) event.getProperty().getValue();
 				DemoUI.get().setAppTarget(tgt);
 				getCurrPage().loadNavigation();
 			}

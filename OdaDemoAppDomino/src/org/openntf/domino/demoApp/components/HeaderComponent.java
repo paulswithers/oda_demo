@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and limitations 
 */
 
 import org.openntf.domino.demoApp.DemoUI;
-import org.openntf.domino.demoAppUtil.FactoryUtils;
+import org.openntf.domino.demoApp.utils.FactoryUtils;
 import org.openntf.domino.utils.DominoUtils;
 
 import com.vaadin.server.ThemeResource;
@@ -39,12 +39,12 @@ public class HeaderComponent extends VerticalLayout {
 	public HeaderComponent(DemoUI ui) {
 		setStyleName("header");
 
-		final HorizontalLayout bannerArea = new HorizontalLayout();
+		HorizontalLayout bannerArea = new HorizontalLayout();
 		bannerArea.setStyleName("menuArea");
 		bannerArea.setSizeFull();
 
-		final ThemeResource resource = new ThemeResource("img/openntf_banner.jpg");
-		final Image bannerImg = new Image();
+		ThemeResource resource = new ThemeResource("img/openntf_banner.jpg");
+		Image bannerImg = new Image();
 		bannerImg.setAlternateText("OpenNTF");
 		bannerImg.setHeight("70px");
 		bannerImg.setDescription("OpenNTF image");
@@ -55,10 +55,10 @@ public class HeaderComponent extends VerticalLayout {
 		getMenubar().setStyleName(ValoTheme.MENU_SUBTITLE);
 		getMenubar().setWidth(100, Unit.PERCENTAGE);
 
-		final MenuItem logout = menubar.addItem("Logout", null);
+		MenuItem logout = menubar.addItem("Logout", null);
 		logout.setStyleName("menuRight");
 
-		final MenuItem userItem = menubar.addItem(getUserName(), null);
+		MenuItem userItem = menubar.addItem(getUserName(), null);
 		userItem.setStyleName("menuRight");
 
 		bannerArea.addComponents(bannerImg, menubar);
@@ -76,7 +76,7 @@ public class HeaderComponent extends VerticalLayout {
 	}
 
 	public void setUserName() {
-		final String name = FactoryUtils.getUserSession().getEffectiveUserName();
+		String name = FactoryUtils.getUserSession().getEffectiveUserName();
 		this.userName = DominoUtils.toCommonName(name);
 	}
 

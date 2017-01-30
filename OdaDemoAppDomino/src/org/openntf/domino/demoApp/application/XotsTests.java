@@ -20,7 +20,6 @@ See the License for the specific language governing permissions and limitations 
 
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +30,8 @@ import org.openntf.domino.ViewEntryCollection;
 import org.openntf.domino.ViewNavigator;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.xots.AbstractXotsCallable;
+import org.openntf.domino.xots.AbstractXotsRunnable;
 import org.openntf.domino.xots.Tasklet;
 
 import com.vaadin.ui.Notification;
@@ -39,18 +40,18 @@ import com.vaadin.ui.UI;
 public class XotsTests {
 
 	@Tasklet(session = Tasklet.Session.CLONE)
-	public static class SessionCallable implements Callable<String> {
+	public static class SessionCallable extends AbstractXotsCallable {
 
 		public SessionCallable() {
-
+			// Pass any additional variables for use within the call() method
 		}
 
 		@Override
 		public String call() {
 			try {
-				final String name = Factory.getSession(SessionType.CURRENT).getEffectiveUserName();
+				String name = Factory.getSession(SessionType.CURRENT).getEffectiveUserName();
 				return name;
-			} catch (final Throwable t) {
+			} catch (Throwable t) {
 				t.printStackTrace();
 				return t.getMessage();
 			}
@@ -58,10 +59,10 @@ public class XotsTests {
 	}
 
 	@Tasklet(session = Tasklet.Session.CLONE)
-	public static class StateUserSummary implements Callable<TreeMap<String, Integer>> {
-		private final String dbPath;
-		private final Integer dbNo;
-		private final TreeMap<String, String> states;
+	public static class StateUserSummary extends AbstractXotsCallable {
+		private String dbPath;
+		private Integer dbNo;
+		private TreeMap<String, String> states;
 
 		public StateUserSummary(Integer dbNo, String dbPath, TreeMap<String, String> states) {
 			super();
@@ -73,35 +74,36 @@ public class XotsTests {
 		@Override
 		public TreeMap<String, Integer> call() {
 			try {
-				final TreeMap<String, Integer> results = new TreeMap<String, Integer>();
+				TreeMap<String, Integer> results = new TreeMap<String, Integer>();
 				// Initialise to zero
 				results.put("dbNo", dbNo);
-				for (final String stateKey : states.keySet()) {
+				for (String stateKey : states.keySet()) {
 					results.put(stateKey, 0);
 				}
 
-				final Database dataDb = Factory.getSession(SessionType.CURRENT).getDatabase(dbPath);
-				final View people = dataDb.getView("AllContactsByState");
-				final ViewNavigator nav = people.createViewNav();
+				System.out.println("XOTS task as " + Factory.getSession(SessionType.CURRENT).getEffectiveUserName());
+				Database dataDb = Factory.getSession(SessionType.CURRENT).getDatabase(dbPath);
+				View people = dataDb.getView("AllContactsByState");
+				ViewNavigator nav = people.createViewNav();
 				ViewEntry cat = nav.getFirst();
 				cat = nav.getNextSibling(cat);
 				ViewEntry lastEntInCat;
 				while (null != cat) {
 					lastEntInCat = nav.getPrev(cat);
-					final String st = (String) lastEntInCat.getColumnValues().get(0);
-					final String pos = lastEntInCat.getPosition();
-					final Integer count = Integer.parseInt(StringUtils.substringAfter(pos, "."));
+					String st = (String) lastEntInCat.getColumnValues().get(1);
+					String pos = lastEntInCat.getPosition();
+					Integer count = Integer.parseInt(StringUtils.substringAfter(pos, "."));
 					results.put(st, count);
 					cat = nav.getNextSibling(cat);
 				}
 				// We won't have got the last category!
 				lastEntInCat = nav.getLast();
-				final String st = (String) lastEntInCat.getColumnValues().get(0);
-				final String pos = lastEntInCat.getPosition();
-				final Integer count = Integer.parseInt(StringUtils.substringAfter(pos, "."));
+				String st = (String) lastEntInCat.getColumnValues().get(1);
+				String pos = lastEntInCat.getPosition();
+				Integer count = Integer.parseInt(StringUtils.substringAfter(pos, "."));
 				results.put(st, count);
 				return results;
-			} catch (final Throwable t) {
+			} catch (Throwable t) {
 				t.printStackTrace();
 				return null;
 			}
@@ -109,14 +111,15 @@ public class XotsTests {
 	}
 
 	@Tasklet(session = Tasklet.Session.NATIVE)
-	public static class UserMergeView implements Runnable {
-		private final String dbPath;
-		private final String stateCode;
-		private final ConcurrentSkipListSet<ContactSummary> contacts;
-		private final ConcurrentSkipListSet<String> completeThreads;
-		private final UI currUi;
+	public static class UserMergeView extends AbstractXotsRunnable {
+		private String dbPath;
+		private String stateCode;
+		private ConcurrentSkipListSet<ContactSummary> contacts;
+		private ConcurrentSkipListSet<String> completeThreads;
+		private UI currUi;
 
-		public UserMergeView(String dbPath, String stateKey, ConcurrentSkipListSet<ContactSummary> contacts, ConcurrentSkipListSet<String> completeThreads, UI currUi) {
+		public UserMergeView(String dbPath, String stateKey, ConcurrentSkipListSet<ContactSummary> contacts,
+				ConcurrentSkipListSet<String> completeThreads, UI currUi) {
 			this.dbPath = dbPath;
 			stateCode = stateKey;
 			this.contacts = contacts;
@@ -127,14 +130,14 @@ public class XotsTests {
 		@Override
 		public void run() {
 			try {
-				final Database dataDb = Factory.getSession(SessionType.NATIVE).getDatabase(dbPath);
-				final String dbName = StringUtils.substringAfterLast(dbPath, "/");
-				final View people = dataDb.getView("AllContactsByState");
-				final ViewEntryCollection coll = people.getAllEntriesByKey(stateCode, true);
+				Database dataDb = Factory.getSession(SessionType.NATIVE).getDatabase(dbPath);
+				String dbName = StringUtils.substringAfterLast(dbPath, "/");
+				View people = dataDb.getView("AllContactsByState");
+				ViewEntryCollection coll = people.getAllEntriesByKey(stateCode, true);
 				ViewEntry ent = coll.getFirstEntry();
 				while (null != ent) {
-					final Map<String, Object> vals = ent.getColumnValuesMap();
-					final ContactSummary contact = new ContactSummary();
+					Map<String, Object> vals = ent.getColumnValuesMap();
+					ContactSummary contact = new ContactSummary();
 					contact.setMetaversalId(ent.getDocument().getMetaversalID());
 					contact.setFirstName((String) vals.get("FirstName"));
 					contact.setLastName((String) vals.get("LastName"));
@@ -149,14 +152,15 @@ public class XotsTests {
 
 					@Override
 					public void run() {
-						final Notification msg = new Notification("Completed loading content from " + dbPath, Notification.Type.TRAY_NOTIFICATION);
+						Notification msg = new Notification("Completed loading content from " + dbPath,
+								Notification.Type.TRAY_NOTIFICATION);
 						msg.show(currUi.getPage());
 					}
 
 				});
-			} catch (final Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-				final Notification msg = new Notification(e.getMessage());
+				Notification msg = new Notification(e.getMessage());
 				msg.show(currUi.getPage());
 			} finally {
 				completeThreads.add(dbPath);

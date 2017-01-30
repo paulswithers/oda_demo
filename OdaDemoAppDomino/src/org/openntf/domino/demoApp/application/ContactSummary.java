@@ -127,7 +127,7 @@ public class ContactSummary implements Serializable, Comparable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final ContactSummary other = (ContactSummary) obj;
+		ContactSummary other = (ContactSummary) obj;
 		if (firstName == null) {
 			if (other.firstName != null) {
 				return false;
