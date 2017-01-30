@@ -10,6 +10,7 @@ import org.openntf.domino.demoApp.components.TargetSelector;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
 import org.openntf.domino.demoApp.subpages.view.View_GetEntries;
 import org.openntf.domino.demoApp.subpages.view.View_Summary;
+import org.openntf.domino.demoApp.subpages.view.View_TimeSensitive;
 import org.openntf.domino.demoApp.subpages.view.View_Unique;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -28,6 +29,7 @@ public class ViewView extends BaseView {
 	private View_Summary summaryDetails = new View_Summary(this);
 	private View_GetEntries getDetails = new View_GetEntries(this);
 	private View_Unique uniqueDetails = new View_Unique(this);
+	private View_TimeSensitive timeDetails = new View_TimeSensitive(this);
 	private Label viewMethodLabel;
 
 	public enum ViewSubPage {
@@ -81,6 +83,10 @@ public class ViewView extends BaseView {
 		case UNIQUE:
 			uniqueDetails.load();
 			getContentPanel().setContent(uniqueDetails);
+			break;
+		case TIME_SENSITIVE:
+			timeDetails.load();
+			getContentPanel().setContent(timeDetails);
 			break;
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));
