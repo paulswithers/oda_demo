@@ -32,6 +32,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -43,6 +44,8 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	private CssLayout subNavigation = new CssLayout();
 	private Panel contentPanel = new Panel();
 	private TabSheet rightSliderContent = new TabSheet();
+	private Tab methodTab;
+	private Tab sourceTab;
 	private Panel methodList = new Panel();
 	private VerticalLayout sourceCode = new VerticalLayout();
 	private boolean showNavigation;
@@ -80,8 +83,9 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 
 			// Add right slider
 			getRightSliderContent().setSizeFull();
-			getRightSliderContent().addTab(getMethodList(), "Public Methods", FontAwesome.INFO);
-			getRightSliderContent().addTab(getSourceCode(), "Source", FontAwesome.CODE);
+			System.out.println("Setting tabs");
+			setMethodTab(getRightSliderContent().addTab(getMethodList(), "Public Methods", FontAwesome.INFO));
+			setSourceTab(getRightSliderContent().addTab(getSourceCode(), "Source", FontAwesome.CODE));
 
 			setLoaded(true);
 		}
@@ -358,6 +362,48 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	@Override
 	public void setShowNavigation(boolean showNavigation) {
 		this.showNavigation = showNavigation;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.openntf.domino.demoApp.pages.BaseViewInterface#getMethodTab()
+	 */
+	@Override
+	public Tab getMethodTab() {
+		return methodTab;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.openntf.domino.demoApp.pages.BaseViewInterface#setMethodTab(com.
+	 * vaadin.ui.TabSheet.Tab)
+	 */
+	@Override
+	public void setMethodTab(Tab methodTab) {
+		this.methodTab = methodTab;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.openntf.domino.demoApp.pages.BaseViewInterface#getSourceTab()
+	 */
+	@Override
+	public Tab getSourceTab() {
+		return sourceTab;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.openntf.domino.demoApp.pages.BaseViewInterface#setSourceTab(com.
+	 * vaadin.ui.TabSheet.Tab)
+	 */
+	@Override
+	public void setSourceTab(Tab sourceTab) {
+		this.sourceTab = sourceTab;
 	}
 
 }

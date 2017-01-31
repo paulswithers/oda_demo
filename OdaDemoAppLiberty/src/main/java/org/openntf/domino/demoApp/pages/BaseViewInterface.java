@@ -26,6 +26,7 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.VerticalLayout;
 
 public interface BaseViewInterface {
@@ -93,5 +94,13 @@ public interface BaseViewInterface {
 	boolean isShowNavigation();
 
 	void setShowNavigation(boolean showNavigation);
+
+	public Tab getMethodTab();
+
+	public void setMethodTab(Tab methodTab);
+
+	public Tab getSourceTab();
+
+	public void setSourceTab(Tab sourceTab);
 
 }
