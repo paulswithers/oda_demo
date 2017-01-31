@@ -171,7 +171,7 @@ public class DemoUI extends UI {
 		addNewMenuItem(SessionView.VIEW_NAME, SessionView.VIEW_LABEL, new SessionView());
 		addNewMenuItem(DatabaseView.VIEW_NAME, DatabaseView.VIEW_LABEL, new DatabaseView());
 		addNewMenuItem(ViewView.VIEW_NAME, ViewView.VIEW_LABEL, new ViewView());
-		addNewMenuItem(DocumentView.VIEW_NAME, DocumentView.VIEW_LABEL, new SessionView());
+		addNewMenuItem(DocumentView.VIEW_NAME, DocumentView.VIEW_LABEL, new DocumentView());
 		addNewMenuItem(DateTimeView.VIEW_NAME, DateTimeView.VIEW_LABEL, new SessionView());
 		addNewMenuItem(MiscView.VIEW_NAME, MiscView.VIEW_LABEL, new SessionView());
 		addNewMenuItem(XotsView.VIEW_NAME, XotsView.VIEW_LABEL, new XotsView());
