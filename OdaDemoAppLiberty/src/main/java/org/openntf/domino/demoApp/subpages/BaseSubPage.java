@@ -43,6 +43,7 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 
 	public BaseSubPage(BaseView parentView) {
 		setParentView(parentView);
+		addStyleName("body-layout");
 		try {
 			InputStream inputStream = getClass().getResourceAsStream("strings.properties");
 			props.load(inputStream);
