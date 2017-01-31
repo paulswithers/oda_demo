@@ -146,11 +146,11 @@ public class ViewView extends BaseView {
 		StringBuilder sb = new StringBuilder();
 		ArrayList<String> newMethods = new ArrayList<String>();
 		for (Method newCrystal : org.openntf.domino.ext.View.class.getMethods()) {
-			newMethods.add(newCrystal.getName());
+			newMethods.add(newCrystal.getName() + newCrystal.hashCode());
 		}
 		TreeMap<String, String> methSummary = new TreeMap<String, String>();
 		for (Method crystal : View.class.getMethods()) {
-			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
+			methSummary.put(crystal.getName() + crystal.hashCode(), getMethodSummary(newMethods, crystal));
 		}
 		for (String content : methSummary.values()) {
 			sb.append(content);

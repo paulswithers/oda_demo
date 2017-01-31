@@ -82,8 +82,7 @@ public class XotsView extends BaseView {
 	}
 
 	public void loadContent(XotsSubPage subPage) {
-		if (getCurrentPage().equals(subPage)) {
-			return;
+		if (!getCurrentPage().equals(subPage)) {
 		}
 		if (!isShowingRunnable) {
 			loadRunnableSource();

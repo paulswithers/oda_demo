@@ -108,9 +108,12 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	 */
 	@Override
 	public String getMethodSummary(ArrayList<String> newMethods, Method crystal) {
+		if (crystal.getReturnType().getName().contains("lotus.domino")) {
+			return "";
+		}
 		StringBuilder meths = new StringBuilder();
 		String style = "<div class=\"coreMethod\">";
-		if (newMethods.contains(crystal.getName())) {
+		if (newMethods.contains(crystal.getName() + crystal.hashCode())) {
 			style = "<div class=\"newMethod\">";
 		}
 		meths.append(style + "<b>" + crystal.getName() + "</b>, return value=" + crystal.getReturnType().getName());

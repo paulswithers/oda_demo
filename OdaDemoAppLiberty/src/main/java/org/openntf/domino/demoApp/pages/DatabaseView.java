@@ -63,10 +63,11 @@ public class DatabaseView extends BaseView {
 	private Label databaseListenerMethodLabel;
 
 	public enum DatabaseSubPage {
-		SUMMARY_DETAILS("Summary Details", Target.BOTH), GETTING_DBS("Getting Databases", Target.BOTH), GETTING_DOCS("Getting Documents",
-				Target.BOTH), FT_INDEXING("Full Text Indexing", Target.BOTH), COMPACT_OPTIONS("Compact Options",
-						Target.BOTH), FIXUP_OPTIONS("Fixup Options", Target.BOTH), DB_OPTIONS("Database Options", Target.BOTH), LISTENERS("Listeners",
-								Target.BOTH), TRANSACTION("Transactional Processing", Target.BOTH);
+		SUMMARY_DETAILS("Summary Details", Target.BOTH), GETTING_DBS("Getting Databases", Target.BOTH), GETTING_DOCS(
+				"Getting Documents", Target.BOTH), FT_INDEXING("Full Text Indexing",
+						Target.BOTH), COMPACT_OPTIONS("Compact Options", Target.BOTH), FIXUP_OPTIONS("Fixup Options",
+								Target.BOTH), DB_OPTIONS("Database Options", Target.BOTH), LISTENERS("Listeners",
+										Target.BOTH), TRANSACTION("Transactional Processing", Target.BOTH);
 		private String value_;
 		private Target target_;
 
@@ -161,7 +162,8 @@ public class DatabaseView extends BaseView {
 		Target currTarget = DemoUI.get().getAppTarget();
 
 		for (final DatabaseSubPage subPage : DatabaseSubPage.values()) {
-			if (Target.BOTH.equals(currTarget) || Target.BOTH.equals(subPage.getTarget()) || currTarget.equals(subPage.getTarget())) {
+			if (Target.BOTH.equals(currTarget) || Target.BOTH.equals(subPage.getTarget())
+					|| currTarget.equals(subPage.getTarget())) {
 				Button button1 = new Button(subPage.getValue());
 				button1.addStyleName(ValoTheme.BUTTON_LINK);
 				button1.addStyleName(ValoTheme.BUTTON_SMALL);
@@ -198,11 +200,11 @@ public class DatabaseView extends BaseView {
 		StringBuilder sb = new StringBuilder();
 		ArrayList<String> newMethods = new ArrayList<String>();
 		for (Method newCrystal : org.openntf.domino.ext.Database.class.getMethods()) {
-			newMethods.add(newCrystal.getName());
+			newMethods.add(newCrystal.getName() + newCrystal.hashCode());
 		}
 		TreeMap<String, String> methSummary = new TreeMap<String, String>();
 		for (Method crystal : Database.class.getMethods()) {
-			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
+			methSummary.put(crystal.getName() + crystal.hashCode(), getMethodSummary(newMethods, crystal));
 		}
 		for (String content : methSummary.values()) {
 			sb.append(content);
@@ -221,11 +223,11 @@ public class DatabaseView extends BaseView {
 		StringBuilder sb = new StringBuilder();
 		ArrayList<String> newMethods = new ArrayList<String>();
 		for (Method newCrystal : org.openntf.domino.transactions.DatabaseTransaction.class.getMethods()) {
-			newMethods.add(newCrystal.getName());
+			newMethods.add(newCrystal.getName() + newCrystal.hashCode());
 		}
 		TreeMap<String, String> methSummary = new TreeMap<String, String>();
 		for (Method crystal : org.openntf.domino.transactions.DatabaseTransaction.class.getMethods()) {
-			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
+			methSummary.put(crystal.getName() + crystal.hashCode(), getMethodSummary(newMethods, crystal));
 		}
 		for (String content : methSummary.values()) {
 			sb.append(content);
@@ -245,11 +247,11 @@ public class DatabaseView extends BaseView {
 		sb.append("<h3>IDominoEvent</h3>");
 		ArrayList<String> newMethods = new ArrayList<String>();
 		for (Method newCrystal : org.openntf.domino.events.IDominoEvent.class.getMethods()) {
-			newMethods.add(newCrystal.getName());
+			newMethods.add(newCrystal.getName() + newCrystal.hashCode());
 		}
 		TreeMap<String, String> methSummary = new TreeMap<String, String>();
 		for (Method crystal : org.openntf.domino.events.IDominoEvent.class.getMethods()) {
-			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
+			methSummary.put(crystal.getName() + crystal.hashCode(), getMethodSummary(newMethods, crystal));
 		}
 		for (String content : methSummary.values()) {
 			sb.append(content);
