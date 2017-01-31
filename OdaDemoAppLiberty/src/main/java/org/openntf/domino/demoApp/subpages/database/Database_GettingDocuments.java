@@ -62,7 +62,11 @@ public class Database_GettingDocuments extends BaseSubPage {
 				FactoryUtils.addCodeString("getDocumentWithKey(Serializable)"),
 				FactoryUtils.addCodeString("getDocumentWithKey(Serializable, boolean)")));
 		label9.setContentMode(ContentMode.HTML);
-		addComponents(label1, label2, label3, label4, label5, label6, label7, label8, label9,
+		Label label10 = new Label(FactoryUtils.addCodeString(getProps().getProperty("gettingDocsMetaversalMethods")));
+		label10.setContentMode(ContentMode.HTML);
+		label10.setStyleName(ValoTheme.LABEL_H3);
+		Label label11 = new Label(getProps().getProperty("gettingDocsMetaversal"));
+		addComponents(label1, label2, label3, label4, label5, label6, label7, label8, label9, label10, label11,
 				new Html_Separator(SeparatorType.NEW_LINE));
 	}
 
