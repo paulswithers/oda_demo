@@ -439,6 +439,7 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 		this.props = props;
 	}
 
+	@Override
 	public void loadSimpleSource(String propertyKey) {
 		getSourceCode().removeAllComponents();
 		Label label1 = new Label(FactoryUtils.addCodeSnippet(getProps().getProperty(propertyKey)));

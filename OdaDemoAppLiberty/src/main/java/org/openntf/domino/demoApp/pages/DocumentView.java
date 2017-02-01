@@ -1,15 +1,5 @@
 package org.openntf.domino.demoApp.pages;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.TreeMap;
-
-import org.openntf.domino.Document;
-import org.openntf.domino.demoApp.DemoUI;
-import org.openntf.domino.demoApp.components.TargetSelector;
-import org.openntf.domino.demoApp.components.TargetSelector.Target;
-import org.openntf.domino.demoApp.subpages.database.Database_GettingDocuments;
-
 /*
 
 <!--
@@ -28,6 +18,16 @@ See the License for the specific language governing permissions and limitations 
 
 */
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.TreeMap;
+
+import org.openntf.domino.Document;
+import org.openntf.domino.demoApp.DemoUI;
+import org.openntf.domino.demoApp.components.TargetSelector;
+import org.openntf.domino.demoApp.components.TargetSelector.Target;
+import org.openntf.domino.demoApp.subpages.database.Database_GettingDocuments;
+
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
@@ -41,20 +41,28 @@ public class DocumentView extends BaseView {
 	public static String VIEW_NAME = "Document";
 	public static String VIEW_LABEL = "Document";
 	private DocumentSubPage currentPage;
+	private SourceCodeType currentSourcePage;
 	private Database_GettingDocuments gettingDocs = new Database_GettingDocuments(this);
 	private Label documentMethodLabel;
 
+	private enum SourceCodeType {
+		GET_DOC, ITEMS, AUTO_BOXING, TABLE;
+	}
+
 	public enum DocumentSubPage {
-		GETTING_DOCUMENTS("Getting Documents", Target.BOTH), GETTING_PUTTING("Getting / Putting Values",
-				Target.BOTH), AUTO_BOXING("Auto-Boxing Values", Target.BOTH), SUMMARY_FIELDS("Summary Fields",
-						Target.BOTH), TABLE_FIELD("Table Fields", Target.XPAGES);
+		GETTING_DOCUMENTS("Getting Documents", Target.BOTH, SourceCodeType.GET_DOC), GETTING_PUTTING(
+				"Getting / Putting Values", Target.BOTH, SourceCodeType.ITEMS), AUTO_BOXING("Auto-Boxing Values",
+						Target.BOTH,
+						SourceCodeType.AUTO_BOXING), TABLE_FIELD("Table Fields", Target.XPAGES, SourceCodeType.TABLE);
 
 		private String value_;
 		private Target target_;
+		private SourceCodeType sourcePage_;
 
-		private DocumentSubPage(String subPage, Target target) {
+		private DocumentSubPage(String subPage, Target target, SourceCodeType sourcePage) {
 			value_ = subPage;
 			target_ = target;
+			sourcePage_ = sourcePage;
 		}
 
 		public String getValue() {
@@ -63,6 +71,10 @@ public class DocumentView extends BaseView {
 
 		public Target getTarget() {
 			return target_;
+		}
+
+		public SourceCodeType getSourcePage() {
+			return sourcePage_;
 		}
 	}
 
@@ -90,6 +102,14 @@ public class DocumentView extends BaseView {
 			break;
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));
+		}
+		if (!subPage.getSourcePage().equals(getCurrentSourcePage())) {
+			switch (subPage.getSourcePage()) {
+
+			default:
+				loadGetDocSource();
+			}
+			setCurrentSourcePage(subPage.getSourcePage());
 		}
 	}
 
@@ -123,20 +143,13 @@ public class DocumentView extends BaseView {
 		}
 	}
 
-	public DocumentSubPage getCurrentPage() {
-		if (null == currentPage) {
-			setCurrentPage(DocumentSubPage.GETTING_DOCUMENTS);
-		}
-		return currentPage;
-	}
-
-	public void setCurrentPage(DocumentSubPage currentPage) {
-		this.currentPage = currentPage;
-	}
-
 	@Override
 	public void loadSource() {
-		return;
+		loadGetDocSource();
+	}
+
+	public void loadGetDocSource() {
+		loadSimpleSource("getDoc");
 	}
 
 	@Override
@@ -167,6 +180,28 @@ public class DocumentView extends BaseView {
 			sb.append(content);
 		}
 		documentMethodLabel = new Label(sb.toString(), ContentMode.HTML);
+	}
+
+	public DocumentSubPage getCurrentPage() {
+		if (null == currentPage) {
+			setCurrentPage(DocumentSubPage.GETTING_DOCUMENTS);
+		}
+		return currentPage;
+	}
+
+	public void setCurrentPage(DocumentSubPage currentPage) {
+		this.currentPage = currentPage;
+	}
+
+	public SourceCodeType getCurrentSourcePage() {
+		if (null == currentSourcePage) {
+			setCurrentSourcePage(SourceCodeType.GET_DOC);
+		}
+		return currentSourcePage;
+	}
+
+	public void setCurrentSourcePage(SourceCodeType currentSourcePage) {
+		this.currentSourcePage = currentSourcePage;
 	}
 
 }

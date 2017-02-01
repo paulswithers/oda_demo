@@ -108,4 +108,6 @@ public interface BaseViewInterface {
 
 	public void setProps(Properties props);
 
+	public void loadSimpleSource(String propertyKey);
+
 }
