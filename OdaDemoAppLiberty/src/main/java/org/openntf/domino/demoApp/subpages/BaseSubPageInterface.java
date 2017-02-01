@@ -1,5 +1,9 @@
 package org.openntf.domino.demoApp.subpages;
 
+import java.util.Properties;
+
+import org.openntf.domino.demoApp.components.TargetSelector.Target;
+
 /*
 
 <!--
@@ -33,5 +37,13 @@ public interface BaseSubPageInterface {
 	BaseView getParentView();
 
 	void setParentView(BaseView parentView);
+
+	public Properties getProps();
+
+	public void setProps(Properties props);
+
+	public Target getTargetContext();
+
+	public void setTargetContext(Target targetContext);
 
 }
