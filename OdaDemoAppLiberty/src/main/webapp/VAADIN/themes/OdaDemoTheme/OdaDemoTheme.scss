@@ -145,4 +145,9 @@
 	display:	inline;
 }
 
+.wrapLine {
+	word-wrap: break-word;
+	white-space: -moz-pre-wrap;
+}
+
 }

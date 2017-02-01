@@ -13080,3 +13080,8 @@ div.v-layout.v-horizontal.v-widget {
 .OdaDemoTheme .v-slot-floating-btn {
 	display: inline;
 }
+
+.OdaDemoTheme .wrapLine {
+	word-wrap: break-word;
+	white-space: -moz-pre-wrap;
+}

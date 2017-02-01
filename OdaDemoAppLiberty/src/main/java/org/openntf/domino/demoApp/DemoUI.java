@@ -161,7 +161,7 @@ public class DemoUI extends UI {
 		innerLayout.addComponent(contentLayout);
 		innerLayout.setExpandRatio(contentLayout, 1);
 		setRightSlider(new SliderPanelBuilder(new VerticalLayout()).caption("INFORMATION").mode(SliderMode.RIGHT)
-				.style(SliderPanelStyles.COLOR_WHITE).tabPosition(SliderTabPosition.MIDDLE).fixedContentSize(450)
+				.style(SliderPanelStyles.COLOR_WHITE).tabPosition(SliderTabPosition.MIDDLE).fixedContentSize(700)
 				.build());
 		innerLayout.addComponent(getRightSlider());
 
