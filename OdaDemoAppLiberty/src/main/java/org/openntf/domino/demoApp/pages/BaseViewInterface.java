@@ -20,6 +20,7 @@ See the License for the specific language governing permissions and limitations 
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.CssLayout;
@@ -102,5 +103,9 @@ public interface BaseViewInterface {
 	public Tab getSourceTab();
 
 	public void setSourceTab(Tab sourceTab);
+
+	public Properties getProps();
+
+	public void setProps(Properties props);
 
 }

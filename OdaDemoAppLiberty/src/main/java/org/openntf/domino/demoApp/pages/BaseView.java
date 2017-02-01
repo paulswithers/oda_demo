@@ -1,5 +1,8 @@
 package org.openntf.domino.demoApp.pages;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 /*
 
 <!--
@@ -20,8 +23,12 @@ See the License for the specific language governing permissions and limitations 
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.openntf.domino.demoApp.DemoUI;
+import org.openntf.domino.demoApp.utils.DatabaseUtils;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -37,6 +44,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 public abstract class BaseView extends CssLayout implements View, BaseViewInterface {
+	public static final Logger logger = Logger.getLogger(DatabaseUtils.class.getName());
 	private static final long serialVersionUID = 1L;
 	private static final String ERROR_DONT_USE_DIRECTLY = "This base method shouldn't be used directly.";
 	private boolean _loaded;
@@ -49,6 +57,16 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	private Panel methodList = new Panel();
 	private VerticalLayout sourceCode = new VerticalLayout();
 	private boolean showNavigation;
+	private Properties props = new Properties();
+
+	public BaseView() {
+		try {
+			InputStream inputStream = getClass().getResourceAsStream("strings.properties");
+			props.load(inputStream);
+		} catch (IOException t) {
+			logger.log(Level.SEVERE, t.getMessage(), t);
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -407,6 +425,16 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	@Override
 	public void setSourceTab(Tab sourceTab) {
 		this.sourceTab = sourceTab;
+	}
+
+	@Override
+	public Properties getProps() {
+		return props;
+	}
+
+	@Override
+	public void setProps(Properties props) {
+		this.props = props;
 	}
 
 }

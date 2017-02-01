@@ -25,6 +25,7 @@ import org.openntf.domino.demoApp.subpages.xots.Xots_CallableExample;
 import org.openntf.domino.demoApp.subpages.xots.Xots_RunnableExample;
 import org.openntf.domino.demoApp.subpages.xots.Xots_Summary;
 import org.openntf.domino.demoApp.subpages.xots.Xots_Tasklets;
+import org.openntf.domino.demoApp.utils.FactoryUtils;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -153,29 +154,14 @@ public class XotsView extends BaseView {
 
 	public void loadRunnableSource() {
 		getSourceCode().removeAllComponents();
-		Label label1 = new Label("<div class=\"domino-code\">@Tasklet(session = Tasklet.Session.CLONE)<br/>"
-				+ "public static class SessionRunnable implements AbstractXotsRunnable<String> {<br/><br/>"
-				+ "&nbsp;&nbsp;public SessionRunnable() {<br/><br/>&nbsp;&nbsp;}<br/><br/>&nbsp;&nbsp;public void run() {"
-				+ "<br/>&nbsp;&nbsp;&nbsp;&nbsp;try {<br/>&nbsp;&nbsp;&nbsp;&nbsp;String name = Factory.getSession(SessionType.CURRENT). getEffectiveUserName();"
-				+ "<br/>&nbsp;&nbsp;&nbsp;&nbsp;return name;<br/>&nbsp;&nbsp;} catch (Throwable t) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;t.printStackTrace();<br/>"
-				+ "&nbsp;&nbsp;&nbsp;&nbsp;system.out.println(t.getMessage());<br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/>&nbsp;&nbsp;}<br/>}<br/><br/>"
-				+ "Xots.getService().submit(new SessionRunnable());</div>");
+		Label label1 = new Label(FactoryUtils.addCodeSnippet(getProps().getProperty("xotsRunnable")));
 		label1.setContentMode(ContentMode.HTML);
 		getSourceCode().addComponent(label1);
 	}
 
 	public void loadCallableSource() {
 		getSourceCode().removeAllComponents();
-		Label label1 = new Label("<div class=\"domino-code\">@Tasklet(session = Tasklet.Session.CLONE)<br/>"
-				+ "public static class SessionCallable implements AbstractXotsCallable<String> {<br/>private int threadNo;<br/>"
-				+ "&nbsp;&nbsp;public SessionCallable(int threadNo) {<br/>this.threadNo = threadNo;<br/>&nbsp;&nbsp;}<br/><br/>&nbsp;&nbsp;public String call() {"
-				+ "<br/>&nbsp;&nbsp;&nbsp;&nbsp;try {<br/>&nbsp;&nbsp;&nbsp;&nbsp;String name = Factory.getSession(SessionType.CURRENT). getEffectiveUserName();"
-				+ "<br/>&nbsp;&nbsp;&nbsp;&nbsp;return \"Hello \" + name + \" from thread \" + threadNo;<br/>&nbsp;&nbsp;} catch (Throwable t) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;t.printStackTrace();<br/>"
-				+ "&nbsp;&nbsp;&nbsp;&nbsp;return t.getMessage();<br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/>&nbsp;&nbsp;}<br/>}<br/><br/>"
-				+ "List<Future<String>> results = new ArrayList<Future<String>>();<br/>for (int i = 0; i < 10; i++) {<br/>&nbsp;&nbsp;results.add(Xots.getService().submit(new SessionCallable(i)));<br/>}"
-				+ "<br/>for (Future<String> f : results) {<br/>&nbsp;&nbsp;try {<br/>&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(f.get());<br/>&nbsp;&nbsp;} "
-				+ "catch (InterruptedException e) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();<br/>&nbsp;&nbsp;} catch (ExecutionException e) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();<br/>"
-				+ "&nbsp;&nbsp;}<br/></div>}");
+		Label label1 = new Label(FactoryUtils.addCodeSnippet(getProps().getProperty("xotsCallable")));
 		label1.setContentMode(ContentMode.HTML);
 		getSourceCode().addComponent(label1);
 	}
