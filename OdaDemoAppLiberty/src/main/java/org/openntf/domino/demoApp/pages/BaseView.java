@@ -29,12 +29,15 @@ import java.util.logging.Logger;
 
 import org.openntf.domino.demoApp.DemoUI;
 import org.openntf.domino.demoApp.utils.DatabaseUtils;
+import org.openntf.domino.demoApp.utils.FactoryUtils;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Panel;
@@ -101,7 +104,6 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 
 			// Add right slider
 			getRightSliderContent().setSizeFull();
-			System.out.println("Setting tabs");
 			setMethodTab(getRightSliderContent().addTab(getMethodList(), "Public Methods", FontAwesome.INFO));
 			setSourceTab(getRightSliderContent().addTab(getSourceCode(), "Source", FontAwesome.CODE));
 
@@ -435,6 +437,14 @@ public abstract class BaseView extends CssLayout implements View, BaseViewInterf
 	@Override
 	public void setProps(Properties props) {
 		this.props = props;
+	}
+
+	public void loadSimpleSource(String propertyKey) {
+		getSourceCode().removeAllComponents();
+		Label label1 = new Label(FactoryUtils.addCodeSnippet(getProps().getProperty(propertyKey)));
+		label1.setContentMode(ContentMode.HTML);
+		label1.setStyleName("wrapLine");
+		getSourceCode().addComponent(label1);
 	}
 
 }

@@ -25,7 +25,6 @@ import org.openntf.domino.demoApp.subpages.xots.Xots_CallableExample;
 import org.openntf.domino.demoApp.subpages.xots.Xots_RunnableExample;
 import org.openntf.domino.demoApp.subpages.xots.Xots_Summary;
 import org.openntf.domino.demoApp.subpages.xots.Xots_Tasklets;
-import org.openntf.domino.demoApp.utils.FactoryUtils;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -44,18 +43,25 @@ public class XotsView extends BaseView {
 	private Xots_RunnableExample runnableExample = new Xots_RunnableExample(this);
 	private Xots_Tasklets taskletDetails = new Xots_Tasklets(this);
 	private XotsSubPage currentPage;
-	private boolean isShowingRunnable = true;
+	private SourceCodeType currentSourcePage;
+
+	private enum SourceCodeType {
+		RUNNABLE, CALLABLE;
+	}
 
 	public enum XotsSubPage {
-		SUMMARY_DETAILS("Summary Details", Target.BOTH), CALLABLE_EXAMPLE("Callable Example",
-				Target.BOTH), RUNNABLE_EXAMPLE("Runnable Example", Target.BOTH), TASKLETS("Tasklets", Target.BOTH);
+		SUMMARY_DETAILS("Summary Details", Target.BOTH, SourceCodeType.RUNNABLE), CALLABLE_EXAMPLE("Callable Example",
+				Target.BOTH, SourceCodeType.CALLABLE), RUNNABLE_EXAMPLE("Runnable Example", Target.BOTH,
+						SourceCodeType.RUNNABLE), TASKLETS("Tasklets", Target.BOTH, SourceCodeType.RUNNABLE);
 
 		private String value_;
 		private Target target_;
+		private SourceCodeType sourcePage_;
 
-		private XotsSubPage(String subPage, Target target) {
+		private XotsSubPage(String subPage, Target target, SourceCodeType sourcePage) {
 			value_ = subPage;
 			target_ = target;
+			sourcePage_ = sourcePage;
 		}
 
 		public String getValue() {
@@ -64,6 +70,10 @@ public class XotsView extends BaseView {
 
 		public Target getTarget() {
 			return target_;
+		}
+
+		public SourceCodeType getSourcePage() {
+			return sourcePage_;
 		}
 	}
 
@@ -85,9 +95,6 @@ public class XotsView extends BaseView {
 	public void loadContent(XotsSubPage subPage) {
 		if (!getCurrentPage().equals(subPage)) {
 		}
-		if (!isShowingRunnable) {
-			loadRunnableSource();
-		}
 		switch (subPage) {
 		case SUMMARY_DETAILS:
 			summaryDetails.load();
@@ -97,7 +104,6 @@ public class XotsView extends BaseView {
 			threadExample.load();
 			getContentPanel().setContent(threadExample);
 			loadCallableSource();
-			isShowingRunnable = false;
 			break;
 		case RUNNABLE_EXAMPLE:
 			runnableExample.load();
@@ -109,6 +115,16 @@ public class XotsView extends BaseView {
 			break;
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));
+		}
+		if (!subPage.getSourcePage().equals(getCurrentSourcePage())) {
+			switch (subPage.getSourcePage()) {
+			case CALLABLE:
+				loadCallableSource();
+				break;
+			default:
+				loadRunnableSource();
+			}
+			setCurrentSourcePage(subPage.getSourcePage());
 		}
 	}
 
@@ -153,17 +169,11 @@ public class XotsView extends BaseView {
 	}
 
 	public void loadRunnableSource() {
-		getSourceCode().removeAllComponents();
-		Label label1 = new Label(FactoryUtils.addCodeSnippet(getProps().getProperty("xotsRunnable")));
-		label1.setContentMode(ContentMode.HTML);
-		getSourceCode().addComponent(label1);
+		loadSimpleSource("xotsRunnable");
 	}
 
 	public void loadCallableSource() {
-		getSourceCode().removeAllComponents();
-		Label label1 = new Label(FactoryUtils.addCodeSnippet(getProps().getProperty("xotsCallable")));
-		label1.setContentMode(ContentMode.HTML);
-		getSourceCode().addComponent(label1);
+		loadSimpleSource("xotsCallable");
 	}
 
 	public XotsSubPage getCurrentPage() {
@@ -175,6 +185,17 @@ public class XotsView extends BaseView {
 
 	public void setCurrentPage(XotsSubPage currentPage) {
 		this.currentPage = currentPage;
+	}
+
+	public SourceCodeType getCurrentSourcePage() {
+		if (null == currentSourcePage) {
+			setCurrentSourcePage(SourceCodeType.RUNNABLE);
+		}
+		return currentSourcePage;
+	}
+
+	public void setCurrentSourcePage(SourceCodeType currentSourcePage) {
+		this.currentSourcePage = currentSourcePage;
 	}
 
 }

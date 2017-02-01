@@ -49,6 +49,7 @@ public class DatabaseView extends BaseView {
 	public static String VIEW_NAME = "Database";
 	public static String VIEW_LABEL = "Database";
 	private DatabaseSubPage currentPage;
+	private SourceCodeType currentSourcePage;
 	private Database_Summary summaryDetails = new Database_Summary(this);
 	private Database_GettingDbs gettingDbs = new Database_GettingDbs(this);
 	private Database_GettingDocuments gettingDocs = new Database_GettingDocuments(this);
@@ -62,18 +63,29 @@ public class DatabaseView extends BaseView {
 	private Label databaseTransactionMethodLabel;
 	private Label databaseListenerMethodLabel;
 
+	private enum SourceCodeType {
+		GET_DB, GET_DOC, LISTENER, TRANSACTION;
+	}
+
 	public enum DatabaseSubPage {
-		SUMMARY_DETAILS("Summary Details", Target.BOTH), GETTING_DBS("Getting Databases", Target.BOTH), GETTING_DOCS(
-				"Getting Documents", Target.BOTH), FT_INDEXING("Full Text Indexing",
-						Target.BOTH), COMPACT_OPTIONS("Compact Options", Target.BOTH), FIXUP_OPTIONS("Fixup Options",
-								Target.BOTH), DB_OPTIONS("Database Options", Target.BOTH), LISTENERS("Listeners",
-										Target.BOTH), TRANSACTION("Transactional Processing", Target.BOTH);
+		SUMMARY_DETAILS("Summary Details", Target.BOTH, SourceCodeType.GET_DB), GETTING_DBS("Getting Databases",
+				Target.BOTH, SourceCodeType.GET_DB), GETTING_DOCS("Getting Documents", Target.BOTH,
+						SourceCodeType.GET_DOC), FT_INDEXING("Full Text Indexing", Target.BOTH,
+								SourceCodeType.GET_DB), COMPACT_OPTIONS("Compact Options", Target.BOTH,
+										SourceCodeType.GET_DB), FIXUP_OPTIONS("Fixup Options", Target.BOTH,
+												SourceCodeType.GET_DB), DB_OPTIONS("Database Options", Target.BOTH,
+														SourceCodeType.GET_DB), LISTENERS("Listeners", Target.BOTH,
+																SourceCodeType.LISTENER), TRANSACTION(
+																		"Transactional Processing", Target.BOTH,
+																		SourceCodeType.TRANSACTION);
 		private String value_;
 		private Target target_;
+		private SourceCodeType sourcePage_;
 
-		private DatabaseSubPage(String subPage, Target target) {
+		private DatabaseSubPage(String subPage, Target target, SourceCodeType sourcePage) {
 			value_ = subPage;
 			target_ = target;
+			sourcePage_ = sourcePage;
 		}
 
 		public String getValue() {
@@ -82,6 +94,10 @@ public class DatabaseView extends BaseView {
 
 		public Target getTarget() {
 			return target_;
+		}
+
+		public SourceCodeType getSourcePage() {
+			return sourcePage_;
 		}
 	}
 
@@ -150,6 +166,22 @@ public class DatabaseView extends BaseView {
 			break;
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));
+		}
+		if (!subPage.getSourcePage().equals(getCurrentSourcePage())) {
+			switch (subPage.getSourcePage()) {
+			case GET_DOC:
+				loadGetDocSource();
+				break;
+			case LISTENER:
+				loadListenerSource();
+				break;
+			case TRANSACTION:
+				loadTransactionSource();
+				break;
+			default:
+				loadGetDbSource();
+			}
+			setCurrentSourcePage(subPage.getSourcePage());
 		}
 	}
 
@@ -273,7 +305,23 @@ public class DatabaseView extends BaseView {
 
 	@Override
 	public void loadSource() {
-		return;
+		loadGetDbSource();
+	}
+
+	public void loadGetDbSource() {
+		loadSimpleSource("getDb");
+	}
+
+	public void loadGetDocSource() {
+		loadSimpleSource("getDoc");
+	}
+
+	public void loadListenerSource() {
+		loadSimpleSource("listener");
+	}
+
+	public void loadTransactionSource() {
+		loadSimpleSource("transaction");
 	}
 
 	public DatabaseSubPage getCurrentPage() {
@@ -285,6 +333,17 @@ public class DatabaseView extends BaseView {
 
 	public void setCurrentPage(DatabaseSubPage currentPage) {
 		this.currentPage = currentPage;
+	}
+
+	public SourceCodeType getCurrentSourcePage() {
+		if (null == currentSourcePage) {
+			setCurrentSourcePage(SourceCodeType.GET_DB);
+		}
+		return currentSourcePage;
+	}
+
+	public void setCurrentSourcePage(SourceCodeType currentSourcePage) {
+		this.currentSourcePage = currentSourcePage;
 	}
 
 }
