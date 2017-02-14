@@ -27,6 +27,8 @@ import org.openntf.domino.demoApp.DemoUI;
 import org.openntf.domino.demoApp.components.TargetSelector;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
 import org.openntf.domino.demoApp.subpages.database.Database_GettingDocuments;
+import org.openntf.domino.demoApp.subpages.document.Document_Autoboxing;
+import org.openntf.domino.demoApp.subpages.document.Document_Items;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -43,6 +45,8 @@ public class DocumentView extends BaseView {
 	private DocumentSubPage currentPage;
 	private SourceCodeType currentSourcePage;
 	private Database_GettingDocuments gettingDocs = new Database_GettingDocuments(this);
+	private Document_Items putItems = new Document_Items(this);
+	private Document_Autoboxing autobox = new Document_Autoboxing(this);
 	private Label documentMethodLabel;
 
 	private enum SourceCodeType {
@@ -100,12 +104,25 @@ public class DocumentView extends BaseView {
 			gettingDocs.load();
 			getContentPanel().setContent(gettingDocs);
 			break;
+		case GETTING_PUTTING:
+			putItems.load();
+			getContentPanel().setContent(putItems);
+			break;
+		case AUTO_BOXING:
+			autobox.load();
+			getContentPanel().setContent(autobox);
+			break;
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));
 		}
 		if (!subPage.getSourcePage().equals(getCurrentSourcePage())) {
 			switch (subPage.getSourcePage()) {
-
+			case ITEMS:
+				loadItemSource();
+				break;
+			case AUTO_BOXING:
+				loadAutoboxSource();
+				break;
 			default:
 				loadGetDocSource();
 			}
@@ -150,6 +167,14 @@ public class DocumentView extends BaseView {
 
 	public void loadGetDocSource() {
 		loadSimpleSource("getDoc");
+	}
+
+	public void loadItemSource() {
+		loadSimpleSource("putItem");
+	}
+
+	public void loadAutoboxSource() {
+		loadSimpleSource("autobox");
 	}
 
 	@Override
