@@ -13071,6 +13071,9 @@ div.v-layout.v-horizontal.v-widget {
 .OdaDemoTheme .domino-code {
 	font-family: Courier New;
 	font-size: 12pt;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: -moz-pre-wrap;
 }
 
 .OdaDemoTheme .v-slot-right {
@@ -13083,5 +13086,6 @@ div.v-layout.v-horizontal.v-widget {
 
 .OdaDemoTheme .wrapLine {
 	word-wrap: break-word;
+	overflow-wrap: break-word;
 	white-space: -moz-pre-wrap;
 }

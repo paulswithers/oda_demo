@@ -26,8 +26,8 @@ import javax.servlet.annotation.WebServlet;
 import org.openntf.domino.demoApp.components.HeaderComponent;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
 import org.openntf.domino.demoApp.pages.DatabaseView;
-import org.openntf.domino.demoApp.pages.DateTimeView;
 import org.openntf.domino.demoApp.pages.DocumentView;
+import org.openntf.domino.demoApp.pages.DominoElseView;
 import org.openntf.domino.demoApp.pages.ErrorView;
 import org.openntf.domino.demoApp.pages.MiscView;
 import org.openntf.domino.demoApp.pages.SessionView;
@@ -172,7 +172,7 @@ public class DemoUI extends UI {
 		addNewMenuItem(DatabaseView.VIEW_NAME, DatabaseView.VIEW_LABEL, new DatabaseView());
 		addNewMenuItem(ViewView.VIEW_NAME, ViewView.VIEW_LABEL, new ViewView());
 		addNewMenuItem(DocumentView.VIEW_NAME, DocumentView.VIEW_LABEL, new DocumentView());
-		addNewMenuItem(DateTimeView.VIEW_NAME, DateTimeView.VIEW_LABEL, new SessionView());
+		addNewMenuItem(DominoElseView.VIEW_NAME, DominoElseView.VIEW_LABEL, new DominoElseView());
 		addNewMenuItem(MiscView.VIEW_NAME, MiscView.VIEW_LABEL, new SessionView());
 		addNewMenuItem(XotsView.VIEW_NAME, XotsView.VIEW_LABEL, new XotsView());
 
