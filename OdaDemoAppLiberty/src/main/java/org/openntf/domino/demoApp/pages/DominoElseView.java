@@ -33,6 +33,8 @@ import org.openntf.domino.demoApp.components.TargetSelector;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
 import org.openntf.domino.demoApp.subpages.elses.Else_DateTime;
 import org.openntf.domino.demoApp.subpages.elses.Else_Summary;
+import org.openntf.domino.demoApp.subpages.elses.OpenLog;
+import org.openntf.domino.logging.BaseOpenLogItem;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -51,15 +53,17 @@ public class DominoElseView extends BaseView {
 	private MethodType currentMethodPage;
 	private Else_DateTime dateTime = new Else_DateTime(this);
 	private Else_Summary summary = new Else_Summary(this);
+	private OpenLog openLog = new OpenLog(this);
 	private Label elseMethodLabel;
 
 	private enum SourceCodeType {
-		SUMMARY, DATE;
+		SUMMARY, DATE, OPENLOG;
 	}
 
 	public enum MethodType {
 		DATE("DateTime"), DOCUMENT_COLLECTION("DocumentCollection"), VIEW_ENTRY_COLLECTION(
-				"ViewEntryCollection"), VIEW_ENTRY("ViewEntry"), FORM("Form"), COLOR_OBJECT("ColorObject");
+				"ViewEntryCollection"), VIEW_ENTRY(
+						"ViewEntry"), FORM("Form"), COLOR_OBJECT("ColorObject"), OPENLOG("OpenLog");
 
 		private String value_;
 
@@ -74,7 +78,8 @@ public class DominoElseView extends BaseView {
 
 	public enum ElseSubPage {
 		SUMMARY_PAGE("Summary", Target.BOTH, SourceCodeType.SUMMARY, MethodType.DOCUMENT_COLLECTION), DATES_PAGE(
-				"DateTimes", Target.BOTH, SourceCodeType.DATE, MethodType.DATE);
+				"DateTimes", Target.BOTH, SourceCodeType.DATE,
+				MethodType.DATE), OPENLOG("OpenLog", Target.BOTH, SourceCodeType.OPENLOG, MethodType.OPENLOG);
 
 		private String value_;
 		private Target target_;
@@ -133,6 +138,10 @@ public class DominoElseView extends BaseView {
 			getContentPanel().setContent(summary);
 			setCurrentMethodPage(MethodType.DOCUMENT_COLLECTION);
 			break;
+		case OPENLOG:
+			openLog.load();
+			getContentPanel().setContent(openLog);
+			setCurrentMethodPage(MethodType.OPENLOG);
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));
 		}
@@ -141,6 +150,9 @@ public class DominoElseView extends BaseView {
 			switch (subPage.getSourcePage()) {
 			case DATE:
 				loadDateSource();
+				break;
+			case OPENLOG:
+				loadOpenLogSource();
 				break;
 			default:
 				loadDocCollSource();
@@ -213,6 +225,10 @@ public class DominoElseView extends BaseView {
 		loadSimpleSource("color");
 	}
 
+	public void loadOpenLogSource() {
+		loadSimpleSource("openLog");
+	}
+
 	@Override
 	public void loadMethodList() {
 		getMethodList().setContent(getElseMethodLabel(getCurrentMethodPage()));
@@ -247,6 +263,8 @@ public class DominoElseView extends BaseView {
 			return org.openntf.domino.ext.ViewEntry.class.getMethods();
 		case VIEW_ENTRY_COLLECTION:
 			return org.openntf.domino.ext.ViewEntryCollection.class.getMethods();
+		case OPENLOG:
+			return BaseOpenLogItem.class.getMethods();
 		default:
 			return org.openntf.domino.ext.DocumentCollection.class.getMethods();
 		}
@@ -264,6 +282,8 @@ public class DominoElseView extends BaseView {
 			return ViewEntry.class.getMethods();
 		case VIEW_ENTRY_COLLECTION:
 			return ViewEntryCollection.class.getMethods();
+		case OPENLOG:
+			return BaseOpenLogItem.class.getMethods();
 		default:
 			return DocumentCollection.class.getMethods();
 		}
