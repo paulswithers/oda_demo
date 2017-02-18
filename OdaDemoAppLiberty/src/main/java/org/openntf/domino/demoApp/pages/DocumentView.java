@@ -29,6 +29,8 @@ import org.openntf.domino.demoApp.components.TargetSelector.Target;
 import org.openntf.domino.demoApp.subpages.database.Database_GettingDocuments;
 import org.openntf.domino.demoApp.subpages.document.Document_Autoboxing;
 import org.openntf.domino.demoApp.subpages.document.Document_Items;
+import org.openntf.domino.demoApp.subpages.document.Document_LegacyFields;
+import org.openntf.domino.demoApp.subpages.document.Document_SyncHelper;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -47,17 +49,20 @@ public class DocumentView extends BaseView {
 	private Database_GettingDocuments gettingDocs = new Database_GettingDocuments(this);
 	private Document_Items putItems = new Document_Items(this);
 	private Document_Autoboxing autobox = new Document_Autoboxing(this);
+	private Document_SyncHelper syncHelper = new Document_SyncHelper(this);
+	private Document_LegacyFields legacy = new Document_LegacyFields(this);
 	private Label documentMethodLabel;
 
 	private enum SourceCodeType {
-		GET_DOC, ITEMS, AUTO_BOXING, TABLE;
+		GET_DOC, ITEMS, AUTO_BOXING, SYNC_HELPER, LEGACY;
 	}
 
 	public enum DocumentSubPage {
 		GETTING_DOCUMENTS("Getting Documents", Target.BOTH, SourceCodeType.GET_DOC), GETTING_PUTTING(
 				"Getting / Putting Values", Target.BOTH, SourceCodeType.ITEMS), AUTO_BOXING("Auto-Boxing Values",
-						Target.BOTH,
-						SourceCodeType.AUTO_BOXING), TABLE_FIELD("Table Fields", Target.XPAGES, SourceCodeType.TABLE);
+						Target.BOTH, SourceCodeType.AUTO_BOXING), SYNC_HELPER("Sync Helper", Target.BOTH,
+								SourceCodeType.SYNC_HELPER), LEGACY_FIELD("Legacy Fields", Target.XPAGES,
+										SourceCodeType.LEGACY);
 
 		private String value_;
 		private Target target_;
@@ -112,6 +117,14 @@ public class DocumentView extends BaseView {
 			autobox.load();
 			getContentPanel().setContent(autobox);
 			break;
+		case SYNC_HELPER:
+			syncHelper.load();
+			getContentPanel().setContent(syncHelper);
+			break;
+		case LEGACY_FIELD:
+			legacy.load();
+			getContentPanel().setContent(legacy);
+			break;
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));
 		}
@@ -122,6 +135,12 @@ public class DocumentView extends BaseView {
 				break;
 			case AUTO_BOXING:
 				loadAutoboxSource();
+				break;
+			case SYNC_HELPER:
+				loadSyncHelperSource();
+				break;
+			case LEGACY:
+				loadNoSource();
 				break;
 			default:
 				loadGetDocSource();
@@ -175,6 +194,16 @@ public class DocumentView extends BaseView {
 
 	public void loadAutoboxSource() {
 		loadSimpleSource("autobox");
+	}
+
+	public void loadSyncHelperSource() {
+		loadSimpleSource("syncHelper");
+	}
+
+	public void loadNoSource() {
+		getSourceCode().removeAllComponents();
+		Label label1 = new Label("");
+		getSourceCode().addComponent(label1);
 	}
 
 	@Override
