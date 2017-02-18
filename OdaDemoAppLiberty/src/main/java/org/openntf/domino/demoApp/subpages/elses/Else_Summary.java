@@ -19,8 +19,7 @@ public class Else_Summary extends BaseSubPage {
 
 	@Override
 	public void loadContent() {
-		Label label1 = new Label(
-				"Please click on the relevant link below to see method summaries and (where appropriate) sample code as appropriate");
+		Label label1 = new Label(getProps().getProperty("summary"));
 		addComponent(label1);
 		for (final MethodType methodType : MethodType.values()) {
 			if (!MethodType.DATE.equals(methodType)) {
