@@ -33,8 +33,10 @@ import org.openntf.domino.demoApp.components.TargetSelector;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
 import org.openntf.domino.demoApp.subpages.elses.Else_DateTime;
 import org.openntf.domino.demoApp.subpages.elses.Else_DocumentSorter;
-import org.openntf.domino.demoApp.subpages.elses.Else_Summary;
+import org.openntf.domino.demoApp.subpages.elses.Else_Email;
 import org.openntf.domino.demoApp.subpages.elses.Else_OpenLog;
+import org.openntf.domino.demoApp.subpages.elses.Else_Summary;
+import org.openntf.domino.email.DominoEmail;
 import org.openntf.domino.helpers.DocumentSorter;
 import org.openntf.domino.logging.BaseOpenLogItem;
 
@@ -57,16 +59,17 @@ public class DominoElseView extends BaseView {
 	private Else_Summary summary = new Else_Summary(this);
 	private Else_OpenLog openLog = new Else_OpenLog(this);
 	private Else_DocumentSorter sorter = new Else_DocumentSorter(this);
+	private Else_Email email = new Else_Email(this);
 	private Label elseMethodLabel;
 
 	private enum SourceCodeType {
-		SUMMARY, DATE, OPENLOG, SORTER;
+		SUMMARY, DATE, OPENLOG, SORTER, EMAIL;
 	}
 
 	public enum MethodType {
 		DATE("DateTime"), DOCUMENT_COLLECTION("DocumentCollection"), VIEW_ENTRY_COLLECTION(
-				"ViewEntryCollection"), VIEW_ENTRY("ViewEntry"), FORM(
-						"Form"), COLOR_OBJECT("ColorObject"), OPENLOG("OpenLog"), SORTER("DocumentSorter");
+				"ViewEntryCollection"), VIEW_ENTRY("ViewEntry"), FORM("Form"), COLOR_OBJECT(
+						"ColorObject"), OPENLOG("OpenLog"), SORTER("DocumentSorter"), EMAIL("Email");
 
 		private String value_;
 
@@ -83,7 +86,8 @@ public class DominoElseView extends BaseView {
 		SUMMARY_PAGE("Summary", Target.BOTH, SourceCodeType.SUMMARY, MethodType.DOCUMENT_COLLECTION), DATES_PAGE(
 				"DateTimes", Target.BOTH, SourceCodeType.DATE,
 				MethodType.DATE), OPENLOG("OpenLog", Target.BOTH, SourceCodeType.OPENLOG, MethodType.OPENLOG), SORTER(
-						"DocumentSorter", Target.BOTH, SourceCodeType.SORTER, MethodType.SORTER);
+						"DocumentSorter", Target.BOTH, SourceCodeType.SORTER,
+						MethodType.SORTER), EMAIL("Email", Target.BOTH, SourceCodeType.EMAIL, MethodType.EMAIL);
 
 		private String value_;
 		private Target target_;
@@ -146,10 +150,17 @@ public class DominoElseView extends BaseView {
 			openLog.load();
 			getContentPanel().setContent(openLog);
 			setCurrentMethodPage(MethodType.OPENLOG);
+			break;
 		case SORTER:
 			sorter.load();
 			getContentPanel().setContent(sorter);
 			setCurrentMethodPage(MethodType.SORTER);
+			break;
+		case EMAIL:
+			email.load();
+			getContentPanel().setContent(email);
+			setCurrentMethodPage(MethodType.EMAIL);
+			break;
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));
 		}
@@ -164,6 +175,9 @@ public class DominoElseView extends BaseView {
 				break;
 			case SORTER:
 				loadSorterSource();
+				break;
+			case EMAIL:
+				loadEmailSource();
 				break;
 			default:
 				loadDocCollSource();
@@ -244,6 +258,10 @@ public class DominoElseView extends BaseView {
 		loadSimpleSource("documentSorter");
 	}
 
+	public void loadEmailSource() {
+		loadSimpleSource("email");
+	}
+
 	@Override
 	public void loadMethodList() {
 		getMethodList().setContent(getElseMethodLabel(getCurrentMethodPage()));
@@ -282,6 +300,8 @@ public class DominoElseView extends BaseView {
 			return BaseOpenLogItem.class.getMethods();
 		case SORTER:
 			return DocumentSorter.class.getMethods();
+		case EMAIL:
+			return DominoEmail.class.getMethods();
 		default:
 			return org.openntf.domino.ext.DocumentCollection.class.getMethods();
 		}
@@ -303,6 +323,8 @@ public class DominoElseView extends BaseView {
 			return BaseOpenLogItem.class.getMethods();
 		case SORTER:
 			return DocumentSorter.class.getMethods();
+		case EMAIL:
+			return DominoEmail.class.getMethods();
 		default:
 			return DocumentCollection.class.getMethods();
 		}
