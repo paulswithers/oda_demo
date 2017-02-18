@@ -35,6 +35,7 @@ import org.openntf.domino.demoApp.subpages.elses.Else_DateTime;
 import org.openntf.domino.demoApp.subpages.elses.Else_DocumentSorter;
 import org.openntf.domino.demoApp.subpages.elses.Else_Email;
 import org.openntf.domino.demoApp.subpages.elses.Else_OpenLog;
+import org.openntf.domino.demoApp.subpages.elses.Else_OtherDemos;
 import org.openntf.domino.demoApp.subpages.elses.Else_Summary;
 import org.openntf.domino.email.DominoEmail;
 import org.openntf.domino.helpers.DocumentSorter;
@@ -60,6 +61,7 @@ public class DominoElseView extends BaseView {
 	private Else_OpenLog openLog = new Else_OpenLog(this);
 	private Else_DocumentSorter sorter = new Else_DocumentSorter(this);
 	private Else_Email email = new Else_Email(this);
+	private Else_OtherDemos others = new Else_OtherDemos(this);
 	private Label elseMethodLabel;
 
 	private enum SourceCodeType {
@@ -87,7 +89,8 @@ public class DominoElseView extends BaseView {
 				"DateTimes", Target.BOTH, SourceCodeType.DATE,
 				MethodType.DATE), OPENLOG("OpenLog", Target.BOTH, SourceCodeType.OPENLOG, MethodType.OPENLOG), SORTER(
 						"DocumentSorter", Target.BOTH, SourceCodeType.SORTER,
-						MethodType.SORTER), EMAIL("Email", Target.BOTH, SourceCodeType.EMAIL, MethodType.EMAIL);
+						MethodType.SORTER), EMAIL("Email", Target.BOTH, SourceCodeType.EMAIL, MethodType.EMAIL), OTHER(
+								"Other Links", Target.BOTH, SourceCodeType.SUMMARY, MethodType.DOCUMENT_COLLECTION);
 
 		private String value_;
 		private Target target_;
@@ -139,27 +142,26 @@ public class DominoElseView extends BaseView {
 		case DATES_PAGE:
 			dateTime.load();
 			getContentPanel().setContent(dateTime);
-			setCurrentMethodPage(MethodType.DATE);
 			break;
 		case SUMMARY_PAGE:
 			summary.load();
 			getContentPanel().setContent(summary);
-			setCurrentMethodPage(MethodType.DOCUMENT_COLLECTION);
 			break;
 		case OPENLOG:
 			openLog.load();
 			getContentPanel().setContent(openLog);
-			setCurrentMethodPage(MethodType.OPENLOG);
 			break;
 		case SORTER:
 			sorter.load();
 			getContentPanel().setContent(sorter);
-			setCurrentMethodPage(MethodType.SORTER);
 			break;
 		case EMAIL:
 			email.load();
 			getContentPanel().setContent(email);
-			setCurrentMethodPage(MethodType.EMAIL);
+			break;
+		case OTHER:
+			others.load();
+			getContentPanel().setContent(others);
 			break;
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));
@@ -185,7 +187,8 @@ public class DominoElseView extends BaseView {
 		}
 
 		if (!subPage.getMethodPage().equals(getCurrentMethodPage())) {
-			getMethodList().setContent(getElseMethodLabel(subPage.getMethodPage()));
+			setCurrentMethodPage(subPage.getMethodPage());
+			loadMethodList();
 		}
 	}
 
@@ -354,7 +357,7 @@ public class DominoElseView extends BaseView {
 
 	public MethodType getCurrentMethodPage() {
 		if (null == currentMethodPage) {
-			setCurrentMethodPage(MethodType.DATE);
+			setCurrentMethodPage(MethodType.DOCUMENT_COLLECTION);
 		}
 		return currentMethodPage;
 	}
