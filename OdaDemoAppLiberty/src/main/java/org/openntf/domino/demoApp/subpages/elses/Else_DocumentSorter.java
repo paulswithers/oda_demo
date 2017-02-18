@@ -6,6 +6,7 @@ import org.openntf.domino.demoApp.pages.BaseView;
 import org.openntf.domino.demoApp.subpages.BaseSubPage;
 import org.openntf.domino.demoApp.utils.FactoryUtils;
 
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
 
 public class Else_DocumentSorter extends BaseSubPage {
@@ -19,6 +20,8 @@ public class Else_DocumentSorter extends BaseSubPage {
 	public void loadContent() {
 		Label label1 = new Label(MessageFormat.format(getProps().getProperty("sorter"),
 				FactoryUtils.addCodeString("org.openntf.domino.helpers.documentSorter")));
+		label1.setContentMode(ContentMode.HTML);
+		addComponent(label1);
 	}
 
 }
