@@ -31,6 +31,10 @@ public class StateSelector extends NativeSelect {
 	private static final long serialVersionUID = 1L;
 
 	public StateSelector() {
+		loadOptions();
+	}
+
+	private void loadOptions() {
 		View allStates = FactoryUtils.getDemoDatabase().getView("AllStates");
 		boolean defaultSet = false;
 		for (Document doc : allStates.getAllDocuments()) {
@@ -47,6 +51,7 @@ public class StateSelector extends NativeSelect {
 
 	public StateSelector(String caption) {
 		super(caption);
+		loadOptions();
 	}
 
 	public StateSelector(String caption, Collection<?> options) {

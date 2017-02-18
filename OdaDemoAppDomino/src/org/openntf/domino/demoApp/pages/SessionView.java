@@ -34,6 +34,7 @@ import org.openntf.domino.demoApp.subpages.session.Session_Factory;
 import org.openntf.domino.demoApp.subpages.session.Session_Fixes;
 import org.openntf.domino.demoApp.subpages.session.Session_Summary;
 import org.openntf.domino.demoApp.subpages.session.Session_ThreadConfig;
+import org.openntf.domino.demoApp.subpages.session.Session_Variables;
 import org.openntf.domino.demoApp.subpages.session.Session_XspProperties;
 import org.openntf.domino.demoApp.utils.FactoryUtils;
 import org.openntf.domino.demoApp.utils.SampleDataUtil;
@@ -61,11 +62,12 @@ public class SessionView extends BaseView {
 	private Session_Factory factorySessionDetails = new Session_Factory(this);
 	private Session_XspProperties xspPropertyDetails = new Session_XspProperties(this);
 	private Session_ThreadConfig threadConfig = new Session_ThreadConfig(this);
+	private Session_Variables variableDetails = new Session_Variables(this);
 
 	public enum SessionSubPage {
 		SUMMARY_DETAILS("Summary Details", Target.BOTH), FIXES("Fixes", Target.NON_XPAGES), XSP_PROPS("Xsp Properties",
-				Target.XPAGES), THREAD_CONFIG("Thread Config",
-						Target.NON_XPAGES), FACTORY_SESSION("Getting Sessions", Target.BOTH);
+				Target.XPAGES), THREAD_CONFIG("Thread Config", Target.NON_XPAGES), FACTORY_SESSION("Getting Sessions",
+						Target.BOTH), XPAGES_VARIABLES("XPages Variables", Target.XPAGES);
 		private String value_;
 		private Target target_;
 
@@ -154,6 +156,10 @@ public class SessionView extends BaseView {
 			threadConfig.load();
 			getContentPanel().setContent(threadConfig);
 			break;
+		case XPAGES_VARIABLES:
+			variableDetails.load();
+			getContentPanel().setContent(variableDetails);
+			break;
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));
 		}
@@ -193,11 +199,11 @@ public class SessionView extends BaseView {
 		StringBuilder sb = new StringBuilder();
 		ArrayList<String> newMethods = new ArrayList<String>();
 		for (Method newCrystal : org.openntf.domino.ext.Session.class.getMethods()) {
-			newMethods.add(newCrystal.getName());
+			newMethods.add(newCrystal.getName() + newCrystal.hashCode());
 		}
 		TreeMap<String, String> methSummary = new TreeMap<String, String>();
 		for (Method crystal : Session.class.getMethods()) {
-			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
+			methSummary.put(crystal.getName() + crystal.hashCode(), getMethodSummary(newMethods, crystal));
 		}
 		for (String content : methSummary.values()) {
 			sb.append(content);

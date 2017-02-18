@@ -97,7 +97,7 @@
 }
 
 .body-layout {
-	padding: 0 5px;
+	padding: 0 5px 10px 5px;
 }
 
 .coreMethod {
@@ -135,6 +135,9 @@
 .domino-code {
 	font-family:	Courier New;
 	font-size:		12pt;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: -moz-pre-wrap;
 }
 
 .v-slot-right {
@@ -143,6 +146,12 @@
 
 .v-slot-floating-btn {
 	display:	inline;
+}
+
+.wrapLine {
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: -moz-pre-wrap;
 }
 
 }

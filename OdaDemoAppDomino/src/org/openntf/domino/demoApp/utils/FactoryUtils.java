@@ -20,6 +20,7 @@ See the License for the specific language governing permissions and limitations 
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
 import org.openntf.domino.demoApp.DemoUI;
@@ -109,6 +110,11 @@ public class FactoryUtils {
 	}
 
 	public static String addCodeString(String content) {
+		return "<span class=\"domino-code\">" + content + "</span>";
+	}
+
+	public static String addCodeSnippet(String content) {
+		content = StringUtils.replace(content, " ", "&nbsp;&nbsp;");
 		return "<span class=\"domino-code\">" + content + "</span>";
 	}
 

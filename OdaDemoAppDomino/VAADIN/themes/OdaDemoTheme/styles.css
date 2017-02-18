@@ -13033,7 +13033,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .OdaDemoTheme .body-layout {
-	padding: 0 5px;
+	padding: 0 5px 10px 5px;
 }
 
 .OdaDemoTheme .coreMethod {
@@ -13071,6 +13071,9 @@ div.v-layout.v-horizontal.v-widget {
 .OdaDemoTheme .domino-code {
 	font-family: Courier New;
 	font-size: 12pt;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: -moz-pre-wrap;
 }
 
 .OdaDemoTheme .v-slot-right {
@@ -13079,4 +13082,10 @@ div.v-layout.v-horizontal.v-widget {
 
 .OdaDemoTheme .v-slot-floating-btn {
 	display: inline;
+}
+
+.OdaDemoTheme .wrapLine {
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: -moz-pre-wrap;
 }

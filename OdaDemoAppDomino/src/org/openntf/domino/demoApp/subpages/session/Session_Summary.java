@@ -50,6 +50,7 @@ public class Session_Summary extends BaseSubPage {
 				+ StringUtils.join(currSess.getUserNameCollection(), "<br/>"), ContentMode.HTML);
 		Label label4 = new Label(getProps().getProperty("sessionUnique") + currSess.getUnique(), ContentMode.HTML);
 		HorizontalLayout fixLayout = new HorizontalLayout();
+		fixLayout.setSizeFull();
 		StringBuilder sb = new StringBuilder();
 		sb.append(getProps().getProperty("sessionFixes"));
 		for (Session.Fixes fix : Session.Fixes.values()) {
@@ -58,8 +59,12 @@ public class Session_Summary extends BaseSubPage {
 		Label label5 = new Label(sb.toString(), ContentMode.HTML);
 		sb = new StringBuilder();
 		sb.append(getProps().getProperty("sessionEnabledFixes"));
-		for (Session.Fixes fix : currSess.getEnabledFixes()) {
-			sb.append("<br/>" + fix.name());
+		for (Session.Fixes fix : Session.Fixes.values()) {
+			if (currSess.isFixEnabled(fix)) {
+				sb.append("<br/>ENABLED");
+			} else {
+				sb.append("<br/><b>DISABLED</b>");
+			}
 		}
 		Label label6 = new Label(sb.toString(), ContentMode.HTML);
 		fixLayout.addComponents(label5, label6);

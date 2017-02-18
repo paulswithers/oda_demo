@@ -21,13 +21,14 @@ See the License for the specific language governing permissions and limitations 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+import javax.servlet.annotation.WebServlet;
+
 import org.openntf.domino.demoApp.components.HeaderComponent;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
 import org.openntf.domino.demoApp.pages.DatabaseView;
-import org.openntf.domino.demoApp.pages.DateTimeView;
 import org.openntf.domino.demoApp.pages.DocumentView;
+import org.openntf.domino.demoApp.pages.DominoElseView;
 import org.openntf.domino.demoApp.pages.ErrorView;
-import org.openntf.domino.demoApp.pages.MiscView;
 import org.openntf.domino.demoApp.pages.SessionView;
 import org.openntf.domino.demoApp.pages.ViewView;
 import org.openntf.domino.demoApp.pages.XotsView;
@@ -79,6 +80,7 @@ public class DemoUI extends UI {
 	private ConcurrentHashMap<String, Integer> createdDocs;
 	private ConcurrentHashMap<String, Integer> updatedDocs;
 
+	@WebServlet(urlPatterns = "/*", name = "UIServlet", asyncSupported = true, displayName = "ODA Demo App", loadOnStartup = 1)
 	@VaadinServletConfiguration(ui = DemoUI.class, productionMode = false, heartbeatInterval = 300)
 	public static class UIServlet extends VaadinServlet {
 
@@ -158,7 +160,7 @@ public class DemoUI extends UI {
 		innerLayout.addComponent(contentLayout);
 		innerLayout.setExpandRatio(contentLayout, 1);
 		setRightSlider(new SliderPanelBuilder(new VerticalLayout()).caption("INFORMATION").mode(SliderMode.RIGHT)
-				.style(SliderPanelStyles.COLOR_WHITE).tabPosition(SliderTabPosition.MIDDLE).fixedContentSize(450)
+				.style(SliderPanelStyles.COLOR_WHITE).tabPosition(SliderTabPosition.MIDDLE).fixedContentSize(700)
 				.build());
 		innerLayout.addComponent(getRightSlider());
 
@@ -168,9 +170,8 @@ public class DemoUI extends UI {
 		addNewMenuItem(SessionView.VIEW_NAME, SessionView.VIEW_LABEL, new SessionView());
 		addNewMenuItem(DatabaseView.VIEW_NAME, DatabaseView.VIEW_LABEL, new DatabaseView());
 		addNewMenuItem(ViewView.VIEW_NAME, ViewView.VIEW_LABEL, new ViewView());
-		addNewMenuItem(DocumentView.VIEW_NAME, DocumentView.VIEW_LABEL, new SessionView());
-		addNewMenuItem(DateTimeView.VIEW_NAME, DateTimeView.VIEW_LABEL, new SessionView());
-		addNewMenuItem(MiscView.VIEW_NAME, MiscView.VIEW_LABEL, new SessionView());
+		addNewMenuItem(DocumentView.VIEW_NAME, DocumentView.VIEW_LABEL, new DocumentView());
+		addNewMenuItem(DominoElseView.VIEW_NAME, DominoElseView.VIEW_LABEL, new DominoElseView());
 		addNewMenuItem(XotsView.VIEW_NAME, XotsView.VIEW_LABEL, new XotsView());
 
 		// Add inner layout to outer layout

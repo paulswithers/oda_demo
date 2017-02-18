@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import org.openntf.domino.Database;
 import org.openntf.domino.View;
 import org.openntf.domino.View.IndexType;
+import org.openntf.domino.demoApp.components.DbInstanceSelector;
 import org.openntf.domino.demoApp.pages.BaseView;
 import org.openntf.domino.demoApp.subpages.BaseSubPage;
 import org.openntf.domino.demoApp.utils.FactoryUtils;
@@ -15,7 +16,6 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -29,7 +29,7 @@ public class View_Summary extends BaseSubPage {
 
 	@Override
 	public void loadContent() {
-		TextField dbPath = new TextField("Alternate Database Path");
+		DbInstanceSelector dbPath = new DbInstanceSelector("Alternate Database");
 		loadViewSummary("");
 		dbPath.addValueChangeListener(new ValueChangeListener() {
 
@@ -46,7 +46,7 @@ public class View_Summary extends BaseSubPage {
 		Database db1 = FactoryUtils.getDemoDatabase();
 		if (!"".equals(dbPath)) {
 			try {
-				db1 = FactoryUtils.getUserSession().getDatabase(dbPath);
+				db1 = FactoryUtils.getDemoDatabase(Integer.parseInt(dbPath));
 			} catch (Exception e) {
 				db1 = FactoryUtils.getDemoDatabase();
 			}
@@ -109,8 +109,10 @@ public class View_Summary extends BaseSubPage {
 		private String hideEmptyCats;
 		private String discardIndex;
 		private String refreshType;
+		private int indexCount;
 		private int refreshInterval;
 		private int indexDiscardedAfter;
+		private String isResortable;
 
 		public ViewItem(View srcView) {
 			if ("".equals(srcView.getName())) {
@@ -152,6 +154,12 @@ public class View_Summary extends BaseSubPage {
 			}
 			setRefreshInterval(srcView.getAutoRefreshSeconds());
 			setIndexDiscardedAfter(srcView.getDiscardHours());
+			setIndexCount(srcView.getIndexCount());
+			if (srcView.isResortable()) {
+				setIsResortable("YES");
+			} else {
+				setIsResortable("NO");
+			}
 		}
 
 		public String getSummary() {
@@ -167,6 +175,8 @@ public class View_Summary extends BaseSubPage {
 				sb.append("<br/><b>Refresh Interval: </b>" + Integer.toString(getRefreshInterval()));
 				sb.append(
 						"<br/><b>Index Discarded After: </b>" + Integer.toString(getIndexDiscardedAfter()) + " hours");
+				sb.append("<br/><b>Is Resortable: </b>" + getIsResortable());
+				sb.append("<br/><b>Index Count: </b>" + Integer.toString(getIndexCount()));
 				retVal = sb.toString();
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -256,6 +266,22 @@ public class View_Summary extends BaseSubPage {
 
 		public void setIndexDiscardedAfter(int indexDiscardedAfter) {
 			this.indexDiscardedAfter = indexDiscardedAfter;
+		}
+
+		public int getIndexCount() {
+			return indexCount;
+		}
+
+		public void setIndexCount(int indexCount) {
+			this.indexCount = indexCount;
+		}
+
+		public String getIsResortable() {
+			return isResortable;
+		}
+
+		public void setIsResortable(String isResortable) {
+			this.isResortable = isResortable;
 		}
 
 	}

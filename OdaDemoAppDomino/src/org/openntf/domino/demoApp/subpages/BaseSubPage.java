@@ -43,6 +43,7 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 
 	public BaseSubPage(BaseView parentView) {
 		setParentView(parentView);
+		addStyleName("body-layout");
 		try {
 			InputStream inputStream = getClass().getResourceAsStream("strings.properties");
 			props.load(inputStream);
@@ -124,26 +125,22 @@ public class BaseSubPage extends VerticalLayout implements BaseSubPageInterface 
 		this.parentView = parentView;
 	}
 
-	/**
-	 * Gets properties file "strings.properties" of content to insert
-	 * 
-	 * @return
-	 */
+	@Override
 	public Properties getProps() {
 		return props;
 	}
 
-	/**
-	 * @param props
-	 */
+	@Override
 	public void setProps(Properties props) {
 		this.props = props;
 	}
 
+	@Override
 	public Target getTargetContext() {
 		return targetContext;
 	}
 
+	@Override
 	public void setTargetContext(Target targetContext) {
 		this.targetContext = targetContext;
 	}
