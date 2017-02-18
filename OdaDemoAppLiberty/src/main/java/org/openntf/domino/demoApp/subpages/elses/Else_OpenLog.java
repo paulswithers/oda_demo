@@ -8,10 +8,10 @@ import org.openntf.domino.demoApp.utils.FactoryUtils;
 
 import com.vaadin.ui.Label;
 
-public class OpenLog extends BaseSubPage {
+public class Else_OpenLog extends BaseSubPage {
 	private static final long serialVersionUID = 1L;
 
-	public OpenLog(BaseView parentView) {
+	public Else_OpenLog(BaseView parentView) {
 		super(parentView);
 	}
 

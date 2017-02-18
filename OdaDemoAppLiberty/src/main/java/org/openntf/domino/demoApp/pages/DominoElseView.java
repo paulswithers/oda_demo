@@ -34,7 +34,7 @@ import org.openntf.domino.demoApp.components.TargetSelector.Target;
 import org.openntf.domino.demoApp.subpages.elses.Else_DateTime;
 import org.openntf.domino.demoApp.subpages.elses.Else_DocumentSorter;
 import org.openntf.domino.demoApp.subpages.elses.Else_Summary;
-import org.openntf.domino.demoApp.subpages.elses.OpenLog;
+import org.openntf.domino.demoApp.subpages.elses.Else_OpenLog;
 import org.openntf.domino.helpers.DocumentSorter;
 import org.openntf.domino.logging.BaseOpenLogItem;
 
@@ -55,7 +55,7 @@ public class DominoElseView extends BaseView {
 	private MethodType currentMethodPage;
 	private Else_DateTime dateTime = new Else_DateTime(this);
 	private Else_Summary summary = new Else_Summary(this);
-	private OpenLog openLog = new OpenLog(this);
+	private Else_OpenLog openLog = new Else_OpenLog(this);
 	private Else_DocumentSorter sorter = new Else_DocumentSorter(this);
 	private Label elseMethodLabel;
 
