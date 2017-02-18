@@ -29,7 +29,6 @@ import org.openntf.domino.demoApp.pages.DatabaseView;
 import org.openntf.domino.demoApp.pages.DocumentView;
 import org.openntf.domino.demoApp.pages.DominoElseView;
 import org.openntf.domino.demoApp.pages.ErrorView;
-import org.openntf.domino.demoApp.pages.MiscView;
 import org.openntf.domino.demoApp.pages.SessionView;
 import org.openntf.domino.demoApp.pages.ViewView;
 import org.openntf.domino.demoApp.pages.XotsView;
@@ -173,7 +172,6 @@ public class DemoUI extends UI {
 		addNewMenuItem(ViewView.VIEW_NAME, ViewView.VIEW_LABEL, new ViewView());
 		addNewMenuItem(DocumentView.VIEW_NAME, DocumentView.VIEW_LABEL, new DocumentView());
 		addNewMenuItem(DominoElseView.VIEW_NAME, DominoElseView.VIEW_LABEL, new DominoElseView());
-		addNewMenuItem(MiscView.VIEW_NAME, MiscView.VIEW_LABEL, new SessionView());
 		addNewMenuItem(XotsView.VIEW_NAME, XotsView.VIEW_LABEL, new XotsView());
 
 		// Add inner layout to outer layout
