@@ -21,8 +21,6 @@ See the License for the specific language governing permissions and limitations 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-import javax.servlet.annotation.WebServlet;
-
 import org.openntf.domino.demoApp.components.HeaderComponent;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
 import org.openntf.domino.demoApp.pages.DatabaseView;
@@ -80,7 +78,6 @@ public class DemoUI extends UI {
 	private ConcurrentHashMap<String, Integer> createdDocs;
 	private ConcurrentHashMap<String, Integer> updatedDocs;
 
-	@WebServlet(urlPatterns = "/*", name = "UIServlet", asyncSupported = true, displayName = "ODA Demo App", loadOnStartup = 1)
 	@VaadinServletConfiguration(ui = DemoUI.class, productionMode = false, heartbeatInterval = 300)
 	public static class UIServlet extends VaadinServlet {
 
