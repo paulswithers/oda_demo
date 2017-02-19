@@ -32,32 +32,32 @@ import java.util.Vector;
 import org.apache.commons.lang3.StringUtils;
 import org.openntf.domino.Database;
 import org.openntf.domino.Database.FTIndexOption;
+import org.openntf.domino.demoApp.utils.SampleDataUtil;
 import org.openntf.domino.DateRange;
 import org.openntf.domino.Document;
 import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.ViewEntry;
 import org.openntf.domino.ViewEntryCollection;
-import org.openntf.domino.demoAppUtil.SampleDataUtil;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.xots.Tasklet;
 
 @Tasklet(session = Tasklet.Session.NATIVE)
 public class XotsDatabaseLoader implements Runnable {
-	private final String dbPath;
-	private final String templatePath;
-	private final int userCount;
-	private final int disc_rootDocs;
-	private final int disc_maxDepth;
-	private final String[] firstNames;
-	private final String[] lastNames;
-	private final String[] cities;
-	private final String[] states;
-	private final String[] loremIpsum;
+	private String dbPath;
+	private String templatePath;
+	private int userCount;
+	private int disc_rootDocs;
+	private int disc_maxDepth;
+	private String[] firstNames;
+	private String[] lastNames;
+	private String[] cities;
+	private String[] states;
+	private String[] loremIpsum;
 
-	public XotsDatabaseLoader(String dbPath, String templatePath, int userCount, int rootDocs, int disc_MaxDepth, String[] firstNames, String[] lastNames, String[] cities,
-			String[] states, String[] loremIpsum) {
+	public XotsDatabaseLoader(String dbPath, String templatePath, int userCount, int rootDocs, int disc_MaxDepth, String[] firstNames,
+			String[] lastNames, String[] cities, String[] states, String[] loremIpsum) {
 		this.dbPath = dbPath;
 		this.templatePath = templatePath;
 		this.userCount = userCount;
@@ -74,43 +74,43 @@ public class XotsDatabaseLoader implements Runnable {
 	public void run() {
 		try {
 
-			final Session sess = Factory.getSession(SessionType.NATIVE);
-			final Database dbTemplate = sess.getDatabase(templatePath);
-			final Database dbNew = dbTemplate.createCopy(dbTemplate.getServer(), dbPath);
+			Session sess = Factory.getSession(SessionType.NATIVE);
+			Database dbTemplate = sess.getDatabase(templatePath);
+			Database dbNew = dbTemplate.createCopy(dbTemplate.getServer(), dbPath);
 
 			createUsers(dbNew);
 			createStates(dbNew);
 			createDiscussionDocuments(dbNew);
 			createAllTypes(dbNew);
-			final Set<FTIndexOption> options = new HashSet<FTIndexOption>();
+			Set<FTIndexOption> options = new HashSet<FTIndexOption>();
 			dbNew.createFTIndex(options, true);
-		} catch (final Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	void createUsers(Database db) throws IOException {
-		final View w = db.getView("AllContacts");
+		View w = db.getView("AllContacts");
 		w.getAllEntries().removeAll(true);
 
-		final HashSet<String> users = new HashSet<String>();
+		HashSet<String> users = new HashSet<String>();
 		for (int i = 0; i < userCount; i++) {
 			while (true) {
-				final HashMap<String, String> userData = new HashMap<String, String>();
-				final String firstName = firstNames[(int) (Math.random() * firstNames.length)];
-				final String lastName = lastNames[(int) (Math.random() * lastNames.length)];
+				HashMap<String, String> userData = new HashMap<String, String>();
+				String firstName = firstNames[(int) (Math.random() * firstNames.length)];
+				String lastName = lastNames[(int) (Math.random() * lastNames.length)];
 				userData.put("Form", "Contact");
 				userData.put("id", "CN=" + firstName + " " + lastName + "/O=renovations");
 				userData.put("FirstName", firstName);
 				userData.put("LastName", lastName);
-				final String fullcity = cities[(int) (Math.random() * cities.length)];
+				String fullcity = cities[(int) (Math.random() * cities.length)];
 				userData.put("City", SampleDataUtil.cityName(fullcity));
 				userData.put("State", SampleDataUtil.cityState(fullcity));
 				userData.put("email", createEmail(firstName, lastName, userData.get("City")));
 
 				// If user already there, then reject and continue
 				// Else, create it...
-				final String nn = lastName + " " + firstName;
+				String nn = lastName + " " + firstName;
 				if (users == null || !users.contains(nn)) {
 					if (users != null) {
 						users.add(nn);
@@ -124,28 +124,28 @@ public class XotsDatabaseLoader implements Runnable {
 
 	/**
 	 * Create method passing a Map (one of the options added by ODA)
-	 *
+	 * 
 	 * @param db
 	 *            Database to create in
 	 * @param fieldVals
 	 *            Map of field names / values
 	 */
 	void createUser(Database db, Map<String, String> fieldVals) {
-		final Document doc = db.createDocument(fieldVals);
+		Document doc = db.createDocument(fieldVals);
 		doc.save();
 	}
 
 	String createEmail(String firstName, String lastName, String city) {
-		final StringBuilder b = new StringBuilder();
+		StringBuilder b = new StringBuilder();
 		for (int i = 0; i < firstName.length(); i++) {
-			final char c = Character.toLowerCase(firstName.charAt(i));
+			char c = Character.toLowerCase(firstName.charAt(i));
 			if (c >= 'a' && c <= 'z') {
 				b.append(c);
 			}
 		}
 		b.append('_');
 		for (int i = 0; i < lastName.length(); i++) {
-			final char c = Character.toLowerCase(lastName.charAt(i));
+			char c = Character.toLowerCase(lastName.charAt(i));
 			if (c >= 'a' && c <= 'z') {
 				b.append(c);
 			}
@@ -156,19 +156,18 @@ public class XotsDatabaseLoader implements Runnable {
 	}
 
 	void createStates(Database db) throws IOException {
-		final View w = db.getView("AllStates");
+		View w = db.getView("AllStates");
 		w.getAllEntries().removeAll(true);
 
-		for (final String state : states) {
-			final String[] s = StringUtils.split(state, ',');
+		for (int i = 0; i < states.length; i++) {
+			String[] s = StringUtils.split(states[i], ',');
 			createState(db, s[1], s[0]);
 		}
 	}
 
 	/**
-	 * Create method passing multiple parameters in format field, value, field,
-	 * value etc
-	 *
+	 * Create method passing multiple parameters in format field, value, field, value etc
+	 * 
 	 * @param db
 	 *            Database to create in
 	 * @param key
@@ -177,7 +176,7 @@ public class XotsDatabaseLoader implements Runnable {
 	 *            String state name
 	 */
 	void createState(Database db, String key, String name) {
-		final Document doc = db.createDocument("Form", "State", "Key", key, "Name", name);
+		Document doc = db.createDocument("Form", "State", "Key", key, "Name", name);
 		doc.save();
 	}
 
@@ -188,17 +187,17 @@ public class XotsDatabaseLoader implements Runnable {
 		// as different weight to each author by adding it a random # of times
 		// in the list
 		// We read the author names from the database
-		final ArrayList<String> users = new ArrayList<String>();
-		final View authorView = db.getView("AllContacts");
+		ArrayList<String> users = new ArrayList<String>();
+		View authorView = db.getView("AllContacts");
 		authorView.refresh();
-		final int maxAuthors = 15;
+		int maxAuthors = 15;
 		int nAuthor = 0;
-		final ViewEntryCollection ec = authorView.getAllEntries();
-		for (final ViewEntry e : ec) {
-			final Vector<?> values = e.getColumnValues();
-			final String name = (String) values.get(6);
+		ViewEntryCollection ec = authorView.getAllEntries();
+		for (ViewEntry e : ec) {
+			Vector<?> values = e.getColumnValues();
+			String name = (String) values.get(6);
 			// Add it a random number of times to the list
-			final int n = ((int) (Math.random() * maxAuthors)) + 1;
+			int n = ((int) (Math.random() * maxAuthors)) + 1;
 			for (int jj = 0; jj < n; jj++) {
 				users.add(name);
 			}
@@ -212,28 +211,28 @@ public class XotsDatabaseLoader implements Runnable {
 			users.add("John Doe");
 		}
 
-		final View w = db.getView("AllThreads");
+		View w = db.getView("AllThreads");
 		w.getAllEntries().removeAll(true);
 		createDiscussionDocument(db, null, users, new int[] { 0 }, disc_rootDocs);
 	}
 
 	void createDiscussionDocument(Database db, Document parent, ArrayList<String> users, int[] pos, int nDoc) throws IOException {
-		final Calendar cal = GregorianCalendar.getInstance();
+		Calendar cal = GregorianCalendar.getInstance();
 		cal.setTime(new Date());
 		for (int j = 0; j < nDoc; j++) {
 			pos[pos.length - 1] = j + 1;
 
-			final Document doc = db.createDocument();
+			Document doc = db.createDocument();
 			doc.replaceItemValue("Form", "Discussion");
-			final StringBuilder b = new StringBuilder();
+			StringBuilder b = new StringBuilder();
 			for (int i = 0; i < pos.length; i++) {
 				if (i > 0) {
 					b.append("/");
 				}
 				b.append(pos[i]);
 			}
-			final int idx = (int) (Math.random() * (loremIpsum.length - 1));
-			final String body = loremIpsum[idx];
+			int idx = (int) (Math.random() * (loremIpsum.length - 1));
+			String body = loremIpsum[idx];
 			int dot = body.indexOf('.');
 			if (dot < 0) {
 				dot = body.length() - 1;
@@ -242,11 +241,11 @@ public class XotsDatabaseLoader implements Runnable {
 			if (coma < 0) {
 				coma = body.length() - 1;
 			}
-			final String title = body.substring(0, Math.min(dot, coma));
+			String title = body.substring(0, Math.min(dot, coma));
 
 			// Get a random author
-			final int x = Math.min((int) (Math.random() * (users.size())), users.size());
-			final String author = users.get(x);
+			int x = Math.min((int) (Math.random() * (users.size())), users.size());
+			String author = users.get(x);
 
 			doc.replaceItemValue("Title", title);
 			doc.replaceItemValue("Body", body);
@@ -259,16 +258,16 @@ public class XotsDatabaseLoader implements Runnable {
 			doc.save();
 
 			if (pos.length < disc_maxDepth) {
-				final double r = Math.random();
+				double r = Math.random();
 				if (r <= (1.0 / pos.length)) {
-					final int[] newPos = new int[pos.length + 1];
+					int[] newPos = new int[pos.length + 1];
 					System.arraycopy(pos, 0, newPos, 0, pos.length);
-					final int n = (int) (Math.random() * 5);
+					int n = (int) (Math.random() * 5);
 					createDiscussionDocument(db, doc, users, newPos, n);
 				}
 			}
 			// Move the date to the day before if requested
-			final boolean mvd = Math.random() <= 0.40;
+			boolean mvd = Math.random() <= 0.40;
 			if (mvd) {
 				// Previous day...
 				cal.add(Calendar.DATE, -1);
@@ -277,7 +276,7 @@ public class XotsDatabaseLoader implements Runnable {
 	}
 
 	void createAllTypes(Database db) throws IOException {
-		final View w = db.getView("AllTypes");
+		View w = db.getView("AllTypes");
 		w.getAllEntries().removeAll(true);
 
 		for (int i = 1; i < 25; i++) {
@@ -286,9 +285,9 @@ public class XotsDatabaseLoader implements Runnable {
 	}
 
 	void createAllType(Database db, int index) {
-		final Session session = db.getParent();
-		final String sIndex = Integer.toString(index);
-		final Document doc = db.createDocument();
+		Session session = db.getParent();
+		String sIndex = Integer.toString(index);
+		Document doc = db.createDocument();
 		doc.put("Form", "AllTypes");
 
 		doc.put("fldIcon", index);
@@ -300,45 +299,45 @@ public class XotsDatabaseLoader implements Runnable {
 		doc.put("fldDateTimeRange", createDateTimeRange(session, 2012, 3, index, 8, 9, index));
 		doc.put("fldDialogList", "dlg_" + sIndex);
 
-		final ArrayList<String> mx = new ArrayList<String>();
+		ArrayList<String> mx = new ArrayList<String>();
 		mx.add("text_" + sIndex + "_1");
 		mx.add("text_" + sIndex + "_2");
 		mx.add("text_" + sIndex + "_3");
 		doc.put("fldText2", mx);
 
-		final ArrayList<Object> mn = new ArrayList<Object>();
+		ArrayList<Object> mn = new ArrayList<Object>();
 		mn.add(index * 100 + 1);
 		mn.add(index * 100 + 2);
 		mn.add(index * 100 + 3);
 		doc.put("fldNumber2", mn);
 
-		final ArrayList<Date> md = new ArrayList<Date>();
+		ArrayList<Date> md = new ArrayList<Date>();
 		md.add(createDate(2010, Calendar.JANUARY, index));
 		md.add(createDate(2010, Calendar.FEBRUARY, index));
 		md.add(createDate(2010, Calendar.MARCH, index));
 		doc.put("fldDate2", md);
 
-		final Vector<Date> mt = new Vector<Date>();
+		Vector<Date> mt = new Vector<Date>();
 		mt.add(createTime(session, 6, 1, index));
 		mt.add(createTime(session, 6, 2, index));
 		mt.add(createTime(session, 6, 3, index));
 		doc.put("fldTime2", mt);
 
-		final Vector<Date> mdt = new Vector<Date>();
+		Vector<Date> mdt = new Vector<Date>();
 		mdt.add(createDateTime(2011, 1, index, 6, 1, index));
 		mdt.add(createDateTime(2011, 2, index, 6, 2, index));
 		mdt.add(createDateTime(2011, 3, index, 6, 3, index));
 		doc.put("fldDateTime2", mdt);
 
 		if (false) { // DateTime range do not work with multiple values?
-			final Vector<DateRange> mrg = new Vector<DateRange>();
+			Vector<DateRange> mrg = new Vector<DateRange>();
 			mrg.add(createDateTimeRange(session, 2012, 2, index, 4, 1, index));
 			mrg.add(createDateTimeRange(session, 2012, 3, index, 5, 1, index));
 			mrg.add(createDateTimeRange(session, 2012, 4, index, 6, 1, index));
 			doc.put("fldDateTimeRange2", mrg);
 		}
 
-		final ArrayList<Object> mdg = new ArrayList<Object>();
+		ArrayList<Object> mdg = new ArrayList<Object>();
 		mdg.add("dlgx_" + sIndex + "_1");
 		mdg.add("dlgx_" + sIndex + "_1");
 		mdg.add("dlgx_" + sIndex + "_1");
@@ -348,30 +347,30 @@ public class XotsDatabaseLoader implements Runnable {
 	}
 
 	protected Date createDate(int year, int month, int day) {
-		final Calendar c1 = GregorianCalendar.getInstance();
+		Calendar c1 = GregorianCalendar.getInstance();
 		c1.set(year, month, day);
-		final Date d = c1.getTime();
+		Date d = c1.getTime();
 		return d;
 	}
 
 	protected Date createTime(Session session, int hour, int minute, int second) {
-		final Calendar c1 = GregorianCalendar.getInstance();
+		Calendar c1 = GregorianCalendar.getInstance();
 		c1.set(Calendar.HOUR_OF_DAY, hour);
 		c1.set(Calendar.MINUTE, minute);
 		c1.set(Calendar.SECOND, second);
-		final Date d = c1.getTime();
+		Date d = c1.getTime();
 		return d;
 	}
 
 	protected Date createDateTime(int year, int month, int day, int hour, int minute, int second) {
-		final Calendar c1 = GregorianCalendar.getInstance();
+		Calendar c1 = GregorianCalendar.getInstance();
 		c1.set(year, month, day, hour, minute, second);
-		final Date d = c1.getTime();
+		Date d = c1.getTime();
 		return d;
 	}
 
 	protected DateRange createDateTimeRange(Session session, int year, int month, int day, int hour, int minute, int second) {
-		final DateRange r = session.createDateRange(new Date(), new Date());
+		DateRange r = session.createDateRange(new Date(), new Date());
 		r.setStartDateTime(session.createDateTime(createDateTime(year, month, day, hour, minute, second)));
 		r.setEndDateTime(session.createDateTime(createDateTime(year + 1, month, day, hour + 1, minute, second)));
 		return r;

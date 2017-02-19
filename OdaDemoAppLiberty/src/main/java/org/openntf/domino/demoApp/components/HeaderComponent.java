@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and limitations 
 */
 
 import org.openntf.domino.demoApp.DemoUI;
-import org.openntf.domino.demoAppUtil.FactoryUtils;
+import org.openntf.domino.demoApp.utils.FactoryUtils;
 import org.openntf.domino.utils.DominoUtils;
 
 import com.vaadin.server.ThemeResource;

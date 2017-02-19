@@ -25,10 +25,9 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
 /**
- * View shown when trying to navigate to a view that does not exist using
- * {@link com.vaadin.navigator.Navigator}.
- *
- *
+ * View shown when trying to navigate to a view that does not exist using {@link com.vaadin.navigator.Navigator}.
+ * 
+ * 
  */
 public class ErrorView extends VerticalLayout implements View {
 	private static final long serialVersionUID = 1L;
@@ -38,7 +37,7 @@ public class ErrorView extends VerticalLayout implements View {
 		setMargin(true);
 		setSpacing(true);
 
-		final Label header = new Label("The view could not be found");
+		Label header = new Label("The view could not be found");
 		header.addStyleName(Reindeer.LABEL_H1);
 		addComponent(header);
 		addComponent(explanation = new Label());

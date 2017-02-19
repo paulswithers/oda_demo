@@ -19,26 +19,30 @@ See the License for the specific language governing permissions and limitations 
 */
 
 import java.util.Collection;
-import java.util.TreeMap;
 
 import org.openntf.domino.Document;
 import org.openntf.domino.View;
-import org.openntf.domino.demoAppUtil.FactoryUtils;
+import org.openntf.domino.demoApp.utils.FactoryUtils;
 
 import com.vaadin.data.Container;
 import com.vaadin.ui.NativeSelect;
 
 public class StateSelector extends NativeSelect {
+	private static final long serialVersionUID = 1L;
 
 	public StateSelector() {
-		final TreeMap<String, String> stateList = new TreeMap<String, String>();
-		final View allStates = FactoryUtils.getDemoDatabase().getView("AllStates");
+		loadOptions();
+	}
+
+	private void loadOptions() {
+		View allStates = FactoryUtils.getDemoDatabase().getView("AllStates");
 		boolean defaultSet = false;
-		for (final Document doc : allStates.getAllDocuments()) {
-			addItem(doc.getItemValueString("Key"));
-			setItemCaption(doc.getItemValueString("Key"), doc.getItemValueString("Name"));
+		for (Document doc : allStates.getAllDocuments()) {
+			String value = doc.getItemValueString("Key");
+			addItem(value);
+			setItemCaption(value, doc.getItemValueString("Name"));
 			if (!defaultSet) {
-				setValue(doc.getItemValueString("Key"));
+				setValue(value);
 				defaultSet = true;
 			}
 		}
@@ -47,6 +51,7 @@ public class StateSelector extends NativeSelect {
 
 	public StateSelector(String caption) {
 		super(caption);
+		loadOptions();
 	}
 
 	public StateSelector(String caption, Collection<?> options) {

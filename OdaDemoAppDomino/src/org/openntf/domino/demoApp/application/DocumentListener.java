@@ -36,7 +36,6 @@ public class DocumentListener implements IDominoListener {
 	}
 
 	// Required method, triggered when Listener fires
-	@Override
 	public boolean eventHappened(IDominoEvent event) {
 		try {
 			if (event.getEvent().equals(Events.AFTER_CREATE_DOCUMENT)) {
@@ -46,15 +45,14 @@ public class DocumentListener implements IDominoListener {
 				return incrementUpdateCount();
 			}
 			return false;
-		} catch (final Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}
 
 	// Required method, lists events to attach listeners for
-	@Override
 	public List<EnumEvent> getEventTypes() {
-		final ArrayList<EnumEvent> eventList = new ArrayList<EnumEvent>();
+		ArrayList<EnumEvent> eventList = new ArrayList<EnumEvent>();
 		eventList.add(Events.AFTER_CREATE_DOCUMENT);
 		eventList.add(Events.AFTER_UPDATE_DOCUMENT);
 		return eventList;
@@ -64,7 +62,7 @@ public class DocumentListener implements IDominoListener {
 		try {
 			Integer docsCreated;
 			// Update a "session-scoped" variable
-			final Map<String, Integer> createdDocs = DemoUI.get().getCreatedDocs();
+			Map<String, Integer> createdDocs = DemoUI.get().getCreatedDocs();
 			if (createdDocs.containsKey(getFilePath())) {
 				docsCreated = createdDocs.get(getFilePath()) + 1;
 			} else {
@@ -72,7 +70,7 @@ public class DocumentListener implements IDominoListener {
 			}
 			DemoUI.get().getCreatedDocs().put(getFilePath(), docsCreated);
 			return true;
-		} catch (final Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}
@@ -81,7 +79,7 @@ public class DocumentListener implements IDominoListener {
 		try {
 			Integer docsUpdated;
 			// Update a "session-scoped" variable
-			final Map<String, Integer> updatedDocs = DemoUI.get().getUpdatedDocs();
+			Map<String, Integer> updatedDocs = DemoUI.get().getUpdatedDocs();
 			if (updatedDocs.containsKey(getFilePath())) {
 				docsUpdated = updatedDocs.get(getFilePath()) + 1;
 			} else {
@@ -89,7 +87,7 @@ public class DocumentListener implements IDominoListener {
 			}
 			DemoUI.get().getCreatedDocs().put(getFilePath(), docsUpdated);
 			return true;
-		} catch (final Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}

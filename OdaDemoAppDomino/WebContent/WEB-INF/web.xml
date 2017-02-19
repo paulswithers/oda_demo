@@ -52,6 +52,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
             <param-name>UI</param-name>
             <param-value>org.openntf.domino.demoApp.DemoUI</param-value>
         </init-param>
+        <display-name>ODA Demo App</display-name>
+        <load-on-startup>1</load-on-startup>
     </servlet> 
 
     <servlet-mapping>

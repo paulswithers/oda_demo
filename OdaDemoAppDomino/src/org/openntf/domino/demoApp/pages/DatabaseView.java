@@ -26,15 +26,15 @@ import org.openntf.domino.Database;
 import org.openntf.domino.demoApp.DemoUI;
 import org.openntf.domino.demoApp.components.TargetSelector;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
-import org.openntf.domino.demoApp.subpages.Database_CompactOptions;
-import org.openntf.domino.demoApp.subpages.Database_DatabaseOptions;
-import org.openntf.domino.demoApp.subpages.Database_FTIndex;
-import org.openntf.domino.demoApp.subpages.Database_FixupOption;
-import org.openntf.domino.demoApp.subpages.Database_GettingDbs;
-import org.openntf.domino.demoApp.subpages.Database_GettingDocuments;
-import org.openntf.domino.demoApp.subpages.Database_Listeners;
-import org.openntf.domino.demoApp.subpages.Database_Summary;
-import org.openntf.domino.demoApp.subpages.Database_Transaction;
+import org.openntf.domino.demoApp.subpages.database.Database_CompactOptions;
+import org.openntf.domino.demoApp.subpages.database.Database_DatabaseOptions;
+import org.openntf.domino.demoApp.subpages.database.Database_FTIndex;
+import org.openntf.domino.demoApp.subpages.database.Database_FixupOption;
+import org.openntf.domino.demoApp.subpages.database.Database_GettingDbs;
+import org.openntf.domino.demoApp.subpages.database.Database_GettingDocuments;
+import org.openntf.domino.demoApp.subpages.database.Database_Listeners;
+import org.openntf.domino.demoApp.subpages.database.Database_Summary;
+import org.openntf.domino.demoApp.subpages.database.Database_Transaction;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -49,29 +49,43 @@ public class DatabaseView extends BaseView {
 	public static String VIEW_NAME = "Database";
 	public static String VIEW_LABEL = "Database";
 	private DatabaseSubPage currentPage;
-	private final Database_Summary summaryDetails = new Database_Summary(this);
-	private final Database_GettingDbs gettingDbs = new Database_GettingDbs(this);
-	private final Database_GettingDocuments gettingDocs = new Database_GettingDocuments(this);
-	private final Database_CompactOptions compactOpts = new Database_CompactOptions(this);
-	private final Database_FixupOption fixupOpts = new Database_FixupOption(this);
-	private final Database_DatabaseOptions dbOpts = new Database_DatabaseOptions(this);
-	private final Database_FTIndex ftIndex = new Database_FTIndex(this);
-	private final Database_Transaction transactionSummary = new Database_Transaction(this);
-	private final Database_Listeners listenerSummary = new Database_Listeners(this);
+	private SourceCodeType currentSourcePage;
+	private Database_Summary summaryDetails = new Database_Summary(this);
+	private Database_GettingDbs gettingDbs = new Database_GettingDbs(this);
+	private Database_GettingDocuments gettingDocs = new Database_GettingDocuments(this);
+	private Database_CompactOptions compactOpts = new Database_CompactOptions(this);
+	private Database_FixupOption fixupOpts = new Database_FixupOption(this);
+	private Database_DatabaseOptions dbOpts = new Database_DatabaseOptions(this);
+	private Database_FTIndex ftIndex = new Database_FTIndex(this);
+	private Database_Transaction transactionSummary = new Database_Transaction(this);
+	private Database_Listeners listenerSummary = new Database_Listeners(this);
 	private Label databaseMethodLabel;
 	private Label databaseTransactionMethodLabel;
 	private Label databaseListenerMethodLabel;
 
+	private enum SourceCodeType {
+		GET_DB, GET_DOC, LISTENER, TRANSACTION;
+	}
+
 	public enum DatabaseSubPage {
-		SUMMARY_DETAILS("Summary Details", Target.BOTH), GETTING_DBS("Getting Databases", Target.BOTH), GETTING_DOCS("Getting Documents",
-				Target.BOTH), FT_INDEXING("Full Text Indexing", Target.BOTH), COMPACT_OPTIONS("Compact Options", Target.BOTH), FIXUP_OPTIONS("Fixup Options",
-						Target.BOTH), DB_OPTIONS("Database Options", Target.BOTH), LISTENERS("Listeners", Target.BOTH), TRANSACTION("Transactional Processing", Target.BOTH);
+		SUMMARY_DETAILS("Summary Details", Target.BOTH, SourceCodeType.GET_DB), GETTING_DBS("Getting Databases",
+				Target.BOTH, SourceCodeType.GET_DB), GETTING_DOCS("Getting Documents", Target.BOTH,
+						SourceCodeType.GET_DOC), FT_INDEXING("Full Text Indexing", Target.BOTH,
+								SourceCodeType.GET_DB), COMPACT_OPTIONS("Compact Options", Target.BOTH,
+										SourceCodeType.GET_DB), FIXUP_OPTIONS("Fixup Options", Target.BOTH,
+												SourceCodeType.GET_DB), DB_OPTIONS("Database Options", Target.BOTH,
+														SourceCodeType.GET_DB), LISTENERS("Listeners", Target.BOTH,
+																SourceCodeType.LISTENER), TRANSACTION(
+																		"Transactional Processing", Target.BOTH,
+																		SourceCodeType.TRANSACTION);
 		private String value_;
 		private Target target_;
+		private SourceCodeType sourcePage_;
 
-		private DatabaseSubPage(String subPage, Target target) {
+		private DatabaseSubPage(String subPage, Target target, SourceCodeType sourcePage) {
 			value_ = subPage;
 			target_ = target;
+			sourcePage_ = sourcePage;
 		}
 
 		public String getValue() {
@@ -80,6 +94,10 @@ public class DatabaseView extends BaseView {
 
 		public Target getTarget() {
 			return target_;
+		}
+
+		public SourceCodeType getSourcePage() {
+			return sourcePage_;
 		}
 	}
 
@@ -149,19 +167,36 @@ public class DatabaseView extends BaseView {
 		default:
 			getContentPanel().setContent(new Label("<b>NO CONTENT SET FOR THIS PAGE</b>", ContentMode.HTML));
 		}
+		if (!subPage.getSourcePage().equals(getCurrentSourcePage())) {
+			switch (subPage.getSourcePage()) {
+			case GET_DOC:
+				loadGetDocSource();
+				break;
+			case LISTENER:
+				loadListenerSource();
+				break;
+			case TRANSACTION:
+				loadTransactionSource();
+				break;
+			default:
+				loadGetDbSource();
+			}
+			setCurrentSourcePage(subPage.getSourcePage());
+		}
 	}
 
 	@Override
 	public void loadNavigation() {
 		getSubNavigation().removeAllComponents();
 
-		final TargetSelector target1 = new TargetSelector(this);
+		TargetSelector target1 = new TargetSelector(this);
 		getSubNavigation().addComponent(target1);
-		final Target currTarget = DemoUI.get().getAppTarget();
+		Target currTarget = DemoUI.get().getAppTarget();
 
 		for (final DatabaseSubPage subPage : DatabaseSubPage.values()) {
-			if (Target.BOTH.equals(currTarget) || Target.BOTH.equals(subPage.getTarget()) || currTarget.equals(subPage.getTarget())) {
-				final Button button1 = new Button(subPage.getValue());
+			if (Target.BOTH.equals(currTarget) || Target.BOTH.equals(subPage.getTarget())
+					|| currTarget.equals(subPage.getTarget())) {
+				Button button1 = new Button(subPage.getValue());
 				button1.addStyleName(ValoTheme.BUTTON_LINK);
 				button1.addStyleName(ValoTheme.BUTTON_SMALL);
 				button1.addStyleName("navigation-button");
@@ -182,7 +217,7 @@ public class DatabaseView extends BaseView {
 
 	@Override
 	public void loadMethodList() {
-		final Label methLabel = getDatabaseMethodLabel();
+		Label methLabel = getDatabaseMethodLabel();
 		getMethodList().setContent(methLabel);
 	}
 
@@ -194,16 +229,16 @@ public class DatabaseView extends BaseView {
 	}
 
 	private void setDatabaseMethodLabel() {
-		final StringBuilder sb = new StringBuilder();
-		final ArrayList<String> newMethods = new ArrayList<String>();
-		for (final Method newCrystal : org.openntf.domino.ext.Database.class.getMethods()) {
-			newMethods.add(newCrystal.getName());
+		StringBuilder sb = new StringBuilder();
+		ArrayList<String> newMethods = new ArrayList<String>();
+		for (Method newCrystal : org.openntf.domino.ext.Database.class.getMethods()) {
+			newMethods.add(newCrystal.getName() + newCrystal.hashCode());
 		}
-		final TreeMap<String, String> methSummary = new TreeMap<String, String>();
-		for (final Method crystal : Database.class.getMethods()) {
-			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
+		TreeMap<String, String> methSummary = new TreeMap<String, String>();
+		for (Method crystal : Database.class.getMethods()) {
+			methSummary.put(crystal.getName() + crystal.hashCode(), getMethodSummary(newMethods, crystal));
 		}
-		for (final String content : methSummary.values()) {
+		for (String content : methSummary.values()) {
 			sb.append(content);
 		}
 		databaseMethodLabel = new Label(sb.toString(), ContentMode.HTML);
@@ -217,16 +252,16 @@ public class DatabaseView extends BaseView {
 	}
 
 	public void setDatabaseTransactionMethodLabel() {
-		final StringBuilder sb = new StringBuilder();
-		final ArrayList<String> newMethods = new ArrayList<String>();
-		for (final Method newCrystal : org.openntf.domino.transactions.DatabaseTransaction.class.getMethods()) {
-			newMethods.add(newCrystal.getName());
+		StringBuilder sb = new StringBuilder();
+		ArrayList<String> newMethods = new ArrayList<String>();
+		for (Method newCrystal : org.openntf.domino.transactions.DatabaseTransaction.class.getMethods()) {
+			newMethods.add(newCrystal.getName() + newCrystal.hashCode());
 		}
-		final TreeMap<String, String> methSummary = new TreeMap<String, String>();
-		for (final Method crystal : org.openntf.domino.transactions.DatabaseTransaction.class.getMethods()) {
-			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
+		TreeMap<String, String> methSummary = new TreeMap<String, String>();
+		for (Method crystal : org.openntf.domino.transactions.DatabaseTransaction.class.getMethods()) {
+			methSummary.put(crystal.getName() + crystal.hashCode(), getMethodSummary(newMethods, crystal));
 		}
-		for (final String content : methSummary.values()) {
+		for (String content : methSummary.values()) {
 			sb.append(content);
 		}
 		databaseTransactionMethodLabel = new Label(sb.toString(), ContentMode.HTML);
@@ -240,29 +275,29 @@ public class DatabaseView extends BaseView {
 	}
 
 	public void setDatabaseListenerMethodLabel() {
-		final StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		sb.append("<h3>IDominoEvent</h3>");
 		ArrayList<String> newMethods = new ArrayList<String>();
-		for (final Method newCrystal : org.openntf.domino.events.IDominoEvent.class.getMethods()) {
-			newMethods.add(newCrystal.getName());
+		for (Method newCrystal : org.openntf.domino.events.IDominoEvent.class.getMethods()) {
+			newMethods.add(newCrystal.getName() + newCrystal.hashCode());
 		}
 		TreeMap<String, String> methSummary = new TreeMap<String, String>();
-		for (final Method crystal : org.openntf.domino.events.IDominoEvent.class.getMethods()) {
-			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
+		for (Method crystal : org.openntf.domino.events.IDominoEvent.class.getMethods()) {
+			methSummary.put(crystal.getName() + crystal.hashCode(), getMethodSummary(newMethods, crystal));
 		}
-		for (final String content : methSummary.values()) {
+		for (String content : methSummary.values()) {
 			sb.append(content);
 		}
 		sb.append("<br/><h3>IDominoListener</h3>");
 		newMethods = new ArrayList<String>();
-		for (final Method newCrystal : org.openntf.domino.events.IDominoListener.class.getMethods()) {
+		for (Method newCrystal : org.openntf.domino.events.IDominoListener.class.getMethods()) {
 			newMethods.add(newCrystal.getName());
 		}
 		methSummary = new TreeMap<String, String>();
-		for (final Method crystal : org.openntf.domino.events.IDominoListener.class.getMethods()) {
+		for (Method crystal : org.openntf.domino.events.IDominoListener.class.getMethods()) {
 			methSummary.put(crystal.getName(), getMethodSummary(newMethods, crystal));
 		}
-		for (final String content : methSummary.values()) {
+		for (String content : methSummary.values()) {
 			sb.append(content);
 		}
 		databaseListenerMethodLabel = new Label(sb.toString(), ContentMode.HTML);
@@ -270,7 +305,23 @@ public class DatabaseView extends BaseView {
 
 	@Override
 	public void loadSource() {
-		return;
+		loadGetDbSource();
+	}
+
+	public void loadGetDbSource() {
+		loadSimpleSource("getDb");
+	}
+
+	public void loadGetDocSource() {
+		loadSimpleSource("getDoc");
+	}
+
+	public void loadListenerSource() {
+		loadSimpleSource("listener");
+	}
+
+	public void loadTransactionSource() {
+		loadSimpleSource("transaction");
 	}
 
 	public DatabaseSubPage getCurrentPage() {
@@ -282,6 +333,17 @@ public class DatabaseView extends BaseView {
 
 	public void setCurrentPage(DatabaseSubPage currentPage) {
 		this.currentPage = currentPage;
+	}
+
+	public SourceCodeType getCurrentSourcePage() {
+		if (null == currentSourcePage) {
+			setCurrentSourcePage(SourceCodeType.GET_DB);
+		}
+		return currentSourcePage;
+	}
+
+	public void setCurrentSourcePage(SourceCodeType currentSourcePage) {
+		this.currentSourcePage = currentSourcePage;
 	}
 
 }

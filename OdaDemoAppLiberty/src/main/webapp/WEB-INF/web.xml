@@ -1,25 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app id="WebApp_ID" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-	<display-name>ODA_DemoApp</display-name>
-	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
-	</welcome-file-list>
-	
-    <servlet>
-        <servlet-name>Vaadin</servlet-name>
-        <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
-        <init-param>
-            <description>Vaadin UI to display</description>
-            <param-name>UI</param-name>
-            <param-value>org.openntf.domino.demoApp.DemoUI</param-value>
-        </init-param>
-    </servlet>
-    
+<web-app id="WebApp_ID" version="3.0"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 	<context-param>
 		<param-name>org.openntf.crossworlds.devtimename</param-name>
 		<param-value>CN=Mickey Mouse/O=Disney</param-value>
@@ -36,11 +18,4 @@
 		<param-name>org.openntf.domino.demoApp.instances</param-name>
 		<param-value>10</param-value>
 	</context-param>
-	<context-param>
-		<param-name>heartbeatInterval</param-name>
-		<param-value>300</param-value>
-	</context-param>
-	<session-config>
-    	<session-timeout>30</session-timeout>
-	</session-config>
 </web-app>

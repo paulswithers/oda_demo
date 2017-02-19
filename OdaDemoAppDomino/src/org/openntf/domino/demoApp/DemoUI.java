@@ -19,17 +19,18 @@ See the License for the specific language governing permissions and limitations 
 */
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 import org.openntf.domino.demoApp.components.HeaderComponent;
 import org.openntf.domino.demoApp.components.TargetSelector.Target;
 import org.openntf.domino.demoApp.pages.DatabaseView;
-import org.openntf.domino.demoApp.pages.DateTimeView;
 import org.openntf.domino.demoApp.pages.DocumentView;
+import org.openntf.domino.demoApp.pages.DominoElseView;
 import org.openntf.domino.demoApp.pages.ErrorView;
-import org.openntf.domino.demoApp.pages.MiscView;
 import org.openntf.domino.demoApp.pages.SessionView;
+import org.openntf.domino.demoApp.pages.ViewView;
 import org.openntf.domino.demoApp.pages.XotsView;
-import org.openntf.domino.demoAppUtil.FactoryUtils;
+import org.openntf.domino.demoApp.utils.FactoryUtils;
 import org.vaadin.sliderpanel.SliderPanel;
 import org.vaadin.sliderpanel.SliderPanelBuilder;
 import org.vaadin.sliderpanel.SliderPanelStyles;
@@ -37,6 +38,7 @@ import org.vaadin.sliderpanel.client.SliderMode;
 import org.vaadin.sliderpanel.client.SliderTabPosition;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Viewport;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
@@ -44,9 +46,9 @@ import com.vaadin.navigator.View;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
@@ -64,6 +66,7 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("OdaDemoTheme")
 @Widgetset("org.openntf.domino.demoApp.widgetset.Oda_demoappWidgetset")
 public class DemoUI extends UI {
+	private static final Logger logger = Logger.getLogger(DemoUI.class.getName());
 
 	private Navigator uiNavigator;
 	private HeaderComponent header;
@@ -74,6 +77,11 @@ public class DemoUI extends UI {
 	private Label configDetails;
 	private ConcurrentHashMap<String, Integer> createdDocs;
 	private ConcurrentHashMap<String, Integer> updatedDocs;
+
+	@VaadinServletConfiguration(ui = DemoUI.class, productionMode = false, heartbeatInterval = 300)
+	public static class UIServlet extends VaadinServlet {
+
+	}
 
 	public Navigator getUiNavigator() {
 		return uiNavigator;
@@ -102,10 +110,10 @@ public class DemoUI extends UI {
 		outerLayout.setSpacing(false);
 
 		// Bottom Slider Panel
-		final VerticalLayout cfgSettings = new VerticalLayout();
+		VerticalLayout cfgSettings = new VerticalLayout();
 		cfgSettings.setStyleName("config-settings");
-		final Label cfgBody;
-		final Button button1 = new Button("Refresh");
+		Label cfgBody;
+		Button button1 = new Button("Refresh");
 		button1.setIcon(FontAwesome.REFRESH);
 		button1.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		button1.addStyleName(ValoTheme.BUTTON_QUIET);
@@ -121,8 +129,9 @@ public class DemoUI extends UI {
 		});
 		setConfigDetails(new Label(FactoryUtils.dumpConfigSettings(), ContentMode.HTML));
 		cfgSettings.addComponents(button1, getConfigDetails());
-		final SliderPanel cfgSlider = new SliderPanelBuilder(cfgSettings).caption("CONFIGURATION SETTINGS").mode(SliderMode.BOTTOM).style(SliderPanelStyles.COLOR_GRAY)
-				.tabPosition(SliderTabPosition.MIDDLE).build();
+		SliderPanel cfgSlider = new SliderPanelBuilder(cfgSettings).caption("CONFIGURATION SETTINGS")
+				.mode(SliderMode.BOTTOM).style(SliderPanelStyles.COLOR_GRAY).tabPosition(SliderTabPosition.MIDDLE)
+				.build();
 
 		// contentLayout component contains Header and Body, stored in
 		// middleLayout
@@ -147,8 +156,9 @@ public class DemoUI extends UI {
 		innerLayout.setSizeFull();
 		innerLayout.addComponent(contentLayout);
 		innerLayout.setExpandRatio(contentLayout, 1);
-		setRightSlider(new SliderPanelBuilder(new VerticalLayout()).caption("INFORMATION").mode(SliderMode.RIGHT).style(SliderPanelStyles.COLOR_WHITE)
-				.tabPosition(SliderTabPosition.MIDDLE).fixedContentSize(450).build());
+		setRightSlider(new SliderPanelBuilder(new VerticalLayout()).caption("INFORMATION").mode(SliderMode.RIGHT)
+				.style(SliderPanelStyles.COLOR_WHITE).tabPosition(SliderTabPosition.MIDDLE).fixedContentSize(700)
+				.build());
 		innerLayout.addComponent(getRightSlider());
 
 		// Add Navigator and menu items
@@ -156,9 +166,9 @@ public class DemoUI extends UI {
 		getUiNavigator().setErrorView(ErrorView.class);
 		addNewMenuItem(SessionView.VIEW_NAME, SessionView.VIEW_LABEL, new SessionView());
 		addNewMenuItem(DatabaseView.VIEW_NAME, DatabaseView.VIEW_LABEL, new DatabaseView());
-		addNewMenuItem(DocumentView.VIEW_NAME, DocumentView.VIEW_LABEL, new SessionView());
-		addNewMenuItem(DateTimeView.VIEW_NAME, DateTimeView.VIEW_LABEL, new SessionView());
-		addNewMenuItem(MiscView.VIEW_NAME, MiscView.VIEW_LABEL, new SessionView());
+		addNewMenuItem(ViewView.VIEW_NAME, ViewView.VIEW_LABEL, new ViewView());
+		addNewMenuItem(DocumentView.VIEW_NAME, DocumentView.VIEW_LABEL, new DocumentView());
+		addNewMenuItem(DominoElseView.VIEW_NAME, DominoElseView.VIEW_LABEL, new DominoElseView());
 		addNewMenuItem(XotsView.VIEW_NAME, XotsView.VIEW_LABEL, new XotsView());
 
 		// Add inner layout to outer layout
@@ -176,7 +186,7 @@ public class DemoUI extends UI {
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
 				if (isSetup()) {
-					for (final MenuItem itm : getHeader().getMenubar().getItems()) {
+					for (MenuItem itm : getHeader().getMenubar().getItems()) {
 						if ("highlight".equals(itm.getStyleName())) {
 							itm.setStyleName("");
 						}
@@ -185,7 +195,8 @@ public class DemoUI extends UI {
 					selectedItem.setStyleName("highlight");
 					DemoUI.getCurrent().getNavigator().navigateTo(viewName);
 				} else {
-					addMessage("", "You must set up the database before navigating the application", Type.ERROR_MESSAGE);
+					addMessage("", "You must set up the database before navigating the application",
+							Type.ERROR_MESSAGE);
 				}
 			}
 		});
