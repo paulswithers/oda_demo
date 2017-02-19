@@ -22,7 +22,8 @@ public class Else_Summary extends BaseSubPage {
 		Label label1 = new Label(getProps().getProperty("summary"));
 		addComponent(label1);
 		for (final MethodType methodType : MethodType.values()) {
-			if (!MethodType.DATE.equals(methodType)) {
+			if (!MethodType.DATE.equals(methodType) && !MethodType.EMAIL.equals(methodType)
+					&& !MethodType.OPENLOG.equals(methodType) && !MethodType.SORTER.equals(methodType)) {
 				Button button1 = new Button(methodType.getValue());
 				button1.setStyleName(ValoTheme.BUTTON_LINK);
 				button1.addClickListener(new Button.ClickListener() {
